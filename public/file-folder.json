@@ -1,0 +1,38 @@
+[
+    {
+        "id": "pdf1",
+        "name": "Company Profile.pdf",
+        "type": "application/pdf",
+        "url": "https://example.com/files/company-profile.pdf"
+    },
+    {
+        "id": "folder-1",
+        "hexColor": "#F59E0B",
+        "name": "Documents",
+        "type": "folder"
+    },
+    {
+        "id": "v1",
+        "name": "Company Profile.mp4",
+        "type": "video/mp4",
+        "url": "https://www.w3schools.com/html/mov_bbb.mp4"
+    },
+    {
+        "id": "f9",
+        "name": "UI Design Mockup.png",
+        "type": "image/png",
+        "url": "https://images.unsplash.com/photo-1558655146-9f40138edfeb"
+    },
+    {
+        "id": "docx1",
+        "name": "Project Proposal.docx",
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "url": "https://example.com/files/project-proposal.docx"
+    },
+    {
+        "id": "mp31",
+        "name": "Summer Vibes.mp3",
+        "type": "audio/mpeg",
+        "url": "https://example.com/files/summer-vibes.mp3"
+    }
+]

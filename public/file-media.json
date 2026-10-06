@@ -1,0 +1,27 @@
+[
+  {
+    "id": "v1",
+    "name": "Company Profile.mp4",
+    "type": "video/mp4",
+    "url": "https://www.w3schools.com/html/mov_bbb.mp4"
+  },
+  {
+    "id": "v2",
+    "name": "Any Reel.mp4",
+    "type": "video/mp4",
+    "url": "https://www.w3schools.com/html/movie.mp4",
+    "orientation": "vertical"
+  },
+  {
+    "id": "f2",
+    "name": "Vacation Bali 2025.jpg",
+    "type": "image/jpeg",
+    "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+  },
+  {
+    "id": "f9",
+    "name": "UI Design Mockup.png",
+    "type": "image/png",
+    "url": "https://images.unsplash.com/photo-1558655146-9f40138edfeb"
+  }
+]

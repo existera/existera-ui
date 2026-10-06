@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+
+@import "tailwindcss";
+@import "./lib/styles/index.css";
+
+@theme {
+  --font-sans: "Geist", sans-serif;
+}
+
+.section-anchor {
+  scroll-margin-top: 96px;
+}
+
+.animated-lines {
+  position: absolute;
+  inset: -100%;
+
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 59px,
+      rgba(255, 255, 255, 0.12) 60px,
+      transparent 61px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 59px,
+      rgba(255, 255, 255, 0.12) 60px,
+      transparent 61px
+    );
+
+  animation: moveLines 18s linear infinite;
+
+  mask-image: radial-gradient(
+    circle at center,
+    white 35%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    white 35%,
+    transparent 100%
+  );
+}
+
+@keyframes moveLines {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(-120px, -120px);
+  }
+}
