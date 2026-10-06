@@ -1,4 +1,4 @@
-# ORCA
+# EXISTERA UI
 
 > Modern React component library built for consistency, accessibility, and scalable enterprise applications.
 
@@ -12,11 +12,11 @@
 
 ## Overview
 
-ORCA is Existera's internal design system and React component library.
+EXISTERA UI is Existera's internal design system and React component library.
 
 It provides a consistent foundation for building modern web applications through reusable components, design tokens, themes, utilities, and developer tooling.
 
-ORCA is designed with a strong focus on:
+EXISTERA UI is designed with a strong focus on:
 
 - Accessibility
 - Consistent user experience
@@ -99,20 +99,20 @@ Additional components may be added in future releases.
 
 ## Installation
 
-ORCA is distributed exclusively by Existera.
+EXISTERA UI is distributed exclusively by Existera.
 
 Authorized users may install the package using the private package registry configured by Existera.
 
 Example:
 
 ```bash
-npm install @existera/orca --registry=http://gitlab.existera.id/api/v4/projects/4/packages/npm
+npm install @existera/EXISTERA UI --registry=http://gitlab.existera.id/api/v4/projects/4/packages/npm
 ```
 
 Import the stylesheet:
 
 ```tsx
-import "@existera/orca/style.css";
+import "@existera/EXISTERA UI/style.css";
 ```
 
 ---
@@ -128,10 +128,10 @@ import "@existera/orca/style.css";
 ## Usage
 
 ```tsx
-import { ExButton } from "@existera/orca";
+import { ExButton } from "@existera/EXISTERA UI";
 
 export default function App() {
-  return <ExButton color="primary">Hello ORCA</ExButton>;
+  return <ExButton color="primary">Hello EXISTERA UI</ExButton>;
 }
 ```
 
@@ -155,7 +155,7 @@ If you have access to the internal documentation portal, refer to it for:
 
 ## Versioning
 
-ORCA follows Semantic Versioning.
+EXISTERA UI follows Semantic Versioning.
 
 ```
 MAJOR.MINOR.PATCH
@@ -171,7 +171,7 @@ Example:
 
 ## Contributing
 
-ORCA is maintained internally by Existera.
+EXISTERA UI is maintained internally by Existera.
 
 External contributions are not accepted unless explicitly authorized.
 
@@ -192,7 +192,7 @@ For assistance, contact your project administrator or Existera.
 
 ## Security
 
-If you discover a security vulnerability within ORCA, please report it privately to Existera.
+If you discover a security vulnerability within EXISTERA UI, please report it privately to Existera.
 
 Do not disclose security issues publicly until they have been reviewed.
 
@@ -215,7 +215,7 @@ Current areas of development include:
 
 Copyright © 2026 Existera.
 
-ORCA is proprietary software owned exclusively by Existera.
+EXISTERA UI is proprietary software owned exclusively by Existera.
 
 Internal use is permitted only for software owned or operated by Existera.
 
@@ -227,7 +227,7 @@ See **LICENSE.md** for the complete license terms.
 
 ## Third-Party Software
 
-ORCA includes or depends upon third-party open-source software.
+EXISTERA UI includes or depends upon third-party open-source software.
 
 Each dependency remains licensed under its respective license.
 
@@ -237,7 +237,7 @@ See `package.json` for details.
 
 ## Acknowledgements
 
-ORCA is built on top of several outstanding open-source projects, including:
+EXISTERA UI is built on top of several outstanding open-source projects, including:
 
 - React
 - TypeScript

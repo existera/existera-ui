@@ -100,7 +100,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative mt-15 flex items-center justify-center text-center md:mt-25">
         <div className="max-w-4xl">
-          <p className="mb-5 text-[9px] uppercase tracking-[0.6em] text-muted-foreground/60 md:text-[11px]">Introducing ORCA</p>
+          <p className="mb-5 text-[9px] uppercase tracking-[0.6em] text-muted-foreground/60 md:text-[11px]">Introducing EXISTERA UI</p>
 
           <h1 className="mb-5 text-4xl font-medium tracking-tight md:text-7xl">
             Design Systems

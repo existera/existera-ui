@@ -1,4 +1,4 @@
-ORCA includes or depends on third-party open-source software.
+EXISTERA UI includes or depends on third-party open-source software.
 
 Each dependency remains licensed under its respective license.
 

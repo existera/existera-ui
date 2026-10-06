@@ -1,4 +1,4 @@
-# ORCA Commercial License
+# EXISTERA UI Commercial License
 
 **Version 1.0**  
 **Last Updated:** July 20, 2026
@@ -9,7 +9,7 @@ Copyright © 2026 Existera. All rights reserved.
 
 ## 1. Ownership
 
-ORCA ("Software") is proprietary software developed and owned exclusively by Existera.
+EXISTERA UI ("Software") is proprietary software developed and owned exclusively by Existera.
 
 All intellectual property rights, including but not limited to source code, compiled code, documentation, designs, icons, themes, components, utilities, and related materials, remain the exclusive property of Existera.
 
@@ -19,7 +19,7 @@ No ownership or copyright is transferred to any user through the use of this Sof
 
 ## 2. Internal Use License
 
-Existera grants its employees, contractors, and authorized affiliates a non-exclusive, non-transferable license to use ORCA solely for developing, maintaining, and operating software products that are wholly owned or operated by Existera.
+Existera grants its employees, contractors, and authorized affiliates a non-exclusive, non-transferable license to use EXISTERA UI solely for developing, maintaining, and operating software products that are wholly owned or operated by Existera.
 
 This includes, but is not limited to:
 
@@ -40,20 +40,20 @@ No additional licensing fee is required for software owned by Existera.
 
 ## 3. Third-Party Usage
 
-Any individual, company, organization, or entity that is not Existera must obtain prior written permission or a valid commercial license from Existera before using ORCA.
+Any individual, company, organization, or entity that is not Existera must obtain prior written permission or a valid commercial license from Existera before using EXISTERA UI.
 
 Without prior written authorization, third parties may **not**:
 
-- Use ORCA in commercial software.
-- Use ORCA in open-source projects.
-- Integrate ORCA into products owned by another company.
-- Embed ORCA into another framework or library.
-- Modify ORCA for redistribution.
+- Use EXISTERA UI in commercial software.
+- Use EXISTERA UI in open-source projects.
+- Integrate EXISTERA UI into products owned by another company.
+- Embed EXISTERA UI into another framework or library.
+- Modify EXISTERA UI for redistribution.
 - Redistribute source code or compiled versions.
-- Publish ORCA on GitHub, GitLab, Bitbucket, or any public repository.
-- Upload ORCA to any public or private package registry.
-- Sell, sublicense, lease, rent, or transfer ORCA.
-- Include ORCA in software delivered to customers.
+- Publish EXISTERA UI on GitHub, GitLab, Bitbucket, or any public repository.
+- Upload EXISTERA UI to any public or private package registry.
+- Sell, sublicense, lease, rent, or transfer EXISTERA UI.
+- Include EXISTERA UI in software delivered to customers.
 
 ---
 
@@ -66,7 +66,7 @@ Unless expressly permitted in writing by Existera, you may not:
 - Reverse engineer compiled distributions where prohibited by law.
 - Remove or alter copyright notices.
 - Claim ownership of the Software.
-- Create competing commercial products derived from ORCA.
+- Create competing commercial products derived from EXISTERA UI.
 - Rent, lease, sublicense, assign, or transfer the Software.
 - Circumvent any licensing or access controls implemented by Existera.
 
@@ -74,7 +74,7 @@ Unless expressly permitted in writing by Existera, you may not:
 
 ## 5. Commercial Licensing
 
-Organizations wishing to use ORCA outside of Existera must obtain an appropriate commercial license issued by Existera.
+Organizations wishing to use EXISTERA UI outside of Existera must obtain an appropriate commercial license issued by Existera.
 
 Commercial licenses may include:
 
@@ -119,7 +119,7 @@ This License shall terminate automatically if any provision of this agreement is
 
 Upon termination, the licensee must immediately:
 
-- Cease all use of ORCA.
+- Cease all use of EXISTERA UI.
 - Remove all copies from systems under its control.
 - Destroy any backups unless retention is required by applicable law.
 - Certify compliance upon request by Existera.
@@ -160,6 +160,6 @@ Email: hello@existera.id
 
 © 2026 Existera. All rights reserved.
 
-ORCA is proprietary software owned exclusively by Existera.
+EXISTERA UI is proprietary software owned exclusively by Existera.
 
-Unauthorized use, copying, modification, distribution, publication, sublicensing, disclosure, or commercial exploitation of ORCA is strictly prohibited unless expressly authorized in writing by Existera.
+Unauthorized use, copying, modification, distribution, publication, sublicensing, disclosure, or commercial exploitation of EXISTERA UI is strictly prohibited unless expressly authorized in writing by Existera.

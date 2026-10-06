@@ -35,7 +35,7 @@ export default function CodeBlockPage() {
   console.log(\`Hello \${name}\`);
 }
 
-hello("ORCA");`;
+hello("EXISTERA UI");`;
 
   return (
     <PageContent section={section}>
@@ -65,7 +65,7 @@ hello("ORCA");`;
   console.log(\`Hello \${name}\`);
 }
 
-hello("ORCA");\`;
+hello("EXISTERA UI");\`;
 
 <ExCodeBlock language="tsx">
   {code}

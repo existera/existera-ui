@@ -49,14 +49,14 @@ export default function RootHeader() {
             className="flex cursor-pointer items-center gap-1"
             onClick={() => navigate("/")}
           >
-            <img className="w-7 dark:hidden" src="/orca-logo.svg" alt="logo" />
+            <img className="w-7 dark:hidden" src="/EXISTERA UI-logo.svg" alt="logo" />
             <img
               className="hidden w-7 dark:block"
-              src="/orca-logo-white.svg"
+              src="/EXISTERA UI-logo-white.svg"
               alt="logo"
             />
 
-            <h1 className="text-lg font-semibold tracking-widest">Orca</h1>
+            <h1 className="text-lg font-semibold tracking-widest">Existera UI</h1>
           </div>
 
           <div className="hidden items-center gap-5 md:flex">
