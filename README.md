@@ -1,27 +1,27 @@
 # EXISTERA UI
 
-> Modern React component library built for consistency, accessibility, and scalable enterprise applications.
+> Modern React component library built for consistency, accessibility, and scalable applications.
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss)
-![License](https://img.shields.io/badge/License-Commercial-red)
+![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
 ---
 
 ## Overview
 
-EXISTERA UI is Existera's internal design system and React component library.
+EXISTERA UI is an open-source React component library and design system for building modern web applications.
 
-It provides a consistent foundation for building modern web applications through reusable components, design tokens, themes, utilities, and developer tooling.
+It provides a consistent foundation through reusable components, design tokens, themes, utilities, and developer-friendly APIs.
 
 EXISTERA UI is designed with a strong focus on:
 
 - Accessibility
 - Consistent user experience
 - Developer productivity
-- Enterprise scalability
+- Scalability
 - Performance
 - Maintainability
 
@@ -43,49 +43,6 @@ EXISTERA UI is designed with a strong focus on:
 
 ---
 
-## Included Components
-
-Examples include:
-
-- Accordion
-- Alert
-- Avatar
-- Badge
-- Breadcrumbs
-- Button
-- Button Group
-- Calendar
-- Card
-- Checkbox
-- Code Block
-- Combo Box
-- Date Picker
-- Dialog
-- Divider
-- Drawer
-- Dropdown
-- Flyout
-- Input
-- Link
-- Modal
-- Pagination
-- Progress
-- Radio
-- Select
-- Skeleton
-- Spinner
-- Switch
-- Table
-- Tabs
-- Textarea
-- Time Picker
-- Toast
-- Tooltip
-
-Additional components may be added in future releases.
-
----
-
 ## Technology Stack
 
 - React
@@ -99,20 +56,16 @@ Additional components may be added in future releases.
 
 ## Installation
 
-EXISTERA UI is distributed exclusively by Existera.
-
-Authorized users may install the package using the private package registry configured by Existera.
-
-Example:
+Install EXISTERA UI from npm:
 
 ```bash
-npm install @existera/EXISTERA UI --registry=http://gitlab.existera.id/api/v4/projects/4/packages/npm
+npm install @existera/ui
 ```
 
 Import the stylesheet:
 
 ```tsx
-import "@existera/EXISTERA UI/style.css";
+import "@existera/ui/style.css";
 ```
 
 ---
@@ -120,7 +73,7 @@ import "@existera/EXISTERA UI/style.css";
 ## Requirements
 
 - React 19+
-- TypeScript 5+
+- TypeScript 6+
 - Tailwind CSS v4
 
 ---
@@ -128,10 +81,14 @@ import "@existera/EXISTERA UI/style.css";
 ## Usage
 
 ```tsx
-import { ExButton } from "@existera/EXISTERA UI";
+import { ExButton } from "@existera/ui";
 
 export default function App() {
-  return <ExButton color="primary">Hello EXISTERA UI</ExButton>;
+  return (
+    <ExButton color="primary">
+      Hello EXISTERA UI
+    </ExButton>
+  );
 }
 ```
 
@@ -139,9 +96,7 @@ export default function App() {
 
 ## Documentation
 
-Internal documentation is maintained by Existera.
-
-If you have access to the internal documentation portal, refer to it for:
+Documentation includes:
 
 - Installation
 - Components
@@ -151,19 +106,21 @@ If you have access to the internal documentation portal, refer to it for:
 - Migration Guides
 - Changelog
 
+More documentation will be added as the project evolves.
+
 ---
 
 ## Versioning
 
 EXISTERA UI follows Semantic Versioning.
 
-```
+```text
 MAJOR.MINOR.PATCH
 ```
 
 Example:
 
-```
+```text
 2.3.1
 ```
 
@@ -171,30 +128,33 @@ Example:
 
 ## Contributing
 
-EXISTERA UI is maintained internally by Existera.
+Contributions are welcome.
 
-External contributions are not accepted unless explicitly authorized.
+If you would like to contribute:
 
-Internal contributors should follow the project's coding standards and review process.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add or update tests where appropriate
+5. Submit a pull request
+
+Please follow the project's coding standards and keep changes focused and maintainable.
 
 ---
 
-## Support
+## Issues
 
-Support is available only for:
+Found a bug or have a feature request?
 
-- Existera development teams
-- Authorized commercial license holders
-
-For assistance, contact your project administrator or Existera.
+Please open an issue in the project repository with enough information to reproduce the problem or explain the proposed improvement.
 
 ---
 
 ## Security
 
-If you discover a security vulnerability within EXISTERA UI, please report it privately to Existera.
+If you discover a security vulnerability in EXISTERA UI, please report it privately to the maintainers.
 
-Do not disclose security issues publicly until they have been reviewed.
+Do not disclose security issues publicly until they have been reviewed and resolved.
 
 ---
 
@@ -202,12 +162,13 @@ Do not disclose security issues publicly until they have been reviewed.
 
 Current areas of development include:
 
-- Additional enterprise components
+- Additional components
 - Improved accessibility
 - Performance optimizations
 - Expanded theme system
 - Enhanced documentation
 - More customization options
+- Improved developer tooling
 
 ---
 
@@ -215,11 +176,9 @@ Current areas of development include:
 
 Copyright © 2026 Existera.
 
-EXISTERA UI is proprietary software owned exclusively by Existera.
+EXISTERA UI is released under the MIT License.
 
-Internal use is permitted only for software owned or operated by Existera.
-
-Any external use requires a valid commercial license issued by Existera.
+You are free to use, modify, distribute, and include EXISTERA UI in personal and commercial projects subject to the terms of the MIT License.
 
 See **LICENSE.md** for the complete license terms.
 
