@@ -1,7 +1,7 @@
 {
   "name": "@existera/ui",
   "version": "1.0.7",
-  "description": "Modern React UI Library",
+  "description": "Modern UI Library",
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "main": "./dist/index.js",
@@ -23,7 +23,8 @@
     "**/*.css"
   ],
   "publishConfig": {
-    "registry": "http://gitlab.existera.id/api/v4/projects/4/packages/npm/"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "dev": "vite",
