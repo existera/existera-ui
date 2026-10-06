@@ -16,7 +16,10 @@
     "./style.css": "./dist/style.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE.md",
+    "NOTICE.md"
   ],
   "sideEffects": [
     "*.css",
