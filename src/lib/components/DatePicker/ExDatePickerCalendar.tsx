@@ -6,6 +6,7 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ExDatePickerCalendarProps } from "./props/ExDatePickerCalendarProps";
 import type { ContentStyle } from "./types/ExDatePickerType";
 import { cn } from "../../utils/Utils";
+import { parseDate as parseDateValue } from "./utils/parseDate";
 
 const GAP = 2;
 const VIEWPORT_PADDING = 8;
@@ -56,15 +57,7 @@ export default function ExDatePickerCalendar({
     minWidth: 0,
     visibility: "hidden",
   });
-  const parseDate = (value?: string) => {
-    if (!value) return undefined;
-    if (format === "YYYY-MM-DD") {
-      const [y, m, d] = value.split("-").map(Number);
-      return new Date(y, m - 1, d);
-    }
-    const [d, m, y] = value.split("-").map(Number);
-    return new Date(y, m - 1, d);
-  };
+  const parseDate = (value?: string) => parseDateValue(value, format);
   const selectedDate = parseDate(value);
   const [currentDate, setCurrentDate] = useState(
     () => selectedDate ?? new Date(),
@@ -243,6 +236,7 @@ export default function ExDatePickerCalendar({
         <div className="flex gap-0.5">
           <button
             type="button"
+            aria-label="Previous month"
             onClick={() => setCurrentDate(new Date(year, month - 1, 1))}
             className="flex h-7 w-7 items-center justify-center rounded-md border border-border transition hover:bg-surface-3 active:bg-surface-3 cursor-pointer"
           >
@@ -250,6 +244,7 @@ export default function ExDatePickerCalendar({
           </button>
           <button
             type="button"
+            aria-label="Next month"
             onClick={() => setCurrentDate(new Date(year, month + 1, 1))}
             className="flex h-7 w-7 items-center justify-center rounded-md border border-border transition hover:bg-surface-3 active:bg-surface-3 cursor-pointer"
           >
@@ -390,7 +385,7 @@ export default function ExDatePickerCalendar({
                   key={value.toISOString()}
                   type="button"
                   disabled={disabled}
-                  onClick={() => onSelect?.(formatDate(value))}
+                  onClick={() => { if (!disabled) onSelect?.(formatDate(value)); }}
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-center text-xs transition
           ${current ? "" : "text-muted opacity-40"}
           ${disabled ? "cursor-not-allowed opacity-35" : "cursor-pointer"}
@@ -419,8 +414,10 @@ export default function ExDatePickerCalendar({
             </button>
             <button
               type="button"
+              disabled={!isSelectable(today) || isDisabledDate(today)}
               onClick={() => {
                 const today = new Date();
+                if (!isSelectable(today) || isDisabledDate(today)) return;
                 setCurrentDate(today);
                 onSelect?.(formatDate(today));
               }}

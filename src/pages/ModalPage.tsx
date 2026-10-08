@@ -1,5 +1,5 @@
 import { Save } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 import ExButton from "../lib/components/Button/ExButton";
 import ExCodeBlock from "../lib/components/CodeBlock/ExCodeBlock";
@@ -18,6 +18,8 @@ import type { OnThisPage } from "../shared/documentation/OnThisPageDocumentation
 import PageContent from "../shared/documentation/PageContent";
 
 export default function ModalPage() {
+  const titleId = useId();
+  const descriptionId = useId();
   const section: OnThisPage[] = [
     { name: "Introduction", link: "#intro" },
     { name: "Basic Usage", link: "#basic-usage" },
@@ -27,6 +29,7 @@ export default function ModalPage() {
     { name: "Close Button", link: "#close-button" },
     { name: "Header & Footer", link: "#header-footer" },
     { name: "Controlled State", link: "#controlled-state" },
+    { name: "Accessibility", link: "#accessibility" },
   ];
 
   const [open, setOpen] = useState(false);
@@ -310,9 +313,30 @@ export default function ModalPage() {
 </ExModal>`}
           </ExCodeBlock>
         </section>
+        <section id="accessibility" className="grid gap-5 section-anchor">
+          <div>
+            <h3 className="text-2xl font-semibold">Accessibility</h3>
+            <p className="text-muted text-md">
+              titleId references the visible heading, not the dialog itself. Focus
+              stays inside the open modal and returns to its trigger on close.
+              Escape closes the topmost modal. Use initialFocusRef and returnFocusRef
+              when you need specific focus targets, or aria-label without a heading.
+            </p>
+          </div>
+          <ExCodeBlock language="tsx">
+            {`const titleId = useId();
+
+<ExModal isOpen={open} onClose={() => setOpen(false)} titleId={titleId}>
+  <ExHeader><span id={titleId}>Create New Item</span></ExHeader>
+  {/* Modal content */}
+</ExModal>`}
+          </ExCodeBlock>
+        </section>
       </div>
 
       <ExModal
+        titleId={titleId}
+        aria-describedby={descriptionId}
         isOpen={open}
         variant={variant}
         size={size}
@@ -321,8 +345,8 @@ export default function ModalPage() {
         onClose={() => setOpen(false)}
       >
         <ExHeader>
-          Create New Item
-          <p className="mt-1 text-sm font-normal text-muted">
+          <span id={titleId}>Create New Item</span>
+          <p id={descriptionId} className="mt-1 text-sm font-normal text-muted">
             Fill out the information below to create a new workspace item.
           </p>
         </ExHeader>

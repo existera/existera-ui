@@ -9,7 +9,6 @@ import ExPrefix from "../Prefix/ExPrefix";
 import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundSelect } from "./types/ExSelectType";
-import type { SelectOption } from "./props/ExSelectProps";
 
 import { cn } from "../../utils/Utils";
 
@@ -17,27 +16,42 @@ import { SelectHeight, SelectPadding, SelectSizeClass, SelectStateClass, SelectS
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 
-const ExSelect: CompoundSelect = ({
-  id,
-  children,
-  selected,
-  option = [],
-  placeholder = "Please Select Item",
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  disabled = false,
-  clearable = false,
-  loading = false,
-  className,
-  textAlign = "left",
-}) => {
+const ExSelect: CompoundSelect = (props) => {
+  const {
+    id,
+    children,
+    selected,
+    defaultSelected,
+    onChange,
+    name,
+    required,
+    autoComplete,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+    option = [],
+    placeholder = "Please Select Item",
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    disabled = false,
+    clearable = false,
+    loading = false,
+    className,
+    textAlign = "left",
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<SelectOption | undefined>(selected);
+  const controlled = "selected" in props;
+  const [internalValue, setInternalValue] = useState<string | null>(defaultSelected?.value ?? null);
+  const selectedValue = controlled ? selected?.value : internalValue;
+  // Resolve against current options so async option updates cannot leave a stale
+  // label or make the browser silently display an unrelated first option.
+  const selectedOption = option.find((item) => item.value === selectedValue) ?? null;
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -60,15 +74,17 @@ const ExSelect: CompoundSelect = ({
     if (disabled) {
       return;
     }
-    const nextSelected = option.find((item) => item.value === e.target.value);
-    setSelectedOption(nextSelected);
+    const nextSelected = option.find((item) => item.value === e.target.value) ?? null;
+    if (!controlled) setInternalValue(nextSelected?.value ?? null);
+    onChange?.(nextSelected);
   };
 
   const handleClear = () => {
     if (disabled) {
       return;
     }
-    setSelectedOption(undefined);
+    if (!controlled) setInternalValue(null);
+    onChange?.(null);
   };
 
   return (
@@ -80,10 +96,7 @@ const ExSelect: CompoundSelect = ({
           ? "min-w-0 flex-1"
           : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
         disabled ? "cursor-not-allowed bg-secondary" : !operator ? "bg-surface-2" : "transparent",
-      )}
-      role="combobox"
-      aria-haspopup="listbox"
-      aria-expanded={false}>
+      )}>
       {!operator && prefix && (
         <ExPrefix radius={radius} size={size}>
           {prefix}
@@ -106,8 +119,13 @@ const ExSelect: CompoundSelect = ({
 
         <select
           id={id}
+          name={name}
+          required={required}
           disabled={disabled}
-          aria-label={selectedOption?.label || placeholder}
+          aria-label={ariaLabel ?? (ariaLabelledBy || id ? undefined : placeholder)}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           value={selectedOption?.value ?? ""}
           onChange={handleChange}
           onFocus={() => setFocused(true)}
@@ -120,8 +138,7 @@ const ExSelect: CompoundSelect = ({
             className,
           )}
           style={{ textAlign }}
-          inputMode="numeric"
-          autoComplete="one-time-code">
+          autoComplete={autoComplete}>
           <option value="" disabled className="text-muted">
             {placeholder}
           </option>
@@ -179,5 +196,5 @@ const ExSelect: CompoundSelect = ({
 ExSelect.Prefix = Prefix;
 ExSelect.Suffix = Suffix;
 
-(ExSelect as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+ExSelect[EX_INPUT_OPERATOR_COMPONENT] = true;
 export default ExSelect;

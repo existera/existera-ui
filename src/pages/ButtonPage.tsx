@@ -2,6 +2,7 @@ import ExCanvas from "../shared/components/ExCanvas";
 import ExButton from "../lib/components/Button/ExButton";
 import ExCodeBlock from "../lib/components/CodeBlock/ExCodeBlock";
 import { RefreshCcw, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import PageContent from "../shared/documentation/PageContent";
 import type { OnThisPage } from "../shared/documentation/OnThisPageDocumentation";
 
@@ -73,13 +74,15 @@ export default function ButtonPage() {
           <div>
             <h3 className="text-2xl font-semibold">Link Button</h3>
             <p className="text-muted text-md">
-              Add href to render a native link with the same button styles.
-              Use target="_blank" to open a new tab. Disabled and loading links
+              Use as with your router's Link component for SPA navigation, or href
+              for a native link. Use target="_blank" to open a new tab. Disabled and loading links
               cannot navigate and are removed from the keyboard tab order.
             </p>
           </div>
           <ExCanvas>
             <div className="flex flex-wrap gap-2">
+              <ExButton as={Link} to="/docs/components/input">SPA: Input</ExButton>
+              <ExButton as={Link} to="/docs/components/input" disabled>Disabled SPA link</ExButton>
               <ExButton href="#basic-usage">Basic Usage</ExButton>
               <ExButton href="#variant" variant="outline" target="_blank">
                 Open in new tab
@@ -89,7 +92,19 @@ export default function ButtonPage() {
             </div>
           </ExCanvas>
           <ExCodeBlock language="tsx">
-            {`<ExButton href="/dashboard">Dashboard</ExButton>
+            {`import { Link } from "react-router-dom";
+
+// Render inside your application's router (BrowserRouter or RouterProvider).
+<ExButton as={Link} to="/dashboard">Dashboard (SPA)</ExButton>
+
+<ExButton as={Link} to="/dashboard" replace state={{ from: "settings" }}>
+  Go to dashboard
+</ExButton>
+
+<ExButton as={Link} to="/dashboard" disabled>Disabled SPA link</ExButton>
+
+// Native navigation:
+<ExButton href="/dashboard">Dashboard</ExButton>
 
 <ExButton href="/documentation" target="_blank" variant="outline">
   Open documentation

@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "../../utils/Utils";
-import type { ExButtonProps } from "./props/ExButtonProps";
+import type { AnchorHTMLAttributes, ElementType, MouseEvent, ReactElement } from "react";
+import type { ExButtonLinkProps, ExButtonNativeProps, ExButtonRouterProps, ExButtonStyleProps } from "./props/ExButtonProps";
 
 import {
   ButtonBaseClass,
@@ -21,7 +22,16 @@ const buttonTextAlignClass = {
   between: "justify-between",
 } as const;
 
+type RouterRuntimeProps = ExButtonStyleProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color" | "type"> & {
+    as: ElementType;
+    type?: never;
+  };
+
+export default function ExButton<C extends ElementType>(props: ExButtonRouterProps<C>): ReactElement;
+export default function ExButton(props: ExButtonNativeProps | ExButtonLinkProps): ReactElement;
 export default function ExButton({
+  as: Component,
   id,
   variant = "solid",
   color = "primary",
@@ -37,7 +47,7 @@ export default function ExButton({
   children,
   className,
   ...props
-}: ExButtonProps) {
+}: ExButtonNativeProps | ExButtonLinkProps | RouterRuntimeProps) {
   const isDisabled = disabled || loading;
 
   const buttonClassName = cn(
@@ -77,12 +87,25 @@ export default function ExButton({
     </>
   );
 
-  if (typeof props.href === "string") {
-    const { href, onClick, onAuxClick, tabIndex, target, rel, ...linkProps } = props;
+  if (Component || typeof props.href === "string") {
+    // Router-specific props stay in this spread and are passed only to the router.
+    const anchorProps = props as AnchorHTMLAttributes<HTMLAnchorElement>;
+    const { href, onClick, onAuxClick, tabIndex, target, rel, ...linkProps } = anchorProps;
+    const LinkComponent = isDisabled ? "a" : (Component ?? "a");
+    // Do not mount a router Link when disabled: it could still generate a usable
+    // href for keyboard, middle-click, or the browser's context menu.
+    const forwardedProps = Component && isDisabled
+      ? {
+          title: linkProps.title,
+          "aria-label": linkProps["aria-label"],
+          "aria-labelledby": linkProps["aria-labelledby"],
+          "aria-describedby": linkProps["aria-describedby"],
+        }
+      : linkProps;
 
     return (
-      <a
-        {...linkProps}
+      <LinkComponent
+        {...forwardedProps}
         id={id}
         href={isDisabled ? undefined : href}
         target={target}
@@ -91,7 +114,7 @@ export default function ExButton({
         aria-disabled={isDisabled || undefined}
         aria-busy={loading}
         tabIndex={isDisabled ? -1 : tabIndex}
-        onClick={(event) => {
+        onClick={(event: MouseEvent<HTMLAnchorElement>) => {
           if (isDisabled) {
             event.preventDefault();
             event.stopPropagation();
@@ -99,7 +122,7 @@ export default function ExButton({
           }
           onClick?.(event);
         }}
-        onAuxClick={(event) => {
+        onAuxClick={(event: MouseEvent<HTMLAnchorElement>) => {
           if (isDisabled) {
             event.preventDefault();
             event.stopPropagation();
@@ -110,11 +133,11 @@ export default function ExButton({
         className={buttonClassName}
       >
         {content}
-      </a>
+      </LinkComponent>
     );
   }
 
-  const { type = "button", ...buttonProps } = props;
+  const { type = "button", ...buttonProps } = props as ExButtonNativeProps;
 
   return (
     <button

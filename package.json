@@ -33,10 +33,13 @@
     "dev": "vite",
     "build": "vite build",
     "check:css": "node scripts/check-css.mjs",
-    "check:button": "node --test scripts/check-button.mjs",
+    "check:select": "node --test scripts/check-select.mjs",
+    "check:datepicker": "node --test scripts/check-datepicker.mjs",
+    "check:modal": "node --test scripts/check-modal.mjs",
+    "check:button": "node --test scripts/check-button.mjs && tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-button-types.tsx",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepublishOnly": "npm run build && npm run check:css && npm run check:button"
+    "prepublishOnly": "npm run build && npm run check:css && npm run check:button && npm run check:select && npm run check:datepicker && npm run check:modal"
   },
   "peerDependencies": {
     "react": "^19",

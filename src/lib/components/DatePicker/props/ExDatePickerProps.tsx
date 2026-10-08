@@ -10,6 +10,8 @@ export interface ExDatePickerProps {
   placeholder?: string;
   disabled?: boolean;
   value?: string;
+  /** Initial date when value is omitted. */
+  defaultValue?: string;
   children?: ReactNode;
   debounce?: number;
   state?: DatePickerState;
@@ -24,4 +26,6 @@ export interface ExDatePickerProps {
   startDate?: string;
   endDate?: string;
   onType?: (value: string) => void;
+  /** Called immediately for selection and reset. An empty string means no date. */
+  onChange?: (value: string) => void;
 }
