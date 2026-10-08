@@ -24,10 +24,14 @@ export default defineConfig({
     emptyOutDir: true,
     copyPublicDir: false,
     sourcemap: true,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     cssMinify: "esbuild",
     lib: {
-      entry: path.resolve(__dirname, "src/lib/index.ts"),
+      // Keep CSS explicit: consumers import @existera/ui/style.css once.
+      entry: {
+        index: path.resolve(__dirname, "src/lib/index.ts"),
+        style: path.resolve(__dirname, "src/lib/style.css"),
+      },
       formats: ["es"],
     },
     rollupOptions: {

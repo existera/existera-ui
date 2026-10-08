@@ -27,7 +27,6 @@ export default function ExButton({
   color = "primary",
   size = "md",
   textAlign = "center",
-  type = "button",
   radius = "default",
   loading = false,
   fit = true,
@@ -41,31 +40,26 @@ export default function ExButton({
 }: ExButtonProps) {
   const isDisabled = disabled || loading;
 
-  return (
-    <button
-      {...props}
-      id={id}
-      type={type}
-      disabled={isDisabled}
-      aria-busy={loading}
-      className={cn(
-        className,
-        ButtonBaseClass,
-        ButtonSizeClass[size],
-        iconOnly
-          ? ButtonIconOnlyClass[size]
-          : radius === "default"
-            ? ButtonPaddingClass[size]
-            : ButtonPaddingRadiusFullClass[size],
-        ButtonVariantClass[variant](color),
-        ButtonRadiusClass[radius],
-        fit ? "min-w-fit" : "w-full",
-        !iconOnly && buttonTextAlignClass[textAlign],
-        isDisabled
-          ? "cursor-not-allowed opacity-70 pointer-events-none"
-          : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
-      )}
-    >
+  const buttonClassName = cn(
+    className,
+    ButtonBaseClass,
+    ButtonSizeClass[size],
+    iconOnly
+      ? ButtonIconOnlyClass[size]
+      : radius === "default"
+        ? ButtonPaddingClass[size]
+        : ButtonPaddingRadiusFullClass[size],
+    ButtonVariantClass[variant](color),
+    ButtonRadiusClass[radius],
+    fit ? "min-w-fit" : "w-full",
+    !iconOnly && buttonTextAlignClass[textAlign],
+    isDisabled
+      ? "cursor-not-allowed opacity-70 pointer-events-none"
+      : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
+  );
+
+  const content = (
+    <>
       {loading && (
         <span
           className={cn(
@@ -80,6 +74,58 @@ export default function ExButton({
       {children}
 
       {!loading && !iconOnly && rightIcon}
+    </>
+  );
+
+  if (typeof props.href === "string") {
+    const { href, onClick, onAuxClick, tabIndex, target, rel, ...linkProps } = props;
+
+    return (
+      <a
+        {...linkProps}
+        id={id}
+        href={isDisabled ? undefined : href}
+        target={target}
+        rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
+        role={isDisabled ? "link" : linkProps.role}
+        aria-disabled={isDisabled || undefined}
+        aria-busy={loading}
+        tabIndex={isDisabled ? -1 : tabIndex}
+        onClick={(event) => {
+          if (isDisabled) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onClick?.(event);
+        }}
+        onAuxClick={(event) => {
+          if (isDisabled) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onAuxClick?.(event);
+        }}
+        className={buttonClassName}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  const { type = "button", ...buttonProps } = props;
+
+  return (
+    <button
+      {...buttonProps}
+      id={id}
+      type={type}
+      disabled={isDisabled}
+      aria-busy={loading}
+      className={buttonClassName}
+    >
+      {content}
     </button>
   );
 }

@@ -32,9 +32,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "check:css": "node scripts/check-css.mjs",
+    "check:button": "node --test scripts/check-button.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run check:css && npm run check:button"
   },
   "peerDependencies": {
     "react": "^19",

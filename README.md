@@ -62,11 +62,26 @@ Install EXISTERA UI from npm:
 npm install @existera/ui
 ```
 
-Import the stylesheet:
+Import the precompiled stylesheet once in your application entry point:
 
 ```tsx
 import "@existera/ui/style.css";
 ```
+
+The stylesheet includes the component utilities, light/dark theme tokens, and
+the Tailwind base reset used by the documentation. You do not need to install
+or configure Tailwind to use the components. JavaScript imports do not inject CSS.
+
+If your application already uses Tailwind, import this stylesheet once alongside
+your application CSS; do not scan this package to regenerate its component styles.
+Load application overrides after the package stylesheet. The existing base styles
+apply to the document, including the page background and form controls.
+
+Typography uses the application's `--font-sans` token, with a system-font default.
+The documentation loads Geist separately; the package does not download fonts.
+
+To activate the included dark palette, set `data-theme="dark"` on the root
+`<html>` element, or use the exported `useExTheme` hook.
 
 ---
 
@@ -74,7 +89,7 @@ import "@existera/ui/style.css";
 
 - React 19+
 - TypeScript 6+
-- Tailwind CSS v4
+- Tailwind CSS v4 is only required when developing this library, not when consuming it.
 
 ---
 

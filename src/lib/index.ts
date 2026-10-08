@@ -1,5 +1,3 @@
-import "./styles/index.css";
-
 export { default as ExAccordion } from "./components/Accordion/ExAccordion";
 export { default as ExAccordionItem } from "./components/Accordion/ExAccordionItem";
 export { default as ExAlert } from "./components/Alert/ExAlert";
@@ -9,6 +7,7 @@ export { default as ExChatBubble } from "./components/ChatBubble/ExChatBubble";
 export { default as ExBreadcrumbs } from "./components/Breadcrumbs/ExBreadcrumbs";
 export { default as ExBreadcrumbsItem } from "./components/Breadcrumbs/ExBreadcrumbsItem";
 export { default as ExButton } from "./components/Button/ExButton";
+export type { ExButtonProps, ExButtonNativeProps, ExButtonLinkProps } from "./components/Button/props/ExButtonProps";
 export { default as ExButtonGroup } from "./components/ButtonGroup/ExButtonGroup";
 export { default as ExButtonGroupItem } from "./components/ButtonGroup/ExButtonGroupItem";
 export { default as ExCard } from "./components/Card/ExCard";

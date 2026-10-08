@@ -16,6 +16,10 @@ export default function ButtonPage() {
       link: "#basic-usage",
     },
     {
+      name: "Link Button",
+      link: "#link-button",
+    },
+    {
       name: "Variant",
       link: "#variant",
     },
@@ -62,6 +66,37 @@ export default function ButtonPage() {
           </ExCanvas>
           <ExCodeBlock language="html">
             {`<ExButton>Button</ExButton>`}
+          </ExCodeBlock>
+        </section>
+
+        <section id="link-button" className="grid gap-5 section-anchor">
+          <div>
+            <h3 className="text-2xl font-semibold">Link Button</h3>
+            <p className="text-muted text-md">
+              Add href to render a native link with the same button styles.
+              Use target="_blank" to open a new tab. Disabled and loading links
+              cannot navigate and are removed from the keyboard tab order.
+            </p>
+          </div>
+          <ExCanvas>
+            <div className="flex flex-wrap gap-2">
+              <ExButton href="#basic-usage">Basic Usage</ExButton>
+              <ExButton href="#variant" variant="outline" target="_blank">
+                Open in new tab
+              </ExButton>
+              <ExButton href="#variant" disabled>Disabled link</ExButton>
+              <ExButton href="#variant" loading>Loading link</ExButton>
+            </div>
+          </ExCanvas>
+          <ExCodeBlock language="tsx">
+            {`<ExButton href="/dashboard">Dashboard</ExButton>
+
+<ExButton href="/documentation" target="_blank" variant="outline">
+  Open documentation
+</ExButton>
+
+<ExButton href="/dashboard" disabled>Disabled link</ExButton>
+<ExButton href="/dashboard" loading>Loading link</ExButton>`}
           </ExCodeBlock>
         </section>
 

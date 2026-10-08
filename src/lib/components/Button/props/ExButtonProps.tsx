@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
 import type {
   ButtonColor,
@@ -8,7 +8,7 @@ import type {
   ButtonVariant,
 } from "../types/ExButtonType";
 
-export interface ExButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ExButtonStyleProps {
   textAlign?: ButtonTextAlign;
   variant?: ButtonVariant;
   color?: ButtonColor;
@@ -19,4 +19,18 @@ export interface ExButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: ReactNode;
   iconOnly?: boolean;
   radius?: ButtonRadius;
+  disabled?: boolean;
 }
+
+export type ExButtonNativeProps = ExButtonStyleProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color"> & {
+    href?: never;
+  };
+
+export type ExButtonLinkProps = ExButtonStyleProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color" | "type"> & {
+    href: string;
+    type?: never;
+  };
+
+export type ExButtonProps = ExButtonNativeProps | ExButtonLinkProps;
