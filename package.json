@@ -15,11 +15,7 @@
   },
   "files": [
     "dist",
-    "README.md",
-    "LICENSE.md",
-    "NOTICE.md",
-    "FORM-API.md",
-    "ACCESSIBILITY.md"
+    "README.md"
   ],
   "sideEffects": [
     "**/*.css"

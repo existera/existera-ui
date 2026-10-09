@@ -12,7 +12,7 @@
 
 ## Overview
 
-EXISTERA UI is an open-source React component library and design system for building modern web applications.
+EXISTERA UI is a **free React component library and design system** for building modern web applications.
 
 It provides a consistent foundation through reusable components, design tokens, themes, utilities, and developer-friendly APIs.
 
@@ -24,8 +24,6 @@ EXISTERA UI is designed with a strong focus on:
 - Scalability
 - Performance
 - Maintainability
-
----
 
 ## Technology Stack
 
@@ -92,115 +90,3 @@ export default function App() {
 ```
 
 ---
-
-## Form API
-
-See [Form API and migration](./FORM-API.md) for controlled/uncontrolled values,
-callback aliases, native form submission/reset, refs, and date/time formats.
-
-## Documentation
-
-Documentation includes:
-
-- Installation
-- Components
-- Themes
-- Design Tokens
-- Changelog
-
-More documentation will be added as the project evolves.
-
----
-
-## Versioning
-
-EXISTERA UI follows Semantic Versioning.
-
-```text
-MAJOR.MINOR.PATCH
-```
-
-Example:
-
-```text
-2.3.1
-```
-
----
-
-## Contributing
-
-Contributions are welcome.
-
-If you would like to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add or update tests where appropriate
-5. Submit a pull request
-
-Please follow the project's coding standards and keep changes focused and maintainable.
-
----
-
-## Issues
-
-Found a bug or have a feature request?
-
-Please open an issue in the project repository with enough information to reproduce the problem or explain the proposed improvement.
-
----
-
-## Security
-
-If you discover a security vulnerability in EXISTERA UI, please report it privately to the maintainers.
-
-Do not disclose security issues publicly until they have been reviewed and resolved.
-
----
-
-## License
-
-Copyright © 2026 Existera.
-
-EXISTERA UI is released under the MIT License.
-
-You are free to use, modify, distribute, and include EXISTERA UI in personal and commercial projects subject to the terms of the MIT License.
-
-See **LICENSE.md** for the complete license terms.
-
----
-
-## Third-Party Software
-
-EXISTERA UI includes or depends upon third-party open-source software.
-
-Each dependency remains licensed under its respective license.
-
-See `package.json` for details.
-
----
-
-## Acknowledgements
-
-EXISTERA UI is built on top of several outstanding open-source projects, including:
-
-- React
-- TypeScript
-- Tailwind CSS
-- Vite
-- Framer Motion
-- Lucide React
-
-We sincerely thank the maintainers and contributors of these projects.
-
----
-
-<div align="center">
-
-**Supported by Existera**
-
-Enterprise UI Components for Modern Web Applications.
-
-</div>
