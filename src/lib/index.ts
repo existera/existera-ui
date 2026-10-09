@@ -1,3 +1,5 @@
+import "./style.css";
+
 export { default as ExAccordion } from "./components/Accordion/ExAccordion";
 export { default as ExAccordionItem } from "./components/Accordion/ExAccordionItem";
 export { default as ExAlert } from "./components/Alert/ExAlert";

@@ -74,29 +74,35 @@ export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonG
 export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGroupVariant, string>> = {
   primary: {
     solid: "bg-primary",
-    soft: "bg-primary-soft dark:bg-primary/30",
+    soft: "bg-primary-soft",
     outline: "border border-primary",
   },
   secondary: {
     solid: "bg-secondary",
-    soft: "bg-secondary-soft dark:bg-secondary-soft",
+    soft: "bg-secondary-soft",
     outline: "border border-secondary/70",
   },
   danger: {
     solid: "bg-danger",
-    soft: "bg-danger-soft dark:bg-danger-soft",
+    soft: "bg-danger-soft",
     outline: "border border-danger",
   },
   success: {
     solid: "bg-success",
-    soft: "bg-success-soft dark:bg-success-soft",
+    soft: "bg-success-soft",
     outline: "border border-success",
   },
   warning: {
     solid: "bg-warning",
-    soft: "bg-warning-soft dark:bg-warning-soft",
+    soft: "bg-warning-soft",
     outline: "border border-warning",
   },
 };
 
-export const ButtonGroupInactiveClass = "bg-transparent text-muted hover:bg-surface-3 hover:text-foreground";
+export const ButtonGroupInactiveClass: Record<ButtonGroupColor, string> = {
+  primary: ["bg-transparent text-primary", "hover:bg-primary-soft hover:text-primary"].join(" "),
+  secondary: ["bg-transparent text-secondary", "hover:bg-secondary-soft hover:text-secondary"].join(" "),
+  danger: ["bg-transparent text-danger", "hover:bg-danger-soft hover:text-danger"].join(" "),
+  success: ["bg-transparent text-success", "hover:bg-success-soft hover:text-success"].join(" "),
+  warning: ["bg-transparent text-warning", "hover:bg-warning-soft hover:text-warning"].join(" "),
+};
