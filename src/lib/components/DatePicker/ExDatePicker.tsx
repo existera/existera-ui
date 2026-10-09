@@ -1,4 +1,7 @@
 "use client";
+import { usePickerKeyboard } from "../../hooks/usePickerKeyboard";
+import { useTextField } from "../../hooks/useTextField";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import type { CompoundDatePicker } from "./types/ExDatePickerType";
 import Prefix from "../Prefix/ExPrefix";
@@ -17,6 +20,8 @@ const ExDatePicker: CompoundDatePicker = (props) => {
   const {
     children,
     id,
+    ref,
+    readOnly = false,
     placeholder = "Choose Date",
     value,
     defaultValue = "",
@@ -35,19 +40,22 @@ const ExDatePicker: CompoundDatePicker = (props) => {
     disabled = false,
     onType,
     onChange,
+    ...nativeProps
   } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendingValueRef = useRef<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+
+
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const controlled = "value" in props;
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const inputValue = controlled ? (value ?? "") : internalValue;
+  const picker = usePickerKeyboard(open, setOpen, triggerRef, contentRef, disabled || readOnly);
+  const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
+  const inputValue = field.value;
+  const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+    element.value = field.reset(); setOpen(false);
+  });
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -64,53 +72,10 @@ const ExDatePicker: CompoundDatePicker = (props) => {
     }
   });
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-        debounceRef.current = null;
-        pendingValueRef.current = null;
-      }
-    };
-  }, [disabled, debounce, onType]);
-
-  useEffect(() => {
-    // An external reset must not be overwritten by a delayed legacy callback.
-    if (controlled && pendingValueRef.current !== null && inputValue !== pendingValueRef.current) {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      debounceRef.current = null;
-      pendingValueRef.current = null;
-    }
-  }, [controlled, inputValue]);
-
   const handleSelect = (nextValue: string) => {
-    if (disabled) return;
-
-    if (!controlled) {
-      setInternalValue(nextValue);
-    }
-
-    setOpen(false);
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-      debounceRef.current = null;
-    }
-    pendingValueRef.current = null;
-    onChange?.(nextValue);
-    if (!onType) return;
-
-    if (debounce <= 0 || nextValue === "") {
-      onType(nextValue);
-      return;
-    }
-
-    pendingValueRef.current = nextValue;
-    debounceRef.current = setTimeout(() => {
-      debounceRef.current = null;
-      pendingValueRef.current = null;
-      onType(nextValue);
-    }, debounce);
+    if (disabled || readOnly) return;
+    field.change(nextValue, nextValue === "");
+    picker.dismiss();
   };
 
   const handleClear = () => handleSelect("");
@@ -165,6 +130,7 @@ const ExDatePicker: CompoundDatePicker = (props) => {
           )}
 
           <input
+            {...nativeProps}
             className={cn(
               "w-full bg-transparent px-1 outline-none focus:border-none focus:outline-none focus:ring-0",
               disabled && "cursor-not-allowed text-muted",
@@ -175,24 +141,23 @@ const ExDatePicker: CompoundDatePicker = (props) => {
             disabled={disabled}
             placeholder={placeholder}
             value={inputValue}
-            onClick={() => { if (!disabled) setOpen(true); }}
-            onKeyDown={(event) => {
-              if (disabled) return;
-              if (event.key === "Escape") setOpen(false);
-              if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
-                event.preventDefault();
-                setOpen(true);
-              }
-            }}
-            onFocus={() => {
-              if (disabled) return;
+            onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+            aria-haspopup="dialog"
+            aria-expanded={open}
+            aria-controls={open ? picker.popupId : undefined}
+            onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
+            onFocus={(e) => {
+              nativeProps.onFocus?.(e);
+                picker.rememberTrigger(e.currentTarget);
+              if (disabled || readOnly) return;
               setFocused(true);
               setOpen(true);
             }}
             onBlur={(e) => {
+              nativeProps.onBlur?.(e);
               setFocused(false);
               const next = e.relatedTarget as Node | null;
-              if (next && contentRef.current?.contains(next)) {
+              if (next && (contentRef.current?.contains(next) || triggerRef.current?.contains(next))) {
                 return;
               }
               setOpen(false);
@@ -205,7 +170,7 @@ const ExDatePicker: CompoundDatePicker = (props) => {
             </div>
           )}
 
-          {clearable && inputValue && !disabled && (
+          {clearable && inputValue && !disabled && !readOnly && (
             <div className="flex items-center pl-2">
               <button
                 type="button"
@@ -242,8 +207,8 @@ const ExDatePicker: CompoundDatePicker = (props) => {
         )}
       </div>
 
-      {open && !disabled && (
-        <ExDatePickerCalendar
+      {open && !disabled && !readOnly && (
+        <ExDatePickerCalendar popupId={picker.popupId} onPopupKeyDown={picker.onPopupKeyDown}
           key={`${format}:${inputValue}`}
           open={open}
           triggerRef={triggerRef}

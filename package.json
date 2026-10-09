@@ -1,17 +1,15 @@
 {
   "name": "@existera/ui",
   "version": "1.0.2",
-  "description": "Modern UI Library",
+  "description": "Modern React UI Library",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js"
     },
     "./style.css": "./dist/style.css"
   },
@@ -19,27 +17,31 @@
     "dist",
     "README.md",
     "LICENSE.md",
-    "NOTICE.md"
+    "NOTICE.md",
+    "FORM-API.md",
+    "ACCESSIBILITY.md"
   ],
   "sideEffects": [
-    "*.css",
     "**/*.css"
   ],
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "access": "public"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "check:css": "node scripts/check-css.mjs",
-    "check:select": "node --test scripts/check-select.mjs",
-    "check:datepicker": "node --test scripts/check-datepicker.mjs",
-    "check:modal": "node --test scripts/check-modal.mjs",
-    "check:button": "node --test scripts/check-button.mjs && tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-button-types.tsx",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "prepublishOnly": "npm run build && npm run check:css && npm run check:button && npm run check:select && npm run check:datepicker && npm run check:modal"
+    "check:types": "tsc --noEmit",
+    "check:package": "publint --strict",
+    "check:exports": "attw --pack --profile esm-only --exclude-entrypoints ./style.css",
+    "check:security": "npm audit --omit=dev --audit-level=high",
+    "check:components": "node --test scripts/check-*.mjs",
+    "check:css": "node scripts/check-css.mjs",
+    "check:forms": "tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-form-types.tsx",
+    "check:button": "tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-button-types.tsx",
+    "check:consumer": "node scripts/check-package.mjs",
+    "check:production": "npm run lint && npm run check:types && npm run build && npm run check:components && npm run check:css && npm run check:forms && npm run check:button && npm run check:package && npm run check:exports && npm run check:consumer",
+    "prepublishOnly": "npm run check:production"
   },
   "peerDependencies": {
     "react": "^19",
@@ -47,27 +49,30 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "esbuild": "^0.28.2",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.3.0",
     "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "react-router-dom": "^7.18.1",
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@microsoft/api-extractor": "^7.7.8",
     "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^6.0.3",
-    "esbuild": "^0.28.1",
     "eslint": "^10.7.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "publint": "^0.3.25",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-router-dom": "^7.18.1",
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",

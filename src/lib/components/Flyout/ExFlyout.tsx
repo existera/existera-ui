@@ -7,6 +7,7 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "../../utils/Utils";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 export default function ExFlyout({
   isOpen,
@@ -17,6 +18,7 @@ export default function ExFlyout({
   onClose,
   children,
 }: ExFlyoutProps) {
+  const registerPortalRef = useRegisterModalPortal<HTMLElement>();
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function ExFlyout({
 
           <div className={cn("fixed z-97", frameClass, sideClass)}>
             <motion.aside
+              ref={registerPortalRef}
               className={cn("h-full bg-surface shadow-xl overflow-hidden flex flex-col", sizeClass)}
               initial={{
                 x: side === "right" ? "110%" : "-110%",

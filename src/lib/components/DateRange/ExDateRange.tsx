@@ -1,4 +1,6 @@
 "use client";
+import { usePickerKeyboard } from "../../hooks/usePickerKeyboard";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import type { CompoundDateRange } from "./types/ExDateRangeType";
 import Prefix from "../Prefix/ExPrefix";
@@ -11,40 +13,78 @@ import { DateRangePadding, DateRangeSizeClass, DateRangeStateClass, DateRangeSta
 import { ArrowRight, CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
 import ExDateRangeCalendar from "./ExDateRangeCalendar";
 
-const ExDateRange: CompoundDateRange = ({
-  children,
-  id,
-  startDatePlaceholder = "Start Date",
-  endDatePlaceholder = "End Date",
-  startDateValue,
-  endDateValue,
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  clearable = false,
-  loading = false,
-  format = "DD-MM-YYYY",
-  debounce = 0,
-  startDate,
-  endDate,
-  disabledDate = [],
-  disabled = false,
-  onType,
-}) => {
+const ExDateRange: CompoundDateRange = (props) => {
+  const {
+    children,
+    id,
+    value,
+    defaultValue,
+    name,
+    startName,
+    endName,
+    ref,
+    endRef,
+    readOnly = false,
+    startDatePlaceholder = "Start Date",
+    endDatePlaceholder = "End Date",
+    startDateValue,
+    endDateValue,
+    onChange,
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    clearable = false,
+    loading = false,
+    format = "DD-MM-YYYY",
+    debounce = 0,
+    startDate,
+    endDate,
+    disabledDate = [],
+    disabled = false,
+    onType,
+    endPlaceholder,
+    ...nativeProps
+  } = props;
+ void endPlaceholder;
   const [focused, setFocused] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const pendingRangeRef = useRef<{ startDate: string; endDate: string } | null>(null);
+  const typeCallback = useRef(onType);
+  useEffect(() => { typeCallback.current = onType; }, [onType]);
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const picker = usePickerKeyboard(open, setOpen, triggerRef, contentRef, disabled || readOnly);
 
-  const startControlled = startDateValue !== undefined;
-
-  const [startInternalValue, setStartInternalValue] = useState(startDateValue ?? "");
-
-  const [endInternalValue, setEndInternalValue] = useState(endDateValue ?? "");
+  const pairControlled = "value" in props;
+  const startControlled = pairControlled || "startDateValue" in props;
+  const endControlled = pairControlled || "endDateValue" in props;
+  const [startInternalValue, setStartInternalValue] = useState(defaultValue?.startDate ?? "");
+  const [endInternalValue, setEndInternalValue] = useState(defaultValue?.endDate ?? "");
+  const startValue = pairControlled ? value?.startDate ?? "" : startControlled ? startDateValue ?? "" : startInternalValue;
+  const endValue = pairControlled ? value?.endDate ?? "" : endControlled ? endDateValue ?? "" : endInternalValue;
+  const resetRange = () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!startControlled) setStartInternalValue(defaultValue?.startDate ?? "");
+    if (!endControlled) setEndInternalValue(defaultValue?.endDate ?? "");
+    setOpen(false);
+  };
+  const startInputRef = useNativeField<HTMLInputElement>(ref, element => {
+    resetRange(); element.value = startControlled ? startValue : defaultValue?.startDate ?? "";
+  });
+  const endInputRef = useNativeField<HTMLInputElement>(endRef, element => {
+    resetRange(); element.value = endControlled ? endValue : defaultValue?.endDate ?? "";
+  });
+  useEffect(() => {
+    const pending = pendingRangeRef.current;
+    if (pending && ((startControlled && startValue !== pending.startDate) ||
+      (endControlled && endValue !== pending.endDate) || disabled || readOnly)) {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      pendingRangeRef.current = null;
+    }
+  }, [startControlled, endControlled, startValue, endValue, disabled, readOnly]);
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -69,64 +109,37 @@ const ExDateRange: CompoundDateRange = ({
     };
   }, []);
 
-  const handleChangeStart = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) return;
-
-    const nextValue = e.target.value;
-
-    if (!startControlled) {
-      setStartInternalValue(nextValue);
-    }
-
+  const notifyType = (value: string) => {
     if (!onType) return;
-
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
-
     if (debounce <= 0) {
-      onType(nextValue);
+      onType(value);
       return;
     }
-
     debounceRef.current = setTimeout(() => {
-      onType(nextValue);
+      pendingRangeRef.current = null;
+      typeCallback.current?.(value);
     }, debounce);
   };
 
-  const handleChangeEnd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) return;
-
-    const nextValue = e.target.value;
-
-    setEndInternalValue(nextValue);
-
-    if (!onType) return;
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    if (debounce <= 0) {
-      onType(nextValue);
-      return;
-    }
-
-    debounceRef.current = setTimeout(() => {
-      onType(nextValue);
-    }, debounce);
+  const updateRange = (next: { startDate: string; endDate: string }, legacyValue = next.endDate || next.startDate) => {
+    if (disabled || readOnly) return;
+    if (!startControlled) setStartInternalValue(next.startDate);
+    if (!endControlled) setEndInternalValue(next.endDate);
+    onChange?.(next);
+    pendingRangeRef.current = next;
+    notifyType(legacyValue);
   };
-
+  const updateStart = (next: string) => updateRange({ startDate: next, endDate: endValue }, next);
+  const updateEnd = (next: string) => updateRange({ startDate: startValue, endDate: next }, next);
   const handleClear = () => {
-    if (disabled) return;
-
-    setStartInternalValue("");
-    setEndInternalValue("");
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
+    if (disabled || readOnly) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!startControlled) setStartInternalValue("");
+    if (!endControlled) setEndInternalValue("");
+    onChange?.({ startDate: "", endDate: "" });
     onType?.("");
   };
 
@@ -179,29 +192,40 @@ const ExDateRange: CompoundDateRange = ({
 
           <div className="grid w-full grid-cols-7 items-center justify-between">
             <input
+              {...nativeProps}
               className={cn(
                 "col-span-3 w-full bg-transparent pl-1 outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
-              id={id}
-              ref={inputRef}
+              id={id ? `${id}-start` : undefined}
+              ref={startInputRef}
+              name={startName ?? (name ? `${name}.startDate` : undefined)}
+              aria-label={nativeProps["aria-label"] ? `${nativeProps["aria-label"]} start` : startDatePlaceholder}
               readOnly
               disabled={disabled}
               placeholder={startDatePlaceholder}
-              value={startInternalValue}
-              onChange={handleChangeStart}
-              onFocus={() => {
-                if (disabled) return;
+              value={startValue ?? ""}
+              onChange={(e) => updateStart(e.target.value)}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              aria-controls={open ? picker.popupId : undefined}
+              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
+              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onFocus={(e) => {
+                nativeProps.onFocus?.(e);
+                picker.rememberTrigger(e.currentTarget);
+                if (disabled || readOnly) return;
 
                 setOpen(true);
                 setFocused(true);
               }}
               onBlur={(e) => {
+                nativeProps.onBlur?.(e);
                 setFocused(false);
 
                 const next = e.relatedTarget as Node | null;
 
-                if (next && contentRef.current?.contains(next)) {
+                if (next && (contentRef.current?.contains(next) || triggerRef.current?.contains(next))) {
                   return;
                 }
 
@@ -214,29 +238,40 @@ const ExDateRange: CompoundDateRange = ({
             </div>
 
             <input
+              {...nativeProps}
               className={cn(
                 "col-span-3 w-full bg-transparent pr-1 text-end outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
-              id={id}
-              ref={inputRef}
+              id={id ? `${id}-end` : undefined}
+              ref={endInputRef}
+              name={endName ?? (name ? `${name}.endDate` : undefined)}
+              aria-label={nativeProps["aria-label"] ? `${nativeProps["aria-label"]} end` : endDatePlaceholder}
               readOnly
               disabled={disabled}
               placeholder={endDatePlaceholder}
-              value={endInternalValue}
-              onChange={handleChangeEnd}
-              onFocus={() => {
-                if (disabled) return;
+              value={endValue ?? ""}
+              onChange={(e) => updateEnd(e.target.value)}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              aria-controls={open ? picker.popupId : undefined}
+              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
+              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onFocus={(e) => {
+                nativeProps.onFocus?.(e);
+                picker.rememberTrigger(e.currentTarget);
+                if (disabled || readOnly) return;
 
                 setOpen(true);
                 setFocused(true);
               }}
               onBlur={(e) => {
+                nativeProps.onBlur?.(e);
                 setFocused(false);
 
                 const next = e.relatedTarget as Node | null;
 
-                if (next && contentRef.current?.contains(next)) {
+                if (next && (contentRef.current?.contains(next) || triggerRef.current?.contains(next))) {
                   return;
                 }
 
@@ -251,12 +286,13 @@ const ExDateRange: CompoundDateRange = ({
             </div>
           )}
 
-          {clearable && (startInternalValue || endInternalValue) && !disabled && (
+          {clearable && (startValue || endValue) && !disabled && !readOnly && (
             <div className="flex items-center pl-2">
               <button
                 type="button"
                 disabled={disabled}
                 onClick={handleClear}
+                aria-label="Clear date range"
                 className={cn(DateRangeStateIconSize[size], "cursor-pointer border-none bg-transparent p-0 text-muted outline-none")}>
                 <X className={DateRangeStateIconSize[size]} />
               </button>
@@ -287,8 +323,8 @@ const ExDateRange: CompoundDateRange = ({
         )}
       </div>
 
-      {open && !disabled && (
-        <ExDateRangeCalendar
+      {open && !disabled && !readOnly && (
+        <ExDateRangeCalendar popupId={picker.popupId} onPopupKeyDown={picker.onPopupKeyDown}
           open={open}
           triggerRef={triggerRef}
           contentRef={contentRef}
@@ -296,25 +332,12 @@ const ExDateRange: CompoundDateRange = ({
           format={format}
           startDate={startDate}
           endDate={endDate}
-          startDateValue={startInternalValue}
-          endDateValue={endInternalValue}
-          onSelectStart={(e) => {
-            if (disabled) return;
-
-            setStartInternalValue(e);
-          }}
-          onSelectEnd={(e) => {
-            if (disabled) return;
-
-            setEndInternalValue(e);
-          }}
-          onClear={() => {
-            if (disabled) return;
-
-            setStartInternalValue("");
-            setEndInternalValue("");
-            onType?.("");
-          }}
+          startDateValue={startValue}
+          endDateValue={endValue}
+          onSelectStart={updateStart}
+          onSelectEnd={updateEnd}
+          onSelectRange={updateRange}
+          onClear={handleClear}
         />
       )}
     </>

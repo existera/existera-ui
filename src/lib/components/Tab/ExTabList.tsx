@@ -22,9 +22,7 @@ export default function ExTabList({ children, className, "aria-label": ariaLabel
 
     if (!container || !scroll) return;
 
-    const activeEl = container.querySelector<HTMLButtonElement>(
-      `[data-tab="${activeTab}"]`,
-    );
+    const activeEl = Array.from(container.querySelectorAll<HTMLButtonElement>("[data-tab]")).find(el => el.dataset.tab === activeTab);
 
     if (!activeEl) return;
 
@@ -55,9 +53,7 @@ export default function ExTabList({ children, className, "aria-label": ariaLabel
     const resizeObserver = new ResizeObserver(() => {
       if (!containerRef.current) return;
 
-      const active = containerRef.current.querySelector<HTMLButtonElement>(
-        `[data-tab="${activeTab}"]`,
-      );
+      const active = Array.from(containerRef.current.querySelectorAll<HTMLButtonElement>("[data-tab]")).find(el => el.dataset.tab === activeTab);
 
       if (!active) return;
 

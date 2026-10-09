@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useRef, useSyncExternalStore } from "react";
+import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
@@ -36,9 +36,16 @@ export default function ExModal({
   const isFullscreen = size === "fullscreen";
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const portalRootsRef = useRef(new Set<HTMLElement>());
+  const registerPortal = useCallback((element: HTMLElement) => {
+    portalRootsRef.current.add(element);
+    return () => portalRootsRef.current.delete(element);
+  }, []);
+  const getAllowedElements = useCallback(() => [...portalRootsRef.current], []);
+  const contextValue = useMemo(() => ({ onClose, isFullscreen, registerPortal }), [onClose, isFullscreen, registerPortal]);
 
   const mounted = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
-  useFocusTrap(isOpen && mounted, modalRef, returnFocusRef, initialFocusRef, onClose);
+  useFocusTrap(isOpen && mounted, modalRef, returnFocusRef, initialFocusRef, onClose, getAllowedElements);
 
   const modalPosition = isFullscreen ? "inset-0" : ModalVariantMap[variant];
 
@@ -46,10 +53,7 @@ export default function ExModal({
 
   return createPortal(
     <ExModalContext.Provider
-      value={{
-        onClose,
-        isFullscreen,
-      }}>
+      value={contextValue}>
       <AnimatePresence>
         {isOpen && (
           <>

@@ -1,24 +1,40 @@
 "use client";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useRef, useImperativeHandle } from "react";
 import type { ExSwitchProps } from "./props/ExSwitchProps";
 
 export default function ExSwitch({
   checked,
+  onChange,
+  readOnly = false,
+  name,
+  form,
+  required,
+  value = "on",
+  ref,
   defaultChecked = false,
   onCheckedChange,
   disabled = false,
   size = "md",
   className,
+  ...nativeProps
 }: ExSwitchProps) {
   const isControlled = checked !== undefined;
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
   const currentChecked = isControlled ? checked : internalChecked;
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  useImperativeHandle(ref, () => buttonRef.current!);
+  const inputRef = useNativeField<HTMLInputElement>(undefined, element => {
+    const next = isControlled ? checked : defaultChecked;
+    if (!isControlled) setInternalChecked(next);
+    element.checked = next;
+  });
   const toggle = () => {
-    if (disabled) return;
+    if (disabled || readOnly) return;
 
     const next = !currentChecked;
 
@@ -26,11 +42,18 @@ export default function ExSwitch({
       setInternalChecked(next);
     }
 
-    onCheckedChange?.(next);
+    (onChange ?? onCheckedChange)?.(next);
   };
 
   return (
+    <>
+    <input ref={inputRef} type="checkbox" hidden name={name} form={form} required={required} value={value}
+      checked={currentChecked} disabled={disabled} readOnly onInvalid={e => { e.preventDefault(); buttonRef.current?.focus(); }} />
     <button
+      {...nativeProps}
+      ref={buttonRef}
+      aria-required={required}
+      aria-readonly={readOnly}
       type="button"
       role="switch"
       aria-checked={currentChecked}
@@ -77,5 +100,6 @@ export default function ExSwitch({
         )}
       />
     </button>
+    </>
   );
 }

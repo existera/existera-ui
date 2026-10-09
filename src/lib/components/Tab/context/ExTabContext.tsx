@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 
 export type TabContextType = {
   activeTab: string;
+  baseId: string;
   setActiveTab: (tab: string) => void;
 };
 

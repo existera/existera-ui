@@ -1,6 +1,8 @@
 "use client";
 
-import React, { Children, isValidElement, useEffect, useRef, useState } from "react";
+import { useTextField } from "../../hooks/useTextField";
+import { useNativeField } from "../../hooks/useNativeField";
+import React, { Children, isValidElement, useState } from "react";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
 
 import Prefix from "../Prefix/ExPrefix";
@@ -16,39 +18,44 @@ import { InputPadding, InputSizeClass, InputStateClass, InputStateIconSize } fro
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 
-const ExInput: CompoundInput = ({
-  children,
-  id,
-  type = "text",
-  disabled = false,
-  placeholder = "Please type here...",
-  value,
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  loading = false,
-  clearable = false,
-  debounce = 0,
-  onType,
-  "aria-labelledby": ariaLabelledBy,
-  "aria-describedby": ariaDescribedby,
-  "aria-required": ariaRequired,
-  "aria-invalid": ariaInvalid = state === "error",
-  maxLength,
-  inputMode,
-  autoComplete,
-  className,
-  textAlign = "left",
-}) => {
+const ExInput: CompoundInput = (props) => {
+  const {
+    children,
+    id,
+    type = "text",
+    disabled = false,
+    placeholder = "Please type here...",
+    value,
+    defaultValue = "",
+    ref,
+    readOnly = false,
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    loading = false,
+    clearable = false,
+    debounce = 0,
+    onChange,
+    onType,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+    "aria-invalid": ariaInvalid = state === "error",
+    maxLength,
+    inputMode,
+    autoComplete,
+    className,
+    textAlign = "left",
+    ...nativeProps
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const controlled = value !== undefined;
-  const [internalValue, setInternalValue] = useState(value ?? "");
-  const inputValue = controlled ? (value ?? "") : internalValue;
+  const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
+  const inputRef = useNativeField<HTMLInputElement>(ref, element => { element.value = field.reset(); });
+  const inputValue = field.value;
   const inputModeMap = {
     text: "text",
     email: "email",
@@ -80,54 +87,8 @@ const ExInput: CompoundInput = ({
     }
   });
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextValue = e.target.value;
-
-    if (!controlled) {
-      setInternalValue(nextValue);
-    }
-
-    if (!onType) {
-      return;
-    }
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    if (debounce <= 0) {
-      onType(nextValue);
-      return;
-    }
-
-    debounceRef.current = setTimeout(() => {
-      onType(nextValue);
-    }, debounce);
-  };
-
-  const handleClear = () => {
-    if (disabled) {
-      return;
-    }
-
-    if (!controlled) {
-      setInternalValue("");
-    }
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    onType?.("");
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => field.change(e.target.value);
+  const handleClear = () => field.change("", true);
 
   return (
     <div
@@ -160,14 +121,17 @@ const ExInput: CompoundInput = ({
         )}
 
         <input
+          {...nativeProps}
+          ref={inputRef}
+          readOnly={readOnly}
           id={id}
           type={type}
           disabled={disabled}
           value={inputValue}
           placeholder={placeholder}
           onChange={handleChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onFocus={(e) => { setFocused(true); nativeProps.onFocus?.(e); }}
+          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedby}
           aria-required={ariaRequired}
@@ -190,7 +154,7 @@ const ExInput: CompoundInput = ({
           </div>
         )}
 
-        {clearable && inputValue.length > 0 && !disabled && (
+        {clearable && inputValue.length > 0 && !disabled && !readOnly && (
           <div className="flex items-center pl-2">
             <button
               type="button"
@@ -232,5 +196,5 @@ const ExInput: CompoundInput = ({
 ExInput.Prefix = Prefix;
 ExInput.Suffix = Suffix;
 
-(ExInput as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+Object.assign(ExInput, { [EX_INPUT_OPERATOR_COMPONENT]: true });
 export default ExInput;

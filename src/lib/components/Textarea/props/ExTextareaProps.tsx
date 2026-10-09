@@ -1,3 +1,4 @@
+import type { ExFormFieldProps } from "../../../types/Form";
 import type { ReactNode } from "react";
 import type {
   TextareaRadius,
@@ -5,7 +6,9 @@ import type {
   TextareaState,
 } from "../types/ExTextareaType";
 
-export interface ExTextareaProps {
+export interface ExTextareaProps extends ExFormFieldProps<HTMLTextAreaElement> {
+  value?: string;
+  defaultValue?: string;
   id?: string;
   children?: ReactNode;
   placeholder?: string;
@@ -20,6 +23,7 @@ export interface ExTextareaProps {
   autoResize?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
+  onChange?: (value: string) => void;
   onType?: (value: string) => void;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;

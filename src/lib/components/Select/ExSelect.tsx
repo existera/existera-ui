@@ -1,4 +1,5 @@
 "use client";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import React, { Children, isValidElement, useState } from "react";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
@@ -20,7 +21,11 @@ const ExSelect: CompoundSelect = (props) => {
   const {
     id,
     children,
-    selected,
+    selected: legacySelected,
+    value,
+    defaultValue,
+    ref,
+    readOnly = false,
     defaultSelected,
     onChange,
     name,
@@ -42,16 +47,25 @@ const ExSelect: CompoundSelect = (props) => {
     loading = false,
     className,
     textAlign = "left",
+    ...nativeProps
   } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const controlled = "selected" in props;
-  const [internalValue, setInternalValue] = useState<string | null>(defaultSelected?.value ?? null);
+  const controlled = "value" in props || "selected" in props;
+  const selected = "value" in props ? value : legacySelected;
+  const initial = "defaultValue" in props ? defaultValue : defaultSelected;
+  const [internalValue, setInternalValue] = useState<string | null>(initial?.value ?? null);
   const selectedValue = controlled ? selected?.value : internalValue;
   // Resolve against current options so async option updates cannot leave a stale
   // label or make the browser silently display an unrelated first option.
   const selectedOption = option.find((item) => item.value === selectedValue) ?? null;
+
+  const inputRef = useNativeField<HTMLSelectElement>(ref, element => {
+    const next = controlled ? selected?.value : initial?.value;
+    if (!controlled) setInternalValue(next ?? null);
+    element.value = option.some(item => item.value === next) ? next! : "";
+  });
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -71,7 +85,7 @@ const ExSelect: CompoundSelect = (props) => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
     const nextSelected = option.find((item) => item.value === e.target.value) ?? null;
@@ -80,7 +94,7 @@ const ExSelect: CompoundSelect = (props) => {
   };
 
   const handleClear = () => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
     if (!controlled) setInternalValue(null);
@@ -118,6 +132,9 @@ const ExSelect: CompoundSelect = (props) => {
         )}
 
         <select
+          {...nativeProps}
+          ref={inputRef}
+          aria-readonly={readOnly}
           id={id}
           name={name}
           required={required}
@@ -128,8 +145,8 @@ const ExSelect: CompoundSelect = (props) => {
           aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           value={selectedOption?.value ?? ""}
           onChange={handleChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onFocus={(e) => { setFocused(true); nativeProps.onFocus?.(e); }}
+          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
           className={cn(
             SelectHeight[inputSize],
             selectedOption ? "text-foreground" : "text-muted",
@@ -156,7 +173,7 @@ const ExSelect: CompoundSelect = (props) => {
           </div>
         )}
 
-        {clearable && selectedOption && !disabled && (
+        {clearable && selectedOption && !disabled && !readOnly && (
           <button
             type="button"
             onClick={handleClear}

@@ -1,246 +1,73 @@
-import { useEffect, useRef, useState, useCallback, type ReactNode } from "react";
+"use client";
+import { useEffect, useRef, useState, useCallback, useId, type ReactNode } from "react";
 import { ExDropdownCtx, type ExDropdownAlign } from "./ExDropdownProps.js";
 
-type Props = {
-  children: ReactNode;
-  defaultAlign?: ExDropdownAlign;
-  disabled?: boolean;
-};
-
-export default function ExDropdownRoot({
-  children,
-  defaultAlign = "left",
-  disabled = false,
-}: Props) {
+type Props = { children: ReactNode; defaultAlign?: ExDropdownAlign; disabled?: boolean };
+export default function ExDropdownRoot({ children, defaultAlign = "left", disabled = false }: Props) {
+  const baseId = useId();
+  const [menuId, setMenuId] = useState(baseId + "-menu");
+  const [triggerId, setTriggerId] = useState(baseId + "-trigger");
   const [open, setOpen] = useState(false);
   const [align, setAlign] = useState<ExDropdownAlign>(defaultAlign);
   const [arrowKeyNavigation, setArrowKeyNavigation] = useState(false);
-
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const menuItemsRef = useRef<Array<HTMLDivElement | null>>([]);
-
-  const toggle = () => {
-    if (disabled) return;
-    setOpen((v) => !v);
+  const pendingFocus = useRef<"first" | "last" | null>(null);
+  const items = useCallback(() => Array.from(contentRef.current?.querySelectorAll<HTMLDivElement>('[role="menuitem"]:not([aria-disabled="true"])') ?? [])
+    .filter(item => item.closest('[role="menu"]') === contentRef.current), []);
+  const focusTrigger = useCallback(() => {
+    const trigger = triggerRef.current;
+    (trigger?.querySelector<HTMLElement>('[data-dropdown-trigger]') ?? trigger)?.focus();
+  }, []);
+  const close = useCallback(() => { focusTrigger(); setOpen(false); setArrowKeyNavigation(false); pendingFocus.current = null; }, [focusTrigger]);
+  const toggle = () => { if (!disabled) { pendingFocus.current = "first"; setOpen(v => !v); } };
+  const setContentRef = useCallback((el: HTMLDivElement | null) => { contentRef.current = el; }, []);
+  const registerMenuItem = useCallback((el: HTMLDivElement | null) => { if (el && !menuItemsRef.current.includes(el)) menuItemsRef.current.push(el); }, []);
+  const unregisterMenuItem = useCallback((el: HTMLDivElement | null) => { menuItemsRef.current = menuItemsRef.current.filter(item => item !== el); }, []);
+  useEffect(() => {
+    if (!open) return;
+    const list = items();
+    (pendingFocus.current === "last" ? list.at(-1) : list[0])?.focus();
+    pendingFocus.current = null;
+  }, [open, items]);
+  const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled || e.defaultPrevented) return;
+    if (e.key === "Escape" && open) { e.preventDefault(); e.stopPropagation(); close(); return; }
+    if (!["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) return;
+    e.preventDefault(); e.stopPropagation();
+    pendingFocus.current = e.key === "ArrowUp" ? "last" : "first";
+    setArrowKeyNavigation(true);
+    if (open) { const list = items(); (pendingFocus.current === "last" ? list.at(-1) : list[0])?.focus(); }
+    setOpen(true);
   };
-
-  const close = useCallback(() => {
-    setOpen(false);
-    setArrowKeyNavigation(false);
-    if (triggerRef.current) {
-      triggerRef.current.focus();
+  const handleContentKeyDown = (e: React.KeyboardEvent) => {
+    if (e.defaultPrevented) return;
+    if (e.key === "Tab") { close(); return; }
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); return; }
+    const list = items();
+    const index = list.indexOf(document.activeElement as HTMLDivElement);
+    if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
+      e.preventDefault(); e.stopPropagation();
+      const next = e.key === "Home" ? 0 : e.key === "End" ? list.length - 1 : (index + (e.key === "ArrowDown" ? 1 : -1) + list.length) % list.length;
+      list[next]?.focus();
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey && e.key !== " ") {
+      const ordered = [...list.slice(index + 1), ...list.slice(0, index + 1)];
+      const match = ordered.find(item => item.textContent?.trim().toLocaleLowerCase().startsWith(e.key.toLocaleLowerCase()));
+      if (match) { e.preventDefault(); match.focus(); }
     }
-  }, []);
-
-  const setContentRef = (el: HTMLDivElement | null) => {
-    if (el) contentRef.current = el;
   };
-
-  const registerMenuItem = useCallback((el: HTMLDivElement | null) => {
-    if (el) {
-      const index = menuItemsRef.current.indexOf(null);
-      if (index === -1) {
-        menuItemsRef.current.push(el);
-      } else {
-        menuItemsRef.current[index] = el;
-      }
-    }
-  }, []);
-
-  const unregisterMenuItem = useCallback((el: HTMLDivElement | null) => {
-    if (el) {
-      const index = menuItemsRef.current.indexOf(el);
-      if (index !== -1) {
-        menuItemsRef.current[index] = null;
-      }
-    }
-  }, []);
-
-  const handleTriggerKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (disabled) return;
-
-      const allowedKeys = [
-        "ArrowDown",
-        "ArrowUp",
-        "Home",
-        "End",
-        "Enter",
-        " ",
-        "Escape",
-      ];
-
-      if (!allowedKeys.includes(e.key)) return;
-
-      e.preventDefault();
-
-      switch (e.key) {
-        case "ArrowDown":
-          e.stopPropagation();
-          setOpen(true);
-          setArrowKeyNavigation(true);
-          const firstItem = menuItemsRef.current.find(
-            (item) => item !== null && !item.getAttribute("aria-disabled")
-          );
-          if (firstItem) firstItem.focus();
-          break;
-        case "ArrowUp":
-          e.stopPropagation();
-          setOpen(true);
-          setArrowKeyNavigation(true);
-          const items = menuItemsRef.current.filter(
-            (item) => item !== null && !item.getAttribute("aria-disabled")
-          );
-          const lastItem = items[items.length - 1];
-          if (lastItem) lastItem.focus();
-          break;
-        case "Home":
-          e.stopPropagation();
-          setOpen(true);
-          setArrowKeyNavigation(true);
-          const first = menuItemsRef.current.find(
-            (item) => item !== null && !item.getAttribute("aria-disabled")
-          );
-          if (first) first.focus();
-          break;
-        case "End":
-          e.stopPropagation();
-          setOpen(true);
-          setArrowKeyNavigation(true);
-          const allItems = menuItemsRef.current.filter(
-            (item) => item !== null && !item.getAttribute("aria-disabled")
-          );
-          const last = allItems[allItems.length - 1];
-          if (last) last.focus();
-          break;
-        case "Enter":
-        case " ":
-          if (!open) {
-            e.stopPropagation();
-            toggle();
-          }
-          break;
-        case "Escape":
-          if (open) {
-            e.stopPropagation();
-            close();
-          }
-          break;
-      }
-    },
-    [disabled, open, toggle, close]
-  );
-
-  const handleContentKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (disabled) return;
-
-      const items = menuItemsRef.current.filter(
-        (item) => item !== null && !item.getAttribute("aria-disabled")
-      );
-
-      switch (e.key) {
-        case "ArrowDown":
-          e.stopPropagation();
-          const currentIndex = items.findIndex(
-            (item) => item === document.activeElement
-          );
-          const nextIndex = (currentIndex + 1) % items.length;
-          items[nextIndex]?.focus();
-          break;
-        case "ArrowUp":
-          e.stopPropagation();
-          const currentIndexUp = items.findIndex(
-            (item) => item === document.activeElement
-          );
-          const prevIndex =
-            currentIndexUp === 0 ? items.length - 1 : currentIndexUp - 1;
-          items[prevIndex]?.focus();
-          break;
-        case "Home":
-          e.stopPropagation();
-          items[0]?.focus();
-          break;
-        case "End":
-          e.stopPropagation();
-          items[items.length - 1]?.focus();
-          break;
-        case "Escape":
-          e.stopPropagation();
-          close();
-          if (triggerRef.current) {
-            triggerRef.current.focus();
-          }
-          break;
-        case "Tab":
-          close();
-          break;
-      }
-    },
-    [disabled, close]
-  );
-
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (
-        triggerRef.current?.contains(e.target as Node) ||
-        contentRef.current?.contains(e.target as Node)
-      )
-        return;
-
-      setOpen(false);
-      setArrowKeyNavigation(false);
+    if (!open) return;
+    const outside = (e: Event) => {
+      if (triggerRef.current?.contains(e.target as Node) || contentRef.current?.contains(e.target as Node)) return;
+      setOpen(false); setArrowKeyNavigation(false);
     };
-
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && open) {
-        close();
-        if (triggerRef.current) {
-          triggerRef.current.focus();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [open, close]);
-
-  useEffect(() => {
-    if (triggerRef.current) {
-      const ariaExpanded = open ? "true" : "false";
-      triggerRef.current.setAttribute("aria-expanded", ariaExpanded);
-    }
+    document.addEventListener("mousedown", outside);
+    document.addEventListener("focusin", outside);
+    return () => { document.removeEventListener("mousedown", outside); document.removeEventListener("focusin", outside); };
   }, [open]);
-
-  return (
-    <ExDropdownCtx.Provider
-      value={{
-        open,
-        setOpen,
-        toggle,
-        close,
-        disabled,
-        align,
-        setAlign,
-        arrowKeyNavigation,
-        setArrowKeyNavigation,
-        triggerRef,
-        contentRef,
-        setContentRef,
-        registerMenuItem,
-        unregisterMenuItem,
-        menuItemsRef,
-        handleTriggerKeyDown,
-        handleContentKeyDown,
-      }}
-    >
-      {children}
-    </ExDropdownCtx.Provider>
-  );
+  return <ExDropdownCtx.Provider value={{ open: open && !disabled, setOpen, toggle, close, disabled, align, setAlign,
+    menuId, triggerId, setMenuId, setTriggerId, arrowKeyNavigation, setArrowKeyNavigation,
+    triggerRef, contentRef, setContentRef, registerMenuItem, unregisterMenuItem, menuItemsRef, handleTriggerKeyDown, handleContentKeyDown }}>{children}</ExDropdownCtx.Provider>;
 }

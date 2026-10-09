@@ -1,9 +1,15 @@
-import { type KeyboardEvent, type PointerEvent, type ReactNode, useRef, useState } from "react";
+import { useNativeField } from "../../hooks/useNativeField";
+import { type KeyboardEvent, type PointerEvent, useRef, useImperativeHandle, useState } from "react";
 import { colorInputRangeStyles, sizeInputRangeStyles } from "./class/ExInputRangeClass";
 import { ExInputRangeProps } from "./props/ExInputRangeProps";
 
 export default function ExInputRange({
   value,
+  ref,
+  name,
+  form,
+  readOnly = false,
+  required,
   defaultValue = 50,
   min = 0,
   max = 100,
@@ -17,9 +23,15 @@ export default function ExInputRange({
   onChange,
   thumbContent,
   className = "",
+  ...nativeProps
 }: ExInputRangeProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const trackRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => trackRef.current!);
+  const inputRef = useNativeField<HTMLInputElement>(undefined, element => {
+    if (value === undefined) setInternalValue(defaultValue);
+    element.value = String(Math.min(safeMax, Math.max(safeMin, value ?? defaultValue)));
+  });
   const isVertical = orientation === "vertical";
   const safeMin = Math.min(min, max);
   const safeMax = Math.max(min, max);
@@ -42,7 +54,7 @@ export default function ExInputRange({
   };
 
   const setValue = (nextValue: number) => {
-    if (disabled) return;
+    if (disabled || readOnly) return;
     const normalizedValue = normalizeValue(nextValue);
     if (value === undefined) {
       setInternalValue(normalizedValue);
@@ -51,7 +63,7 @@ export default function ExInputRange({
   };
 
   const updateValue = (clientX: number, clientY: number) => {
-    if (!trackRef.current || disabled || range <= 0) return;
+    if (!trackRef.current || disabled || readOnly || range <= 0) return;
     const rect = trackRef.current.getBoundingClientRect();
     const trackLength = isVertical ? rect.height : rect.width;
     const usableLength = trackLength - 2 * currentInset;
@@ -63,13 +75,13 @@ export default function ExInputRange({
   };
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (disabled) return;
+    if (disabled || readOnly) return;
     event.currentTarget.setPointerCapture(event.pointerId);
     updateValue(event.clientX, event.clientY);
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (disabled || !event.currentTarget.hasPointerCapture(event.pointerId)) {
+    if (disabled || readOnly || !event.currentTarget.hasPointerCapture(event.pointerId)) {
       return;
     }
     updateValue(event.clientX, event.clientY);
@@ -82,7 +94,7 @@ export default function ExInputRange({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (disabled) return;
+    if (disabled || readOnly) return;
     let nextValue: number | undefined;
     switch (event.key) {
       case "ArrowRight":
@@ -120,14 +132,17 @@ export default function ExInputRange({
   return (
     <div
       className={`relative flex ${isVertical ? currentSize.wrapperVert : currentSize.wrapperHoriz} ${disabled ? "opacity-60 grayscale" : ""} ${className}`}>
+      <input ref={inputRef} type="hidden" name={name} form={form} value={currentValue} disabled={disabled} />
       <div
+        {...nativeProps}
+        aria-readonly={readOnly}
+        aria-required={required}
         ref={trackRef}
         role="slider"
         tabIndex={disabled ? -1 : 0}
         aria-valuemin={safeMin}
         aria-valuemax={safeMax}
         aria-valuenow={currentValue}
-        aria-valuestep={safeStep}
         aria-disabled={disabled}
         aria-orientation={orientation}
         onPointerDown={handlePointerDown}

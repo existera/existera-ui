@@ -1,6 +1,8 @@
+import type { ExFormFieldProps } from "../../../types/Form";
 import { ReactNode } from "react";
 
-export interface ExInputRangeProps {
+export interface ExInputRangeProps extends ExFormFieldProps<HTMLDivElement> {
+  id?: string;
   value?: number;
   defaultValue?: number;
   min?: number;

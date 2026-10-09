@@ -54,30 +54,17 @@ export default function ExButton({
     className,
     ButtonBaseClass,
     ButtonSizeClass[size],
-    iconOnly
-      ? ButtonIconOnlyClass[size]
-      : radius === "default"
-        ? ButtonPaddingClass[size]
-        : ButtonPaddingRadiusFullClass[size],
+    iconOnly ? ButtonIconOnlyClass[size] : radius === "default" ? ButtonPaddingClass[size] : ButtonPaddingRadiusFullClass[size],
     ButtonVariantClass[variant](color),
     ButtonRadiusClass[radius],
     fit ? "min-w-fit" : "w-full",
     !iconOnly && buttonTextAlignClass[textAlign],
-    isDisabled
-      ? "cursor-not-allowed opacity-70 pointer-events-none"
-      : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
+    isDisabled ? "cursor-not-allowed opacity-70 pointer-events-none" : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
   );
 
   const content = (
     <>
-      {loading && (
-        <span
-          className={cn(
-            ButtonLoadingClass[size],
-            "animate-spin rounded-full border-current/30 border-t-current",
-          )}
-        />
-      )}
+      {loading && <span className={cn(ButtonLoadingClass[size], "animate-spin rounded-full border-current/30 border-t-current")} />}
 
       {!loading && !iconOnly && leftIcon}
 
@@ -88,20 +75,18 @@ export default function ExButton({
   );
 
   if (Component || typeof props.href === "string") {
-    // Router-specific props stay in this spread and are passed only to the router.
     const anchorProps = props as AnchorHTMLAttributes<HTMLAnchorElement>;
     const { href, onClick, onAuxClick, tabIndex, target, rel, ...linkProps } = anchorProps;
     const LinkComponent = isDisabled ? "a" : (Component ?? "a");
-    // Do not mount a router Link when disabled: it could still generate a usable
-    // href for keyboard, middle-click, or the browser's context menu.
-    const forwardedProps = Component && isDisabled
-      ? {
-          title: linkProps.title,
-          "aria-label": linkProps["aria-label"],
-          "aria-labelledby": linkProps["aria-labelledby"],
-          "aria-describedby": linkProps["aria-describedby"],
-        }
-      : linkProps;
+    const forwardedProps =
+      Component && isDisabled
+        ? {
+            title: linkProps.title,
+            "aria-label": linkProps["aria-label"],
+            "aria-labelledby": linkProps["aria-labelledby"],
+            "aria-describedby": linkProps["aria-describedby"],
+          }
+        : linkProps;
 
     return (
       <LinkComponent
@@ -130,24 +115,15 @@ export default function ExButton({
           }
           onAuxClick?.(event);
         }}
-        className={buttonClassName}
-      >
+        className={buttonClassName}>
         {content}
       </LinkComponent>
     );
   }
 
   const { type = "button", ...buttonProps } = props as ExButtonNativeProps;
-
   return (
-    <button
-      {...buttonProps}
-      id={id}
-      type={type}
-      disabled={isDisabled}
-      aria-busy={loading}
-      className={buttonClassName}
-    >
+    <button {...buttonProps} id={id} type={type} disabled={isDisabled} aria-busy={loading} className={buttonClassName}>
       {content}
     </button>
   );

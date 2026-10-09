@@ -7,6 +7,7 @@ export const useFocusTrap = (
   triggerRef: RefObject<HTMLElement | null> | null = null,
   initialFocusRef?: RefObject<HTMLElement | null>,
   onEscape?: () => void,
+  getAllowedElements?: () => HTMLElement[],
 ) => {
   const escapeRef = useRef(onEscape);
   useEffect(() => { escapeRef.current = onEscape; }, [onEscape]);
@@ -16,7 +17,8 @@ export const useFocusTrap = (
       initialFocus: initialFocusRef?.current,
       returnFocus: triggerRef?.current,
       onEscape: () => escapeRef.current?.(),
+      getAllowedElements,
     });
-  }, [isActive, containerRef, triggerRef, initialFocusRef]);
+  }, [isActive, containerRef, triggerRef, initialFocusRef, getAllowedElements]);
   return { triggerRef, containerRef };
 };

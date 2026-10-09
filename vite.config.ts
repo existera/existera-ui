@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
 import path from "node:path";
 
+const root = import.meta.dirname;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -12,50 +14,52 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.build.json",
       entryRoot: "src/lib",
       insertTypesEntry: true,
+      bundleTypes: true,
     }),
   ],
+
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(root, "src"),
     },
   },
+
   build: {
-    target: "esnext",
+    target: "es2022",
     emptyOutDir: true,
     copyPublicDir: false,
     sourcemap: true,
     cssCodeSplit: true,
     cssMinify: "esbuild",
+
     lib: {
-      // Keep CSS explicit: consumers import @existera/ui/style.css once.
       entry: {
-        index: path.resolve(__dirname, "src/lib/index.ts"),
-        style: path.resolve(__dirname, "src/lib/style.css"),
+        index: path.resolve(root, "src/lib/index.ts"),
+        style: path.resolve(root, "src/lib/style.css"),
       },
       formats: ["es"],
     },
-    rollupOptions: {
+
+    rolldownOptions: {
       external: [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "framer-motion",
-        "lucide-react",
-        "@emotion/is-prop-valid",
+        /^react(?:\/.*)?$/,
+        /^react-dom(?:\/.*)?$/,
+        /^framer-motion(?:\/.*)?$/,
+        /^lucide-react(?:\/.*)?$/,
+        /^@emotion\/is-prop-valid(?:\/.*)?$/,
       ],
+
       output: {
         preserveModules: true,
         preserveModulesRoot: "src/lib",
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
         entryFileNames: "[name].js",
         chunkFileNames: "chunks/[name]-[hash].js",
+
         assetFileNames(assetInfo) {
           if (assetInfo.name?.endsWith(".css")) {
             return "style.css";
           }
+
           return "assets/[name][extname]";
         },
       },

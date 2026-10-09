@@ -1,3 +1,4 @@
+import type { ExFormFieldProps } from "../../../types/Form";
 import type { ReactNode } from "react";
 import type {
   DatePickerRadius,
@@ -5,7 +6,7 @@ import type {
   DatePickerState,
 } from "../types/ExDatePickerType";
 
-export interface ExDatePickerProps {
+export interface ExDatePickerProps extends ExFormFieldProps<HTMLInputElement> {
   id?: string;
   placeholder?: string;
   disabled?: boolean;

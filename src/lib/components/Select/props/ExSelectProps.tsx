@@ -1,3 +1,4 @@
+import type { ExFormFieldProps } from "../../../types/Form";
 import type { ReactNode, SelectHTMLAttributes } from "react";
 import type {
   SelectRadius,
@@ -10,9 +11,11 @@ export interface SelectOption {
   value: string;
 }
 
-export interface ExSelectProps extends Pick<SelectHTMLAttributes<HTMLSelectElement>,
+export interface ExSelectProps extends ExFormFieldProps<HTMLSelectElement>, Pick<SelectHTMLAttributes<HTMLSelectElement>,
   "name" | "required" | "autoComplete" | "aria-label" | "aria-labelledby" | "aria-describedby" | "aria-invalid"
 > {
+  value?: SelectOption | null;
+  defaultValue?: SelectOption | null;
   id?: string;
   placeholder?: string;
   disabled?: boolean;

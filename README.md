@@ -101,13 +101,18 @@ import { ExButton } from "@existera/ui";
 export default function App() {
   return (
     <ExButton color="primary">
-      Hello EXISTERA UI
+      Button
     </ExButton>
   );
 }
 ```
 
 ---
+
+## Form API
+
+See [Form API and migration](./FORM-API.md) for controlled/uncontrolled values,
+callback aliases, native form submission/reset, refs, and date/time formats.
 
 ## Documentation
 
@@ -231,3 +236,4 @@ We sincerely thank the maintainers and contributors of these projects.
 Enterprise UI Components for Modern Web Applications.
 
 </div>
+Keyboard behavior and manual checks: [ACCESSIBILITY.md](./ACCESSIBILITY.md). Run `npm run dev:accessibility` after building to open the keyboard fixture.

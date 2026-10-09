@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-EXISTERA UI includes and depends on third-party open-source software.
+Existera UI includes and depends on third-party open-source software.
 
 Third-party software remains subject to its respective license terms and copyright notices.
 

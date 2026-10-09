@@ -1,4 +1,5 @@
 "use client";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import React, { Children, isValidElement, type ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import Prefix from "../Prefix/ExPrefix";
@@ -20,33 +21,46 @@ import { ComboBoxItemSizeClass } from "./class/ExComboBoxItemClass";
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 
-const ExComboBox = (<T,>({
-  children,
-  id,
-  placeholder = "Please type here...",
-  value,
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  disabled = false,
-  clearable = false,
-  loading = false,
-  selected = [],
-  multiple = false,
-  debounce = 0,
-  badgeVariant = "solid",
-  badgeColor = "primary",
-  onSelection,
-  onType,
-}: ExComboBoxProps<T>) => {
+const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
+  const {
+    children,
+    id,
+    placeholder = "Please type here...",
+    value,
+    defaultValue = "",
+    defaultSelected = [],
+    onChange,
+    onSearchChange,
+    getOptionValue,
+    name,
+    ref,
+    readOnly = false,
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    disabled = false,
+    clearable = false,
+    loading = false,
+    selected: controlledSelected,
+    multiple = false,
+    debounce = 0,
+    badgeVariant = "solid",
+    badgeColor = "primary",
+    onSelection,
+    onType,
+    ...nativeProps
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const pendingSearch = useRef<string | null>(null);
+  const typeCallback = useRef(onType);
+  useEffect(() => { typeCallback.current = onType; }, [onType]);
+
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -55,8 +69,40 @@ const ExComboBox = (<T,>({
 
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const controlled = value !== undefined;
-  const [internalValue, setInternalValue] = useState(value ?? "");
+  const controlled = "value" in props;
+  const [searchValue, setInternalValue] = useState(defaultValue);
+  const internalValue = controlled ? value ?? "" : searchValue;
+  useEffect(() => {
+    if (disabled || readOnly || (controlled && pendingSearch.current !== null && value !== pendingSearch.current)) {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      pendingSearch.current = null;
+    }
+  }, [controlled, value, disabled, readOnly]);
+  const selectionControlled = "selected" in props;
+  const [internalSelected, setInternalSelected] = useState<ExOption<T>[]>(defaultSelected);
+  const selected = useMemo(() => selectionControlled ? controlledSelected ?? [] : internalSelected,
+    [selectionControlled, controlledSelected, internalSelected]);
+  const changeSelection = (next: ExOption<T>[]) => {
+    if (disabled || readOnly) return;
+    if (!selectionControlled) setInternalSelected(next);
+    (onChange ?? onSelection)?.(next);
+  };
+  const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!controlled) setInternalValue(defaultValue);
+    if (!selectionControlled) setInternalSelected(defaultSelected);
+    const resetSelected = selectionControlled ? controlledSelected ?? [] : defaultSelected;
+    element.value = !multiple && resetSelected.length ? resetSelected[0].label : controlled ? value ?? "" : defaultValue;
+    setOpen(false);
+  });
+  const serializeOption = (item: ExOption<T>) => {
+    if (getOptionValue) return getOptionValue(item);
+    if (typeof item.value === "string" || typeof item.value === "number") return String(item.value);
+    throw new Error("A named ExComboBox with object values requires getOptionValue");
+  };
+  useEffect(() => {
+    inputRef.current?.setCustomValidity(nativeProps.required && selected.length === 0 ? "Please select an option." : "");
+  }, [inputRef, nativeProps.required, selected.length]);
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -149,19 +195,20 @@ const ExComboBox = (<T,>({
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
 
     const nextValue = e.target.value;
 
-    setInternalValue(nextValue);
+    if (!controlled) setInternalValue(nextValue);
+    onSearchChange?.(nextValue);
 
     if (!multiple && selected.length > 0 && selected[0].label !== nextValue) {
-      onSelection?.([]);
+      changeSelection([]);
     }
 
-    if (!onType) {
+    if (!onType || onType === onSearchChange) {
       return;
     }
 
@@ -174,27 +221,30 @@ const ExComboBox = (<T,>({
       return;
     }
 
+    pendingSearch.current = nextValue;
     debounceRef.current = setTimeout(() => {
-      onType(nextValue);
+      pendingSearch.current = null;
+      typeCallback.current?.(nextValue);
     }, debounce);
   };
 
   const handleClear = () => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
 
-    setInternalValue("");
-    onSelection?.([]);
+    if (!controlled) setInternalValue("");
+    onSearchChange?.("");
+    changeSelection([]);
 
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
 
-    onType?.("");
+    if (onType !== onSearchChange) onType?.("");
   };
 
-  const items = useMemo(() => {
+  const items = (() => {
     const filtered = filteredItems.map((child, index) => {
       if (!isValidElement<ExComboBoxItemProps<T>>(child)) {
         return null;
@@ -208,13 +258,13 @@ const ExComboBox = (<T,>({
             itemRefs.current[index] = el;
           }}
           size={inputSize}
-          disabled={disabled || child.props.disabled}
+          disabled={disabled || readOnly || child.props.disabled}
           value={child.props.value}
           label={child.props.label}
           selected={selectedItem}
           active={activeIndex === index}
           onSelect={(value, label) => {
-            if (disabled || child.props.disabled) {
+            if (disabled || readOnly || child.props.disabled) {
               return;
             }
             const typedValue = value as T;
@@ -242,7 +292,7 @@ const ExComboBox = (<T,>({
                 inputRef.current?.blur();
               });
             }
-            onSelection?.(nextSelected);
+            changeSelection(nextSelected);
           }}>
           {child.props.children}
         </ExComboBoxItem>
@@ -250,7 +300,7 @@ const ExComboBox = (<T,>({
     });
 
     return filtered.filter((item): item is React.ReactElement => item !== null);
-  }, [filteredItems, selected, size, multiple, activeIndex, disabled]);
+  })();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -271,6 +321,7 @@ const ExComboBox = (<T,>({
 
   return (
     <>
+      {name && selected.map((item, index) => <input key={index} type="hidden" name={name} form={nativeProps.form} disabled={disabled} value={serializeOption(item)} />)}
       <div
         ref={triggerRef}
         className={cn(
@@ -316,19 +367,23 @@ const ExComboBox = (<T,>({
                   key={index}
                   variant={badgeVariant}
                   color={badgeColor}
-                  dismissible={!disabled}
+                  dismissible={!disabled && !readOnly}
                   onDismiss={() => {
-                    if (disabled) {
+                    if (disabled || readOnly) {
                       return;
                     }
 
-                    onSelection?.(selected.filter((_, i) => i !== index));
+                    changeSelection(selected.filter((_, i) => i !== index));
                   }}>
                   {option.label}
                 </ExBadge>
               ))}
 
             <input
+              {...nativeProps}
+              readOnly={readOnly}
+              required={nativeProps.required && selected.length === 0}
+              aria-required={nativeProps.required}
               id={id}
               ref={inputRef}
               disabled={disabled}
@@ -338,11 +393,12 @@ const ExComboBox = (<T,>({
                 "border-none bg-transparent px-1 shadow-none outline-none",
                 disabled && "cursor-not-allowed text-muted",
               )}
-              value={internalValue}
+              value={!multiple && selected.length > 0 ? selected[0].label : internalValue}
               placeholder={selected.length ? "" : placeholder}
               onChange={handleChange}
-              onFocus={() => {
-                if (disabled) {
+              onFocus={(e) => {
+                nativeProps.onFocus?.(e);
+                if (disabled || readOnly) {
                   return;
                 }
 
@@ -350,15 +406,16 @@ const ExComboBox = (<T,>({
                 setOpen(true);
               }}
               onBlur={(e) => {
+                nativeProps.onBlur?.(e);
                 setFocused(false);
 
-                if (disabled) {
+                if (disabled || readOnly) {
                   return;
                 }
 
                 if (!controlled && !multiple && selected.length > 0 && e.target.value !== selected[0].label) {
                   setInternalValue("");
-                  onSelection?.([]);
+                  changeSelection([]);
                 }
 
                 if (selected.length === 0) {
@@ -366,7 +423,7 @@ const ExComboBox = (<T,>({
                 }
               }}
               onKeyDown={(e) => {
-                if (disabled || !open) {
+                if (disabled || readOnly || !open) {
                   return;
                 }
 
@@ -428,7 +485,7 @@ const ExComboBox = (<T,>({
             </div>
           )}
 
-          {clearable && (value || selected.length > 0) && !disabled && (
+          {clearable && (internalValue || selected.length > 0) && !disabled && !readOnly && (
             <div className="flex items-center pl-2">
               <button
                 type="button"
@@ -465,7 +522,7 @@ const ExComboBox = (<T,>({
         )}
       </div>
 
-      <ExComboBoxContent open={disabled ? false : open} triggerRef={triggerRef} contentRef={contentRef}>
+      <ExComboBoxContent open={disabled || readOnly ? false : open} triggerRef={triggerRef} contentRef={contentRef}>
         <div id={id ? `${id}-listbox` : undefined} role="listbox" className="flex flex-col items-start gap-0 text-md">
           {items.length > 0 && items}
 
@@ -483,5 +540,5 @@ const ExComboBox = (<T,>({
 ExComboBox.Prefix = Prefix;
 ExComboBox.Suffix = Suffix;
 
-(ExComboBox as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+Object.assign(ExComboBox, { [EX_INPUT_OPERATOR_COMPONENT]: true });
 export default ExComboBox;

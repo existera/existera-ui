@@ -5,7 +5,7 @@ import { cn } from "../../utils/Utils";
 import { useAccordion } from "./context/ExAccordionContext";
 import { AccordionSizeClass } from "./class/ExAccordionClass";
 import type { ExAccordionItemProps } from "./props/ExAccordionItemProps";
-import { useEffect, useRef } from "react";
+import { useId } from "react";
 
 export default function ExAccordionItem({
   title,
@@ -20,15 +20,17 @@ export default function ExAccordionItem({
     ? openIndexes.includes(__index)
     : openIndex === __index;
 
-  const panelRef = useRef<HTMLDivElement>(null);
+  const itemId = useId();
+  const triggerId = `${itemId}-trigger`;
+  const panelId = `${itemId}-panel`;
 
   return (
     <div className="border-b border-border last:border-b-0">
       <button
-        id={`accordion-trigger-${__index}`}
+        id={triggerId}
+        data-accordion-trigger=""
         aria-expanded={opened}
-        aria-controls={`accordion-panel-${__index}`}
-        aria-labelledby={`accordion-trigger-${__index}`}
+        aria-controls={panelId}
         type="button"
         onClick={() => toggle(__index)}
         className={cn(
@@ -59,9 +61,9 @@ export default function ExAccordionItem({
       </button>
 
       <div
-        id={`accordion-panel-${__index}`}
+        id={panelId}
         role="region"
-        aria-labelledby={`accordion-trigger-${__index}`}
+        aria-labelledby={triggerId}
         className={cn(
           AccordionSizeClass[size].text,
           AccordionSizeClass[size].padingContent,
@@ -71,8 +73,9 @@ export default function ExAccordionItem({
             : "grid-rows-[0fr] opacity-0 pb-0",
         )}
         aria-hidden={!opened}
+        inert={!opened}
       >
-        <div ref={panelRef} className="overflow-hidden text-muted-foreground">
+        <div className="overflow-hidden text-muted-foreground">
           {children}
         </div>
       </div>

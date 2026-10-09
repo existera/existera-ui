@@ -1,10 +1,17 @@
 "use client";
+import type { ExFormFieldProps } from "../../types/Form";
+
+import { useNativeField } from "../../hooks/useNativeField";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useId, useState } from "react";
 import clsx from "clsx";
 
-export interface ExRadioProps {
+export interface ExRadioProps extends ExFormFieldProps<HTMLInputElement> {
+  id?: string;
+  name?: string;
+  value?: string;
+  onChange?: (checked: boolean) => void;
   label?: string;
   description?: string;
   error?: string;
@@ -43,24 +50,50 @@ const sizeMap = {
 };
 
 const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
-  ({ label, description, error, checked, defaultChecked = false, disabled = false, size = "md", onChecked }, ref) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+  ({ label, description, error, checked, defaultChecked = false, disabled = false, size = "md", onChecked, onChange, readOnly = false, ...nativeProps }, ref) => {
+
 
     const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
     const isControlled = checked !== undefined;
     const isChecked = isControlled ? checked : internalChecked;
 
-    useImperativeHandle(ref, () => inputRef.current!);
+    const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+      const next = isControlled ? checked : defaultChecked;
+      if (!isControlled) setInternalChecked(next);
+      element.checked = next;
+    });
+    const fieldId = useId();
+    const descriptionId = description ? fieldId + "-description" : undefined;
+    const errorId = error ? fieldId + "-error" : undefined;
+    const describedBy = [nativeProps["aria-describedby"], descriptionId, errorId].filter(Boolean).join(" ") || undefined;
+
+    useEffect(() => {
+      const element = inputRef.current;
+      if (!element || isControlled || !element.name) return;
+      const syncGroup = (event: Event) => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement && !target.readOnly && target.type === "radio" &&
+          target.name === element.name && target.form === element.form && target.getRootNode() === element.getRootNode()) {
+          setInternalChecked(target === element);
+        }
+      };
+      element.ownerDocument.addEventListener("change", syncGroup, true);
+      element.ownerDocument.addEventListener("click", syncGroup, true);
+      return () => {
+        element.ownerDocument.removeEventListener("change", syncGroup, true);
+        element.ownerDocument.removeEventListener("click", syncGroup, true);
+      };
+    });
 
     const handleChange = () => {
-      if (disabled) return;
+      if (disabled || readOnly) return;
 
       if (!isControlled) {
         setInternalChecked(true);
       }
 
-      onChecked?.(true);
+      (onChange ?? onChecked)?.(true);
     };
 
     const styles = sizeMap[size];
@@ -71,6 +104,11 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
         {/* Radio control */}
         <span className={clsx("relative flex shrink-0 items-center justify-center", styles.box)}>
           <input
+            {...nativeProps}
+            readOnly={readOnly}
+            onClick={event => { if (readOnly) event.preventDefault(); }}
+            aria-describedby={describedBy}
+            aria-invalid={nativeProps["aria-invalid"] ?? Boolean(error)}
             ref={inputRef}
             type="radio"
             checked={isChecked}
@@ -150,8 +188,8 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
                 {label}
               </span>
             )}
-            {description && <span className="mt-1 block text-xs leading-relaxed text-muted">{description}</span>}
-            {error && <span className="mt-1 block text-xs leading-relaxed text-danger">{error}</span>}
+            {description && <span id={descriptionId} className="mt-1 block text-xs leading-relaxed text-muted">{description}</span>}
+            {error && <span id={errorId} className="mt-1 block text-xs leading-relaxed text-danger">{error}</span>}
           </span>
         )}
       </label>
