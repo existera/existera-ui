@@ -2,6 +2,7 @@
 
 > Simple React component library built for consistency, accessibility, and scalable applications.
 
+![License](https://img.shields.io/badge/License-Free_to_Use-blue)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss)
