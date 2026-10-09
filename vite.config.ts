@@ -14,7 +14,7 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.build.json",
       entryRoot: "src/lib",
       insertTypesEntry: true,
-      bundleTypes: true,
+      bundleTypes: false,
     }),
   ],
 
