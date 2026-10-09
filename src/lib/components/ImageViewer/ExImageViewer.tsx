@@ -200,7 +200,7 @@ export default function ExImageViewer({
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-999999 bg-black/90 backdrop-blur-md"
+        className="fixed inset-0 z-999999 bg-surface backdrop-blur-md"
         initial={{
           opacity: 0,
         }}
@@ -216,7 +216,7 @@ export default function ExImageViewer({
         aria-label={name ? `Image viewer: ${name}` : "Image viewer"}
       >
         <div
-          className="relative z-20 flex items-center justify-between border-b border-white/10 bg-surface px-4 py-3"
+          className="relative z-999999 flex items-center justify-between border-b border-white/10 bg-background px-4 py-3"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex max-w-[55%] min-w-0 items-center gap-2 font-medium">

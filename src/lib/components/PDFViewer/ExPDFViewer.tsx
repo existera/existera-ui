@@ -6,12 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import ExButton from "../Button/ExButton";
 import type { ExPDFViewerProps } from "./props/ExPDFViewer";
 
-export default function ExPDFViewer({
-  name,
-  url,
-  file,
-  onClose,
-}: ExPDFViewerProps) {
+export default function ExPDFViewer({ name, url, file, onClose }: ExPDFViewerProps) {
   const pdfUrl = useMemo(() => {
     if (file) return URL.createObjectURL(file);
     return url;
@@ -32,6 +27,18 @@ export default function ExPDFViewer({
   }, []);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
     if (!file || !pdfUrl) return;
     return () => {
       URL.revokeObjectURL(pdfUrl);
@@ -46,17 +53,14 @@ export default function ExPDFViewer({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-9999 flex flex-col bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-9999 flex flex-col bg-surface backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
-        aria-label={name ? `PDF viewer: ${name}` : "PDF viewer"}
-      >
-        <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 py-3">
+        aria-label={name ? `PDF viewer: ${name}` : "PDF viewer"}>
+        <div className="flex items-center justify-between border-b border-white/10 bg-background px-4 py-3">
           <div className="flex min-w-0 items-center gap-2">
             <FileText className="size-5 text-white" aria-hidden="true" />
-            <span className="truncate text-sm font-medium text-white">
-              {name}
-            </span>
+            <span className="truncate text-sm font-medium text-white">{name}</span>
           </div>
           <div className="flex items-center gap-1">
             <ExButton variant="soft" color="danger" iconOnly onClick={onClose}>
@@ -66,7 +70,7 @@ export default function ExPDFViewer({
         </div>
         <div className="relative flex-1 bg-neutral-900">
           {loading && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-neutral-900">
+            <div className="absolute inset-0 z-999999 flex items-center justify-center bg-neutral-900">
               <LoaderCircle className="size-8 animate-spin text-white" aria-hidden="true" />
             </div>
           )}
