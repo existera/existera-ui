@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { cn } from "../../utils/Utils";
 import type { ExToggleProps } from "./props/ExToggleProps";
 
@@ -32,50 +33,44 @@ export default function ExToggle({
 }: ExToggleProps) {
   const isDisabled = disabled || loading;
 
-  const handleClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleClick = () => {
     if (isDisabled) return;
-    const newState = !selected;
-    onSelect?.(newState, id);
+
+    onSelect?.(!selected, id);
   };
 
   return (
     <button
       {...props}
+      id={id}
       type="button"
       disabled={isDisabled}
-      aria-pressed={selected && !isDisabled}
+      aria-pressed={selected}
+      aria-busy={loading}
       onClick={handleClick}
       className={cn(
-        className,
         ToggleBaseClass,
         ToggleSizeClass[size],
-        iconOnly
-          ? ToggleIconOnlyClass[size]
-          : radius === "default"
-            ? TogglePaddingClass[size]
-            : TogglePaddingRadiusFullClass[size],
+        iconOnly ? ToggleIconOnlyClass[size] : radius === "default" ? TogglePaddingClass[size] : TogglePaddingRadiusFullClass[size],
         ToggleRadiusClass[radius],
         "border",
         fit ? "min-w-fit" : "w-full",
-        selected
-          ? "bg-primary text-white"
-          : "bg-transparent border-foreground/15",
-        isDisabled || loading
+        selected ? "bg-primary text-white" : "bg-transparent border-foreground/15",
+        isDisabled
           ? "cursor-not-allowed opacity-70"
           : "cursor-pointer hover:scale-[1.01] active:scale-[0.98] hover:bg-primary hover:text-white",
+        className,
       )}>
       {loading && (
-        <span
-          className={cn(
-            ToggleLoadingClass[size],
-            "animate-spin rounded-full border-current/30 border-t-current",
-          )}
-        />
+        <span aria-hidden="true" className={cn(ToggleLoadingClass[size], "animate-spin rounded-full border-current/30 border-t-current")} />
       )}
+
       {!loading && leftIcon}
+
       {children}
+
+      {!loading && selected && showCheckIcon && <Check size={14} aria-hidden="true" />}
+
       {rightIcon}
     </button>
   );

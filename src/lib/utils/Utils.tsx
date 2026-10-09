@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useSyncExternalStore } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: Parameters<typeof clsx>) {
@@ -8,27 +8,40 @@ export function cn(...inputs: Parameters<typeof clsx>) {
 
 export function useDebounce<T>(value: T, delay = 300) {
   const [debounced, setDebounced] = useState(value);
+
   useEffect(() => {
-    const t = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => {
+      setDebounced(value);
+    }, delay);
+
+    return () => clearTimeout(timer);
   }, [value, delay]);
+
   return debounced;
 }
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(callback: () => void) {
+  const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+
+  mediaQuery.addEventListener("change", callback);
+
+  return () => {
+    mediaQuery.removeEventListener("change", callback);
+  };
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
+
 export function usePrefersReducedMotion() {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handler = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-    setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
-
-  return prefersReducedMotion;
+  return useSyncExternalStore(subscribeReducedMotion, getReducedMotionSnapshot, getReducedMotionServerSnapshot);
 }
 
 export function useReducedMotionProps() {
@@ -44,8 +57,9 @@ export function useReducedMotionProps() {
           transition: { duration: 0 },
         };
       }
+
       return props;
     },
-    [prefersReducedMotion]
+    [prefersReducedMotion],
   );
 }

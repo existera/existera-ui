@@ -12,6 +12,10 @@ import { OperatorProps } from "./props/ExInputOperatorProps";
 import { InputOperatorProvider } from "./context/ExInputOperatorContext";
 import { EX_INPUT_OPERATOR_COMPONENT } from "./context/ExInputOperatorMarker";
 
+type MarkedOperator = ElementType & {
+  [EX_INPUT_OPERATOR_COMPONENT]?: boolean;
+};
+
 const Operator = ({ children }: OperatorProps) => {
   return (
     <span
@@ -26,10 +30,10 @@ const Operator = ({ children }: OperatorProps) => {
     </span>
   );
 };
-(Operator as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+(Operator as MarkedOperator)[EX_INPUT_OPERATOR_COMPONENT] = true;
 
 const isValidOperatorChild = (type: ElementType) => {
-  return Boolean((type as any)[EX_INPUT_OPERATOR_COMPONENT]);
+  return Boolean((type as MarkedOperator)[EX_INPUT_OPERATOR_COMPONENT]);
 };
 
 const ExInputOperator: CompoundInputOperator = ({ children, id, size = "md", radius = "default", disabled = false, state = "default" }) => {

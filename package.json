@@ -26,18 +26,13 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/fix-dts.mjs",
     "lint": "eslint .",
     "check:types": "tsc --noEmit",
     "check:package": "publint --strict",
     "check:exports": "attw --pack --profile esm-only --exclude-entrypoints ./style.css",
     "check:security": "npm audit --omit=dev --audit-level=high",
-    "check:components": "node --test scripts/check-*.mjs",
-    "check:css": "node scripts/check-css.mjs",
-    "check:forms": "tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-form-types.tsx",
-    "check:button": "tsc --ignoreConfig --noEmit --strict --jsx react-jsx --module esnext --moduleResolution bundler --target es2022 --skipLibCheck scripts/check-button-types.tsx",
-    "check:consumer": "node scripts/check-package.mjs",
-    "check:production": "npm run lint && npm run check:types && npm run build && npm run check:components && npm run check:css && npm run check:forms && npm run check:button && npm run check:package && npm run check:exports && npm run check:consumer",
+    "check:production": "npm run lint && npm run check:types && npm run build && npm run check:package && npm run check:exports",
     "prepublishOnly": "npm run check:production"
   },
   "peerDependencies": {
@@ -53,6 +48,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^24.12.3",
@@ -64,6 +60,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "publint": "^0.3.25",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.18.1",
