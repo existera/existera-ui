@@ -3,6 +3,7 @@
 import { useContext } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "../../utils/Utils";
+
 import {
   BaseClass,
   ButtonGroupActiveTextClass,
@@ -12,6 +13,7 @@ import {
   ButtonGroupLoadingClass,
   ButtonGroupSizeItemClass,
 } from "./class/ExButtonGroupClass";
+
 import type { ExButtonGroupItemProps } from "./props/ExButtonGroupItemProps";
 import { ExButtonGroupContext } from "./ExButtonGroupContext";
 
@@ -34,11 +36,13 @@ export default function ExButtonGroupItem({
 }: ExButtonGroupItemProps) {
   const group = useContext(ExButtonGroupContext);
   const reduceMotion = useReducedMotion();
+
   const itemColor = group?.color ?? color;
   const itemVariant = group?.variant ?? variant;
   const itemSize = group?.size ?? size;
   const itemFit = group?.fit;
   const itemRadius = group?.radius ?? "default";
+
   const selectable = group !== null && value !== undefined;
   const isActive = selectable ? group.value === value : active;
   const unavailable = disabled || loading || Boolean(group?.disabled);
@@ -51,7 +55,17 @@ export default function ExButtonGroupItem({
         ? "w-full flex-none sm:w-auto sm:flex-1 sm:basis-0"
         : "min-w-0 flex-1 basis-auto";
 
-  const stateClass = isActive ? ButtonGroupActiveTextClass[itemColor][itemVariant] : ButtonGroupInactiveClass;
+  const stateClass = isActive ? ButtonGroupActiveTextClass[itemColor][itemVariant] : ButtonGroupInactiveClass[itemColor];
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (unavailable) return;
+
+    onClick?.(event);
+
+    if (!event.defaultPrevented && group && value !== undefined) {
+      group.select(value);
+    }
+  };
 
   return (
     <button
@@ -63,13 +77,7 @@ export default function ExButtonGroupItem({
       data-active={isActive === true}
       aria-pressed={isActive ?? props["aria-pressed"]}
       aria-busy={loading || undefined}
-      onClick={(event) => {
-        if (unavailable) return;
-        onClick?.(event);
-        if (!event.defaultPrevented && group && value !== undefined) {
-          group.select(value);
-        }
-      }}
+      onClick={handleClick}
       className={cn(
         BaseClass,
         ButtonGroupSizeItemClass[itemSize],

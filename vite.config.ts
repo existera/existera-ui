@@ -44,6 +44,7 @@ export default defineConfig({
       external: [
         /^react(?:\/.*)?$/,
         /^react-dom(?:\/.*)?$/,
+        /^motion(?:\/.*)?$/,
         /^framer-motion(?:\/.*)?$/,
         /^lucide-react(?:\/.*)?$/,
         /^@emotion\/is-prop-valid(?:\/.*)?$/,
