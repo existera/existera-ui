@@ -1,6 +1,6 @@
 # EXISTERA UI
 
-> Modern React component library built for consistency, accessibility, and scalable applications.
+> Simple React component library built for consistency, accessibility, and scalable applications.
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)
@@ -24,22 +24,6 @@ EXISTERA UI is designed with a strong focus on:
 - Scalability
 - Performance
 - Maintainability
-
----
-
-## Features
-
-- Modern React Components
-- Tailwind CSS v4
-- TypeScript First
-- Theme System
-- Dark Mode Support
-- Design Tokens
-- Accessible Components
-- Lightweight Bundle
-- Tree Shaking Support
-- Responsive Components
-- Developer Friendly API
 
 ---
 
