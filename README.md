@@ -122,8 +122,6 @@ Documentation includes:
 - Components
 - Themes
 - Design Tokens
-- Best Practices
-- Migration Guides
 - Changelog
 
 More documentation will be added as the project evolves.
@@ -178,20 +176,6 @@ Do not disclose security issues publicly until they have been reviewed and resol
 
 ---
 
-## Roadmap
-
-Current areas of development include:
-
-- Additional components
-- Improved accessibility
-- Performance optimizations
-- Expanded theme system
-- Enhanced documentation
-- More customization options
-- Improved developer tooling
-
----
-
 ## License
 
 Copyright © 2026 Existera.
@@ -236,4 +220,3 @@ We sincerely thank the maintainers and contributors of these projects.
 Enterprise UI Components for Modern Web Applications.
 
 </div>
-Keyboard behavior and manual checks: [ACCESSIBILITY.md](./ACCESSIBILITY.md). Run `npm run dev:accessibility` after building to open the keyboard fixture.
