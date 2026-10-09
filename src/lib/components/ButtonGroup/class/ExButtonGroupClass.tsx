@@ -3,7 +3,7 @@ import type { ButtonGroupColor, ButtonGroupRadius, ButtonGroupSize, ButtonGroupV
 export const BaseClass = [
   "group/item relative isolate inline-flex min-w-0",
   "items-center justify-center select-none",
-  "whitespace-nowrap text-center font-medium leading-none",
+  "whitespace-nowrap text-center leading-none",
   "cursor-pointer outline-none",
   "transition-colors duration-150 ease-out",
   "focus-visible:z-10 focus-visible:ring-2",

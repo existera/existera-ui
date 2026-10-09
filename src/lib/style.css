@@ -1,6 +1,2 @@
-/* Standalone package CSS: include the same Tailwind foundation as the docs. */
-@import "tailwindcss" source(none);
 @import "./styles/base.css";
-
-/* Keep the scan rooted in the library, including on Windows. */
 @source "**/*.{ts,tsx}";
