@@ -1,4 +1,5 @@
 "use client";
+import { useCalendarKeyboard, handlePickerGroupKeyDown } from "../../hooks/useCalendarKeyboard";
 
 import { useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import type { ExDateRangeCalendarProps } from "./props/ExDateRangeContentProps";
@@ -10,7 +11,9 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { parseDate as parseDateValue } from "../DatePicker/utils/parseDate";
 import { cn } from "../../utils/Utils";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 const GAP = 2;
 const VIEWPORT_PADDING = 8;
@@ -43,6 +46,8 @@ interface CalendarDay {
 
 export default function ExDateRangeCalendar({
   open,
+  popupId,
+  onPopupKeyDown,
   startDateValue,
   endDateValue,
   triggerRef,
@@ -52,10 +57,19 @@ export default function ExDateRangeCalendar({
   endDate,
   disabledDate,
   onSelectStart,
+  onSelectRange,
   onSelectEnd,
   onClear,
 }: ExDateRangeCalendarProps) {
   const [view, setView] = useState<"calendar" | "month" | "year">("calendar");
+  const registerPortalRef = useRegisterModalPortal<HTMLDivElement>();
+  const previousView = useRef(view);
+  useLayoutEffect(() => {
+    if (previousView.current !== view) {
+      previousView.current = view;
+      (contentRef.current?.querySelector<HTMLButtonElement>('[tabindex="0"]') ?? contentRef.current?.querySelector<HTMLButtonElement>("button"))?.focus();
+    }
+  }, [view, contentRef]);
   const yearRef = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<ContentStyle>({
     top: -99999,
@@ -63,15 +77,7 @@ export default function ExDateRangeCalendar({
     minWidth: 0,
     visibility: "hidden",
   });
-  const parseDate = (value?: string) => {
-    if (!value) return undefined;
-    if (format === "YYYY-MM-DD") {
-      const [y, m, d] = value.split("-").map(Number);
-      return new Date(y, m - 1, d);
-    }
-    const [d, m, y] = value.split("-").map(Number);
-    return new Date(y, m - 1, d);
-  };
+  const parseDate = (value?: string) => parseDateValue(value, format);
 
   const selectedStartDate = parseDate(startDateValue);
   const selectedEndDate = parseDate(endDateValue);
@@ -212,17 +218,20 @@ export default function ExDateRangeCalendar({
       window.removeEventListener("scroll", updatePosition, true);
     };
   }, [open, contentRef, updatePosition]);
-  if (!open) return null;
 
   const isDisabledDate = (date: Date) => {
     if (disabledDate) return disabledDate.includes(formatDate(date));
   };
 
+  const dayProps = useCalendarKeyboard(calendar, selectedStartDate, date => isSelectable(date) && !isDisabledDate(date), setCurrentDate, contentRef);
+  if (!open) return null;
+
   return createPortal(
     <div
       role="dialog"
-      aria-modal="true"
-      ref={contentRef}
+      id={popupId}
+      onKeyDown={onPopupKeyDown}
+      ref={(element) => { contentRef.current = element; registerPortalRef(element); }}
       tabIndex={-1}
       aria-label="Date range picker"
       style={{
@@ -305,22 +314,25 @@ export default function ExDateRangeCalendar({
             {MONTHS.map((item, index) => (
               <button
                 key={item}
+                aria-label={item}
+                tabIndex={index === month ? 0 : -1}
+                onKeyDown={e => handlePickerGroupKeyDown(e, 3)}
                 type="button"
                 onClick={() => {
                   if (state === "START") {
                     setCurrentStartDate(
-                      new Date(year, index, currentStartDate.getDate()),
+                      new Date(year, index, Math.min(currentStartDate.getDate(), new Date(year, index + 1, 0).getDate())),
                     );
                     setCurrentDate(
-                      new Date(year, index, currentStartDate.getDate()),
+                      new Date(year, index, Math.min(currentStartDate.getDate(), new Date(year, index + 1, 0).getDate())),
                     );
                   }
                   if (state === "END") {
                     setCurrentEndDate(
-                      new Date(year, index, currentEndDate.getDate()),
+                      new Date(year, index, Math.min(currentEndDate.getDate(), new Date(year, index + 1, 0).getDate())),
                     );
                     setCurrentDate(
-                      new Date(year, index, currentEndDate.getDate()),
+                      new Date(year, index, Math.min(currentEndDate.getDate(), new Date(year, index + 1, 0).getDate())),
                     );
                   }
                   setView("year");
@@ -367,6 +379,8 @@ export default function ExDateRangeCalendar({
                   return (
                     <button
                       key={item}
+                      tabIndex={active ? 0 : -1}
+                      onKeyDown={e => handlePickerGroupKeyDown(e)}
                       type="button"
                       onClick={() => {
                         if (state === "START") {
@@ -374,14 +388,14 @@ export default function ExDateRangeCalendar({
                             new Date(
                               item,
                               currentStartDate.getMonth(),
-                              currentStartDate.getDate(),
+                              Math.min(currentStartDate.getDate(), new Date(item, currentStartDate.getMonth() + 1, 0).getDate()),
                             ),
                           );
                           setCurrentDate(
                             new Date(
                               item,
                               currentStartDate.getMonth(),
-                              currentStartDate.getDate(),
+                              Math.min(currentStartDate.getDate(), new Date(item, currentStartDate.getMonth() + 1, 0).getDate()),
                             ),
                           );
                         }
@@ -390,14 +404,14 @@ export default function ExDateRangeCalendar({
                             new Date(
                               item,
                               currentEndDate.getMonth(),
-                              currentEndDate.getDate(),
+                              Math.min(currentEndDate.getDate(), new Date(item, currentEndDate.getMonth() + 1, 0).getDate()),
                             ),
                           );
                           setCurrentDate(
                             new Date(
                               item,
                               currentEndDate.getMonth(),
-                              currentEndDate.getDate(),
+                              Math.min(currentEndDate.getDate(), new Date(item, currentEndDate.getMonth() + 1, 0).getDate()),
                             ),
                           );
                         }
@@ -465,6 +479,7 @@ export default function ExDateRangeCalendar({
             <div className="flex gap-0.5">
               <button
                 type="button"
+                aria-label="Previous month"
                 onClick={() => {
                   setCurrentDate(new Date(year, month - 1, 1));
                 }}
@@ -474,6 +489,7 @@ export default function ExDateRangeCalendar({
               </button>
               <button
                 type="button"
+                aria-label="Next month"
                 onClick={() => {
                   setCurrentDate(new Date(year, month + 1, 1));
                 }}
@@ -513,14 +529,17 @@ export default function ExDateRangeCalendar({
 
               return (
                 <button
+                  {...dayProps(value)}
+                  aria-current={isToday ? "date" : undefined}
+                  aria-pressed={Boolean(isSelectedStart || isSelectedEnd || isInRange)}
                   key={value.toISOString()}
                   type="button"
                   disabled={disabled}
                   onClick={() => {
                     if (!value) return;
                     if (!selectedStartDate || !selectedEndDate) {
-                      onSelectStart?.(formatDate(value));
-                      onSelectEnd?.(formatDate(value));
+                      if (onSelectRange) onSelectRange({ startDate: formatDate(value), endDate: formatDate(value) });
+                      else { onSelectStart?.(formatDate(value)); onSelectEnd?.(formatDate(value)); }
                       return;
                     }
                     if (value < selectedStartDate) {
@@ -535,8 +554,8 @@ export default function ExDateRangeCalendar({
                     }
                     setCurrentStartDate(value);
                     setCurrentEndDate(value);
-                    onSelectStart?.(formatDate(value));
-                    onSelectEnd?.(formatDate(value));
+                    if (onSelectRange) onSelectRange({ startDate: formatDate(value), endDate: formatDate(value) });
+                      else { onSelectStart?.(formatDate(value)); onSelectEnd?.(formatDate(value)); }
                   }}
                   className={cn(
                     "flex h-7 w-7 items-center justify-center select-none rounded-full text-center text-xs transition",
@@ -575,13 +594,15 @@ export default function ExDateRangeCalendar({
             </button>
             <button
               type="button"
+              disabled={!isSelectable(today) || isDisabledDate(today)}
               onClick={() => {
                 const today = new Date();
+                if (!isSelectable(today) || isDisabledDate(today)) return;
                 setCurrentDate(today);
                 setCurrentStartDate(today);
                 setCurrentEndDate(today);
-                onSelectStart?.(formatDate(today));
-                onSelectEnd?.(formatDate(today));
+                if (onSelectRange) onSelectRange({ startDate: formatDate(today), endDate: formatDate(today) });
+                      else { onSelectStart?.(formatDate(today)); onSelectEnd?.(formatDate(today)); }
               }}
               className="flex py-1 items-center select-none rounded-sm bg-primary px-2 text-xs font-medium text-white transition hover:opacity-90 cursor-pointer"
             >

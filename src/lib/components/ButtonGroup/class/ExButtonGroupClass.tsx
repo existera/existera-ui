@@ -1,67 +1,37 @@
 import type { ButtonGroupColor, ButtonGroupRadius, ButtonGroupSize, ButtonGroupVariant } from "../types/ExButtonGroupType";
 
-export const BaseClass =
-  "relative inline-flex items-center justify-center select-none overflow-hidden transition-colors duration-150 ease-out focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background leading-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50";
-
-export const ButtonGroupVariantClass: Record<ButtonGroupColor, Record<ButtonGroupVariant, string>> = {
-  primary: {
-    solid: "bg-primary text-white hover:bg-primary/90 active:bg-primary/80 disabled:hover:bg-primary",
-    soft: "bg-primary/20 text-primary hover:bg-primary/25 active:bg-primary/30 dark:bg-primary/25 dark:hover:bg-primary/30 dark:active:bg-primary/35",
-    outline:
-      "bg-background text-primary hover:bg-primary/10 active:bg-primary/15 dark:bg-background dark:hover:bg-primary/15 dark:active:bg-primary/20",
-  },
-
-  secondary: {
-    solid: "bg-secondary text-white hover:bg-secondary/90 active:bg-secondary/80 disabled:hover:bg-secondary",
-    soft: "bg-secondary/20 text-secondary hover:bg-secondary/25 active:bg-secondary/30 dark:bg-secondary/25 dark:hover:bg-secondary/30 dark:active:bg-secondary/35",
-    outline:
-      "bg-background text-secondary hover:bg-secondary/10 active:bg-secondary/15 dark:bg-background dark:hover:bg-secondary/15 dark:active:bg-secondary/20",
-  },
-
-  danger: {
-    solid: "bg-danger text-white hover:bg-danger/90 active:bg-danger/80 disabled:hover:bg-danger",
-    soft: "bg-danger/20 text-danger hover:bg-danger/25 active:bg-danger/30 dark:bg-danger/25 dark:hover:bg-danger/30 dark:active:bg-danger/35",
-    outline:
-      "bg-background text-danger hover:bg-danger/10 active:bg-danger/15 dark:bg-background dark:hover:bg-danger/15 dark:active:bg-danger/20",
-  },
-
-  success: {
-    solid: "bg-success text-white hover:bg-success/90 active:bg-success/80 disabled:hover:bg-success",
-    soft: "bg-success/20 text-success hover:bg-success/25 active:bg-success/30 dark:bg-success/25 dark:hover:bg-success/30 dark:active:bg-success/35",
-    outline:
-      "bg-background text-success hover:bg-success/10 active:bg-success/15 dark:bg-background dark:hover:bg-success/15 dark:active:bg-success/20",
-  },
-
-  warning: {
-    solid: "bg-warning text-white hover:bg-warning/90 active:bg-warning/80 disabled:hover:bg-warning",
-    soft: "bg-warning/20 text-warning hover:bg-warning/25 active:bg-warning/30 dark:bg-warning/25 dark:hover:bg-warning/30 dark:active:bg-warning/35",
-    outline:
-      "bg-background text-warning hover:bg-warning/10 active:bg-warning/15 dark:bg-background dark:hover:bg-warning/15 dark:active:bg-warning/20",
-  },
-};
+export const BaseClass = [
+  "group/item relative isolate inline-flex min-w-0",
+  "items-center justify-center select-none",
+  "whitespace-nowrap text-center leading-none",
+  "cursor-pointer outline-none",
+  "transition-colors duration-150 ease-out",
+  "focus-visible:z-10 focus-visible:ring-2",
+  "focus-visible:ring-ring focus-visible:ring-inset",
+  "disabled:pointer-events-none disabled:cursor-not-allowed",
+  "disabled:opacity-50",
+].join(" ");
 
 export const ButtonGroupSizeClass: Record<ButtonGroupSize, string> = {
-  xs: "rounded-[var(--radius-xs)]",
-  sm: "rounded-[var(--radius-sm)]",
-  md: "rounded-[var(--radius-md)]",
-  lg: "rounded-[var(--radius-lg)]",
+  xs: "gap-1 p-0.5 rounded-[calc(var(--radius-xs)+2px)]",
+  sm: "gap-1 p-0.5 rounded-[calc(var(--radius-sm)+2px)]",
+  md: "gap-1 p-1 rounded-[calc(var(--radius-md)+4px)]",
+  lg: "gap-1 p-1 rounded-[calc(var(--radius-lg)+4px)]",
 };
 
 export const ButtonGroupSizeItemClass: Record<ButtonGroupSize, string> = {
-  xs: "h-xs text-xs leading-none gap-[var(--gap-x-xs)]",
-  sm: "h-sm text-sm leading-none gap-[var(--gap-x-sm)]",
-  md: "h-md text-md leading-none gap-[var(--gap-x-md)]",
-  lg: "h-lg text-base leading-none gap-[var(--gap-x-lg)]",
+  xs: ["h-xs text-xs leading-none", "gap-[var(--gap-x-xs)]", "px-[var(--padding-x-xs)]", "rounded-[var(--radius-xs)]"].join(" "),
+  sm: ["h-sm text-sm leading-none", "gap-[var(--gap-x-sm)]", "px-[var(--padding-x-sm)]", "rounded-[var(--radius-sm)]"].join(" "),
+  md: ["h-md text-md leading-none", "gap-[var(--gap-x-md)]", "px-[var(--padding-x-md)]", "rounded-[var(--radius-md)]"].join(" "),
+  lg: ["h-lg text-lg leading-none", "gap-[var(--gap-x-lg)]", "px-[var(--padding-x-lg)]", "rounded-[var(--radius-lg)]"].join(" "),
 };
 
-export const ButtonGroupPaddingClass: Record<ButtonGroupSize, string> = {
-  xs: "px-[var(--padding-x-xs)]",
-  sm: "px-[var(--padding-x-sm)]",
-  md: "px-[var(--padding-x-md)]",
-  lg: "px-[var(--padding-x-lg)]",
+export const ButtonGroupRadiusClass: Record<ButtonGroupRadius, string> = {
+  default: "",
+  full: "rounded-full",
 };
 
-export const ButtogGroupRadiusClass: Record<ButtonGroupRadius, string> = {
+export const ButtonGroupItemRadiusClass: Record<ButtonGroupRadius, string> = {
   default: "",
   full: "rounded-full",
 };
@@ -73,18 +43,60 @@ export const ButtonGroupLoadingClass: Record<ButtonGroupSize, string> = {
   lg: "h-4.5 w-4.5 border-3",
 };
 
-export const ButtonGroupOutlineClass: Record<ButtonGroupColor, string> = {
-  primary: "border border-primary",
-  secondary: "border border-secondary",
-  danger: "border border-danger",
-  success: "border border-success",
-  warning: "border border-warning",
+export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonGroupVariant, string>> = {
+  primary: {
+    solid: "text-white",
+    soft: "text-primary",
+    outline: "text-primary",
+  },
+  secondary: {
+    solid: "text-white",
+    soft: "text-secondary",
+    outline: "text-secondary",
+  },
+  danger: {
+    solid: "text-white",
+    soft: "text-danger",
+    outline: "text-danger",
+  },
+  success: {
+    solid: "text-white",
+    soft: "text-success",
+    outline: "text-success",
+  },
+  warning: {
+    solid: "text-white",
+    soft: "text-warning",
+    outline: "text-warning",
+  },
 };
 
-export const ButtonGroupSeparatorClass: Record<ButtonGroupColor, string> = {
-  primary: "border-r-primary",
-  secondary: "border-r-secondary",
-  danger: "border-r-danger",
-  success: "border-r-success",
-  warning: "border-r-warning",
+export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGroupVariant, string>> = {
+  primary: {
+    solid: "bg-primary",
+    soft: "bg-primary-soft dark:bg-primary/30",
+    outline: "border border-primary",
+  },
+  secondary: {
+    solid: "bg-secondary",
+    soft: "bg-secondary-soft dark:bg-secondary-soft",
+    outline: "border border-secondary/70",
+  },
+  danger: {
+    solid: "bg-danger",
+    soft: "bg-danger-soft dark:bg-danger-soft",
+    outline: "border border-danger",
+  },
+  success: {
+    solid: "bg-success",
+    soft: "bg-success-soft dark:bg-success-soft",
+    outline: "border border-success",
+  },
+  warning: {
+    solid: "bg-warning",
+    soft: "bg-warning-soft dark:bg-warning-soft",
+    outline: "border border-warning",
+  },
 };
+
+export const ButtonGroupInactiveClass = "bg-transparent text-muted hover:bg-surface-3 hover:text-foreground";

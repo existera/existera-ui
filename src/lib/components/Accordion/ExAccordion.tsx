@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Children, cloneElement, useEffect, useRef, useCallback } from "react";
+import { useState, Children, cloneElement, isValidElement, useRef, useCallback } from "react";
 import { ExAccordionContext } from "./context/ExAccordionContext";
 import type { ExAccordionProps } from "./props/ExAccordionProps";
 import { cn } from "../../utils/Utils";
@@ -24,7 +24,6 @@ export default function ExAccordion({
         : [],
   );
 
-  const [childrenCount, setChildrenCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const toggle = useCallback((index: number) => {
@@ -43,57 +42,17 @@ export default function ExAccordion({
     }
   }, [allowMultiple]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!allowMultiple) {
-      const allOpenIndexes = openIndex !== null ? [openIndex] : [];
-      switch (e.key) {
-        case "ArrowDown":
-          e.stopPropagation();
-          e.preventDefault();
-          const nextIndex = allOpenIndexes.length > 0 ? (allOpenIndexes[allOpenIndexes.length - 1] + 1) % childrenCount : 0;
-          if (nextIndex >= 0) {
-            const nextElem = document.querySelector<HTMLButtonElement>(
-              `[id="accordion-trigger-${nextIndex}"]`
-            );
-            nextElem?.focus();
-          }
-          break;
-        case "ArrowUp":
-          e.stopPropagation();
-          e.preventDefault();
-          const prevIndex = allOpenIndexes.length > 0 
-            ? (allOpenIndexes[0] - 1 + childrenCount) % childrenCount 
-            : 0;
-          if (prevIndex >= 0) {
-            const prevElem = document.querySelector<HTMLButtonElement>(
-              `[id="accordion-trigger-${prevIndex}"]`
-            );
-            prevElem?.focus();
-          }
-          break;
-        case "Home":
-          e.stopPropagation();
-          e.preventDefault();
-          if (childrenCount > 0) {
-            const firstElem = document.querySelector<HTMLButtonElement>(
-              `[id="accordion-trigger-0"]`
-            );
-            firstElem?.focus();
-          }
-          break;
-        case "End":
-          e.stopPropagation();
-          e.preventDefault();
-          if (childrenCount > 0) {
-            const lastElem = document.querySelector<HTMLButtonElement>(
-              `[id="accordion-trigger-${childrenCount - 1}"]`
-            );
-            lastElem?.focus();
-          }
-          break;
-      }
-    }
-  }, [allowMultiple, openIndex, childrenCount]);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (!target.matches("button[data-accordion-trigger]") || target.closest("[data-accordion-root]") !== containerRef.current) return;
+    const buttons = Array.from(containerRef.current?.querySelectorAll<HTMLButtonElement>("button[data-accordion-trigger]:not(:disabled)") ?? [])
+      .filter(button => button.closest("[data-accordion-root]") === containerRef.current);
+    const index = buttons.indexOf(target as HTMLButtonElement);
+    if (index < 0 || !["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
+    e.preventDefault(); e.stopPropagation();
+    const next = e.key === "Home" ? 0 : e.key === "End" ? buttons.length - 1 : (index + (e.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
+    buttons[next]?.focus();
+  };
 
   return (
     <ExAccordionContext.Provider
@@ -107,26 +66,20 @@ export default function ExAccordion({
     >
       <div
           ref={containerRef}
+          data-accordion-root=""
           className={cn(
             "w-full rounded-lg border border-border",
             variant === "default" ? "bg-background" : "bg-transparent",
           )}
           onKeyDown={handleKeyDown}
-          role="presentation"
-          aria-label={children ? "Accordion navigation" : undefined}
         >
           <div
             className="flex flex-col"
-            ref={(el) => {
-              if (el) {
-                setChildrenCount(el.children.length);
-              }
-            }}
           >
             {Children.map(children, (child, index) => {
-              if (!child) return null;
+              if (!isValidElement<{ __index?: number }>(child)) return child;
 
-              return cloneElement(child as never, {
+              return cloneElement(child, {
                 __index: index,
               });
             })}

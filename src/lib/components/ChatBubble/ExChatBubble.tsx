@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, CheckCheck, Download, File, Image as ImageIcon, Video, X } from "lucide-react";
+import { Check, CheckCheck, Download, File, Image as ImageIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 

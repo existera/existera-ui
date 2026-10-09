@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import * as PrismThemes from "react-syntax-highlighter/dist/esm/styles/prism";
+import { lazy, Suspense, useState, useSyncExternalStore } from "react";
 import { Check, Copy } from "lucide-react";
 import type { ExCodeBlockProps } from "./props/ExCodeBlockProps";
 import {
@@ -11,6 +9,11 @@ import {
   SizeCodeBlockClass,
 } from "./class/CodeBlockClass";
 import { cn } from "../../utils/Utils";
+
+const SyntaxHighlighter = lazy(() => import("./ExCodeHighlighter"));
+const subscribe = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 export default function ExCodeBlock({
   language = "tsx",
@@ -23,6 +26,7 @@ export default function ExCodeBlock({
 }: ExCodeBlockProps) {
   const sizeClass = SizeCodeBlockClass[size];
   const code = Array.isArray(children) ? children.join("") : children;
+  const isMounted = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
   const [copied, setCopied] = useState(false);
   const handleCopy = async () => {
     try {
@@ -78,29 +82,21 @@ export default function ExCodeBlock({
           ColorCodeBlockBodyStyles[color],
         )}
       >
-        <SyntaxHighlighter
-          language={language}
-          style={PrismThemes[theme]}
-          showLineNumbers={showLineNumbers}
-          wrapLines
-          wrapLongLines={false}
-          customStyle={{
-            margin: 0,
-            padding: sizeClass.padding,
-            background: "transparent",
-            fontSize: sizeClass.fontSize,
-            width: "100%",
-            whiteSpace: "pre",
-          }}
-          codeTagProps={{
-            style: {
-              background: "transparent",
-              whiteSpace: "pre",
-            },
-          }}
-        >
-          {code}
-        </SyntaxHighlighter>
+        {isMounted ? (
+          <Suspense fallback={<pre className="m-0 overflow-x-auto" style={{ padding: sizeClass.padding, fontSize: sizeClass.fontSize }}><code>{code}</code></pre>}>
+            <SyntaxHighlighter
+              language={language}
+              theme={theme}
+              showLineNumbers={showLineNumbers}
+              padding={sizeClass.padding}
+              fontSize={sizeClass.fontSize}
+            >
+              {code}
+            </SyntaxHighlighter>
+          </Suspense>
+        ) : (
+          <pre className="m-0 overflow-x-auto" style={{ padding: sizeClass.padding, fontSize: sizeClass.fontSize }}><code>{code}</code></pre>
+        )}
       </div>
 
       <style>{`

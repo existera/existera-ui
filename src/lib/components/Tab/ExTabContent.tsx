@@ -9,9 +9,9 @@ export default function ExTabContent({
   children,
   className,
 }: ExTabContentProps) {
-  const { activeTab } = useTab();
+  const { activeTab, baseId } = useTab();
 
-  if (activeTab !== value) return null;
+  const active = activeTab === value;
 
-  return <div className={cn("pt-4", className)}>{children}</div>;
+  return <div id={`${baseId}-panel-${encodeURIComponent(value)}`} role="tabpanel" aria-labelledby={`${baseId}-tab-${encodeURIComponent(value)}`} hidden={!active} tabIndex={active ? 0 : -1} className={cn("pt-4", className)}>{active ? children : null}</div>;
 }

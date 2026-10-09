@@ -1,12 +1,14 @@
 "use client";
 
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useImperativeHandle } from "react";
 import { FileText, Trash2, Upload } from "lucide-react";
 
 import { ExFilePickerProps } from "./props/ExFilePickerProps";
 
 export default function ExFilePicker({
   id,
+  ref,
+  onChange,
   accept,
   multiple = false,
   disabled = false,
@@ -16,8 +18,9 @@ export default function ExFilePicker({
   onRemove,
 }: ExFilePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle(ref, () => inputRef.current!);
   const hasFile = !!file;
-  const fileName = file instanceof File ? file.name : file?.name;
+  const fileName = typeof File !== "undefined" && file instanceof File ? file.name : file?.name;
   const handleClick = () => {
     if (!disabled) {
       inputRef.current?.click();
@@ -25,6 +28,7 @@ export default function ExFilePicker({
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
     const files = event.target.files;
     if (!files) return;
     const selectedFiles = Array.from(files);
@@ -32,7 +36,7 @@ export default function ExFilePicker({
       ? selectedFiles.filter((file) => file.size <= maxSize)
       : selectedFiles;
     if (validFiles.length > 0) {
-      onFileSelect?.(validFiles);
+      (onChange ?? onFileSelect)?.(validFiles);
     }
     event.target.value = "";
   };
@@ -89,7 +93,7 @@ export default function ExFilePicker({
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
-                onRemove?.();
+                if (onChange) onChange([]); else onRemove?.();
               }}
               disabled={disabled}
               className="

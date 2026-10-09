@@ -1,6 +1,8 @@
 "use client";
 
-import React, { Children, isValidElement, useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
+import { useTextField } from "../../hooks/useTextField";
+import { useNativeField } from "../../hooks/useNativeField";
+import React, { Children, isValidElement, useLayoutEffect, useState, useCallback } from "react";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
 
 import Prefix from "../Prefix/ExPrefix";
@@ -23,46 +25,44 @@ import {
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 
-const ExTextarea: CompoundTextarea = ({
-  id,
-  children,
-  placeholder = "Please type here...",
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  disabled = false,
-  rows = 3,
-  autoResize = false,
-  loading = false,
-  clearable = false,
-  debounce = 0,
-  onType,
-  "aria-labelledby": ariaLabelledBy,
-  "aria-describedby": ariaDescribedby,
-  "aria-required": ariaRequired,
-  "aria-invalid": ariaInvalid = state === "error",
-  maxLength,
-  inputMode,
-  autoComplete,
-  className,
-}) => {
+const ExTextarea: CompoundTextarea = (props) => {
+  const {
+    id,
+    value: controlledValue,
+    defaultValue = "",
+    onChange,
+    ref,
+    readOnly = false,
+    children,
+    placeholder = "Please type here...",
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    disabled = false,
+    rows = 3,
+    autoResize = false,
+    loading = false,
+    clearable = false,
+    debounce = 0,
+    onType,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+    "aria-invalid": ariaInvalid = state === "error",
+    maxLength,
+    inputMode,
+    autoComplete,
+    className,
+    ...nativeProps
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const hasTypedRef = useRef(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
+  const field = useTextField({ controlled: "value" in props, value: controlledValue, defaultValue, onChange, onType, debounce, disabled, readOnly });
+  const textareaRef = useNativeField<HTMLTextAreaElement>(ref, element => { element.value = field.reset(); });
+  const value = field.value;
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -89,49 +89,14 @@ const ExTextarea: CompoundTextarea = ({
     }
     el.style.height = "0px";
     el.style.height = `${el.scrollHeight}px`;
-  }, [autoResize]);
+  }, [autoResize, textareaRef]);
 
   useLayoutEffect(() => {
-    if (!hasTypedRef.current) {
-      return;
-    }
-
     autoResizeTextarea();
   }, [value, autoResizeTextarea]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (disabled) {
-      return;
-    }
-    hasTypedRef.current = true;
-    const nextValue = e.target.value;
-    setValue(nextValue);
-    if (!onType) {
-      return;
-    }
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    if (debounce <= 0) {
-      onType(nextValue);
-      return;
-    }
-    debounceRef.current = setTimeout(() => {
-      onType(nextValue);
-    }, debounce);
-  };
-
-  const handleClear = () => {
-    if (disabled) {
-      return;
-    }
-    hasTypedRef.current = true;
-    setValue("");
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    onType?.("");
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => field.change(e.target.value);
+  const handleClear = () => field.change("", true);
 
   return (
     <div
@@ -164,6 +129,8 @@ const ExTextarea: CompoundTextarea = ({
         )}
 
         <textarea
+          {...nativeProps}
+          readOnly={readOnly}
           id={id}
           ref={textareaRef}
           disabled={disabled}
@@ -171,14 +138,15 @@ const ExTextarea: CompoundTextarea = ({
           rows={rows}
           placeholder={placeholder}
           onChange={handleChange}
-          onFocus={() => {
+          onFocus={(e) => {
+            nativeProps.onFocus?.(e);
             if (disabled) {
               return;
             }
 
             setFocused(true);
           }}
-          onBlur={() => setFocused(false)}
+          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedby}
           aria-required={ariaRequired}
@@ -201,7 +169,7 @@ const ExTextarea: CompoundTextarea = ({
           </div>
         )}
 
-        {clearable && value.length > 0 && !disabled && (
+        {clearable && value.length > 0 && !disabled && !readOnly && (
           <div className={cn("flex items-center", TextareaStateIconPaddingSize[inputSize])}>
             <button
               type="button"
@@ -243,5 +211,5 @@ const ExTextarea: CompoundTextarea = ({
 ExTextarea.Prefix = Prefix;
 ExTextarea.Suffix = Suffix;
 
-(ExTextarea as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+Object.assign(ExTextarea, { [EX_INPUT_OPERATOR_COMPONENT]: true });
 export default ExTextarea;

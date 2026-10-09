@@ -1,5 +1,7 @@
 export interface ExDatePickerCalendarProps {
   open: boolean;
+  popupId?: string;
+  onPopupKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   value?: string;
   triggerRef: React.RefObject<HTMLDivElement | null>;
   contentRef: React.RefObject<HTMLDivElement | null>;

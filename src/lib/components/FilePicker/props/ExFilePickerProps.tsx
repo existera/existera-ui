@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import { FilePickerSize } from "../types/ExFilePickerType";
 
 export interface ExSelectedFile {
@@ -9,6 +10,8 @@ export interface ExSelectedFile {
 
 export interface ExFilePickerProps {
   id?: string;
+  ref?: Ref<HTMLInputElement>;
+  onChange?: (files: File[]) => void;
   accept?: string;
   multiple?: boolean;
   disabled?: boolean;

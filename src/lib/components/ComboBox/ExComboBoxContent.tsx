@@ -3,6 +3,7 @@
 import { createPortal } from "react-dom";
 import { useLayoutEffect, useState, useCallback } from "react";
 import type { ExComboBoxContentProps } from "./props/ExComboBoxContent";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 const GAP = 2;
 const VIEWPORT_PADDING = 8;
@@ -19,6 +20,7 @@ export default function ExComboBoxContent({
   triggerRef,
   contentRef,
 }: ExComboBoxContentProps) {
+  const registerPortalRef = useRegisterModalPortal<HTMLDivElement>();
   const [style, setStyle] = useState<ContentStyle>({
     top: -99999,
     left: -99999,
@@ -77,7 +79,7 @@ export default function ExComboBoxContent({
   return createPortal(
     <div
       role="listbox"
-      ref={contentRef}
+      ref={(element) => { contentRef.current = element; registerPortalRef(element); }}
       style={{
         position: "absolute",
         top: style.top,

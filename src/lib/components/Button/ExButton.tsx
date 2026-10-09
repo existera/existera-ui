@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "../../utils/Utils";
-import type { ExButtonProps } from "./props/ExButtonProps";
+import type { AnchorHTMLAttributes, ElementType, MouseEvent, ReactElement } from "react";
+import type { ExButtonLinkProps, ExButtonNativeProps, ExButtonRouterProps, ExButtonStyleProps } from "./props/ExButtonProps";
 
 import {
   ButtonBaseClass,
@@ -21,13 +22,21 @@ const buttonTextAlignClass = {
   between: "justify-between",
 } as const;
 
+type RouterRuntimeProps = ExButtonStyleProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color" | "type"> & {
+    as: ElementType;
+    type?: never;
+  };
+
+export default function ExButton<C extends ElementType>(props: ExButtonRouterProps<C>): ReactElement;
+export default function ExButton(props: ExButtonNativeProps | ExButtonLinkProps): ReactElement;
 export default function ExButton({
+  as: Component,
   id,
   variant = "solid",
   color = "primary",
   size = "md",
   textAlign = "center",
-  type = "button",
   radius = "default",
   loading = false,
   fit = true,
@@ -38,48 +47,84 @@ export default function ExButton({
   children,
   className,
   ...props
-}: ExButtonProps) {
+}: ExButtonNativeProps | ExButtonLinkProps | RouterRuntimeProps) {
   const isDisabled = disabled || loading;
 
-  return (
-    <button
-      {...props}
-      id={id}
-      type={type}
-      disabled={isDisabled}
-      aria-busy={loading}
-      className={cn(
-        className,
-        ButtonBaseClass,
-        ButtonSizeClass[size],
-        iconOnly
-          ? ButtonIconOnlyClass[size]
-          : radius === "default"
-            ? ButtonPaddingClass[size]
-            : ButtonPaddingRadiusFullClass[size],
-        ButtonVariantClass[variant](color),
-        ButtonRadiusClass[radius],
-        fit ? "min-w-fit" : "w-full",
-        !iconOnly && buttonTextAlignClass[textAlign],
-        isDisabled
-          ? "cursor-not-allowed opacity-70 pointer-events-none"
-          : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
-      )}
-    >
-      {loading && (
-        <span
-          className={cn(
-            ButtonLoadingClass[size],
-            "animate-spin rounded-full border-current/30 border-t-current",
-          )}
-        />
-      )}
+  const buttonClassName = cn(
+    className,
+    ButtonBaseClass,
+    ButtonSizeClass[size],
+    iconOnly ? ButtonIconOnlyClass[size] : radius === "default" ? ButtonPaddingClass[size] : ButtonPaddingRadiusFullClass[size],
+    ButtonVariantClass[variant](color),
+    ButtonRadiusClass[radius],
+    fit ? "min-w-fit" : "w-full",
+    !iconOnly && buttonTextAlignClass[textAlign],
+    isDisabled ? "cursor-not-allowed opacity-70 pointer-events-none" : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
+  );
+
+  const content = (
+    <>
+      {loading && <span className={cn(ButtonLoadingClass[size], "animate-spin rounded-full border-current/30 border-t-current")} />}
 
       {!loading && !iconOnly && leftIcon}
 
       {children}
 
       {!loading && !iconOnly && rightIcon}
+    </>
+  );
+
+  if (Component || typeof props.href === "string") {
+    const anchorProps = props as AnchorHTMLAttributes<HTMLAnchorElement>;
+    const { href, onClick, onAuxClick, tabIndex, target, rel, ...linkProps } = anchorProps;
+    const LinkComponent = isDisabled ? "a" : (Component ?? "a");
+    const forwardedProps =
+      Component && isDisabled
+        ? {
+            title: linkProps.title,
+            "aria-label": linkProps["aria-label"],
+            "aria-labelledby": linkProps["aria-labelledby"],
+            "aria-describedby": linkProps["aria-describedby"],
+          }
+        : linkProps;
+
+    return (
+      <LinkComponent
+        {...forwardedProps}
+        id={id}
+        href={isDisabled ? undefined : href}
+        target={target}
+        rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
+        role={isDisabled ? "link" : linkProps.role}
+        aria-disabled={isDisabled || undefined}
+        aria-busy={loading}
+        tabIndex={isDisabled ? -1 : tabIndex}
+        onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+          if (isDisabled) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onClick?.(event);
+        }}
+        onAuxClick={(event: MouseEvent<HTMLAnchorElement>) => {
+          if (isDisabled) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onAuxClick?.(event);
+        }}
+        className={buttonClassName}>
+        {content}
+      </LinkComponent>
+    );
+  }
+
+  const { type = "button", ...buttonProps } = props as ExButtonNativeProps;
+  return (
+    <button {...buttonProps} id={id} type={type} disabled={isDisabled} aria-busy={loading} className={buttonClassName}>
+      {content}
     </button>
   );
 }

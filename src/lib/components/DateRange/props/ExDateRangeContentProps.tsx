@@ -1,5 +1,7 @@
 export interface ExDateRangeCalendarProps {
   open: boolean;
+  popupId?: string;
+  onPopupKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
   startDateValue?: string;
   endDateValue?: string;
   triggerRef: React.RefObject<HTMLDivElement | null>;
@@ -10,5 +12,6 @@ export interface ExDateRangeCalendarProps {
   endDate?: string;
   onSelectStart?: (date: string) => void;
   onSelectEnd?: (date: string) => void;
+  onSelectRange?: (range: { startDate: string; endDate: string }) => void;
   onClear?: () => void;
 }

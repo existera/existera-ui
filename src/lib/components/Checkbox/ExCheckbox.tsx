@@ -1,8 +1,10 @@
 "use client";
 
+import { useNativeField } from "../../hooks/useNativeField";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Minus } from "lucide-react";
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useId, useState } from "react";
 
 import { cn } from "../../utils/Utils";
 import type { ExCheckboxProps } from "./props/ExCheckboxProps";
@@ -21,30 +23,41 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
       size = "md",
       radius = "default",
       onChecked,
+      onChange,
+      readOnly = false,
+      ...nativeProps
     },
     ref,
   ) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+
     const [internalChecked, setInternalChecked] = useState(defaultChecked);
     const isControlled = checked !== undefined;
     const isChecked = isControlled ? checked : internalChecked;
     const isActive = isChecked || indeterminate;
 
-    useImperativeHandle(ref, () => inputRef.current!);
+    const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+      const next = isControlled ? checked : defaultChecked;
+      if (!isControlled) setInternalChecked(next);
+      element.checked = next;
+    });
+    const fieldId = useId();
+    const descriptionId = description ? fieldId + "-description" : undefined;
+    const errorId = error ? fieldId + "-error" : undefined;
+    const describedBy = [nativeProps["aria-describedby"], descriptionId, errorId].filter(Boolean).join(" ") || undefined;
 
     useEffect(() => {
       if (inputRef.current) {
         inputRef.current.indeterminate = indeterminate;
       }
-    }, [indeterminate]);
+    }, [indeterminate, inputRef]);
 
     const handleChange = () => {
-      if (disabled) return;
+      if (disabled || readOnly) return;
       const value = !isChecked;
       if (!isControlled) {
         setInternalChecked(value);
       }
-      onChecked?.(value);
+      (onChange ?? onChecked)?.(value);
     };
 
     const styles = sizeMap[size];
@@ -53,6 +66,10 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
       <label className={cn("group flex items-start select-none gap-2", disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer")}>
         <span className={cn("relative flex shrink-0 items-center justify-center", styles.box)}>
           <input
+            {...nativeProps}
+            readOnly={readOnly}
+            aria-describedby={describedBy}
+            aria-invalid={nativeProps["aria-invalid"] ?? Boolean(error)}
             ref={inputRef}
             type="checkbox"
             checked={isChecked}
@@ -134,8 +151,8 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
                 {label}
               </span>
             )}
-            {description && <span className="mt-1 block text-xs leading-relaxed text-muted">{description}</span>}
-            {error && <span className="mt-1 block text-xs leading-relaxed text-danger">{error}</span>}
+            {description && <span id={descriptionId} className="mt-1 block text-xs leading-relaxed text-muted">{description}</span>}
+            {error && <span id={errorId} className="mt-1 block text-xs leading-relaxed text-danger">{error}</span>}
           </span>
         )}
       </label>

@@ -1,3 +1,5 @@
+import type { Ref } from "react";
+import type { ExFormFieldProps } from "../../../types/Form";
 import type { ReactNode } from "react";
 import type {
   DateRangeRadius,
@@ -5,7 +7,14 @@ import type {
   DateRangeState,
 } from "../types/ExDateRangeType";
 
-export interface ExDateRangeProps {
+export interface ExDateRangeValue { startDate: string; endDate: string; }
+
+export interface ExDateRangeProps extends ExFormFieldProps<HTMLInputElement> {
+  value?: ExDateRangeValue;
+  defaultValue?: ExDateRangeValue;
+  startName?: string;
+  endName?: string;
+  endRef?: Ref<HTMLInputElement>;
   id?: string;
   startDatePlaceholder?: string;
   endDatePlaceholder?: string;
@@ -13,6 +22,7 @@ export interface ExDateRangeProps {
   endPlaceholder?: string;
   startDateValue?: string;
   endDateValue?: string;
+  onChange?: (range: ExDateRangeValue) => void;
   children?: ReactNode;
   debounce?: number;
   state?: DateRangeState;

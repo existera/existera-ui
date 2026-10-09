@@ -1,4 +1,5 @@
 "use client";
+import { useCalendarKeyboard, handlePickerGroupKeyDown } from "../../hooks/useCalendarKeyboard";
 
 import { createPortal } from "react-dom";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -6,6 +7,8 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ExDatePickerCalendarProps } from "./props/ExDatePickerCalendarProps";
 import type { ContentStyle } from "./types/ExDatePickerType";
 import { cn } from "../../utils/Utils";
+import { parseDate as parseDateValue } from "./utils/parseDate";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 const GAP = 2;
 const VIEWPORT_PADDING = 8;
@@ -38,6 +41,8 @@ interface CalendarDay {
 
 export default function ExDatePickerCalendar({
   open,
+  popupId,
+  onPopupKeyDown,
   value,
   triggerRef,
   contentRef,
@@ -48,7 +53,15 @@ export default function ExDatePickerCalendar({
   onSelect,
   onClear,
 }: ExDatePickerCalendarProps) {
+  const registerPortalRef = useRegisterModalPortal<HTMLDivElement>();
   const [view, setView] = useState<"calendar" | "month" | "year">("calendar");
+  const previousView = useRef(view);
+  useLayoutEffect(() => {
+    if (previousView.current !== view) {
+      previousView.current = view;
+      (contentRef.current?.querySelector<HTMLButtonElement>('[tabindex="0"]') ?? contentRef.current?.querySelector<HTMLButtonElement>("button"))?.focus();
+    }
+  }, [view, contentRef]);
   const yearRef = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<ContentStyle>({
     top: -99999,
@@ -56,15 +69,7 @@ export default function ExDatePickerCalendar({
     minWidth: 0,
     visibility: "hidden",
   });
-  const parseDate = (value?: string) => {
-    if (!value) return undefined;
-    if (format === "YYYY-MM-DD") {
-      const [y, m, d] = value.split("-").map(Number);
-      return new Date(y, m - 1, d);
-    }
-    const [d, m, y] = value.split("-").map(Number);
-    return new Date(y, m - 1, d);
-  };
+  const parseDate = (value?: string) => parseDateValue(value, format);
   const selectedDate = parseDate(value);
   const [currentDate, setCurrentDate] = useState(
     () => selectedDate ?? new Date(),
@@ -194,15 +199,21 @@ export default function ExDatePickerCalendar({
       window.removeEventListener("scroll", updatePosition, true);
     };
   }, [open, contentRef, updatePosition]);
-  if (!open) return null;
 
   const isDisabledDate = (date: Date) => {
     if (disabledDate) return disabledDate.includes(formatDate(date));
   };
 
+  const dayProps = useCalendarKeyboard(calendar, selectedDate, date => isSelectable(date) && !isDisabledDate(date), setCurrentDate, contentRef);
+  if (!open) return null;
+
   return createPortal(
     <div
-      ref={contentRef}
+      id={popupId}
+      onKeyDown={onPopupKeyDown}
+      ref={(element) => { contentRef.current = element; registerPortalRef(element); }}
+      role="dialog"
+      aria-label="Choose date"
       tabIndex={-1}
       style={{
         position: "absolute",
@@ -243,6 +254,7 @@ export default function ExDatePickerCalendar({
         <div className="flex gap-0.5">
           <button
             type="button"
+            aria-label="Previous month"
             onClick={() => setCurrentDate(new Date(year, month - 1, 1))}
             className="flex h-7 w-7 items-center justify-center rounded-md border border-border transition hover:bg-surface-3 active:bg-surface-3 cursor-pointer"
           >
@@ -250,6 +262,7 @@ export default function ExDatePickerCalendar({
           </button>
           <button
             type="button"
+            aria-label="Next month"
             onClick={() => setCurrentDate(new Date(year, month + 1, 1))}
             className="flex h-7 w-7 items-center justify-center rounded-md border border-border transition hover:bg-surface-3 active:bg-surface-3 cursor-pointer"
           >
@@ -263,6 +276,9 @@ export default function ExDatePickerCalendar({
             {MONTHS.map((item, index) => (
               <button
                 key={item}
+                aria-label={item}
+                tabIndex={index === month ? 0 : -1}
+                onKeyDown={e => handlePickerGroupKeyDown(e, 3)}
                 type="button"
                 onClick={() => {
                   setCurrentDate(new Date(year, index, 1));
@@ -308,6 +324,8 @@ export default function ExDatePickerCalendar({
                   return (
                     <button
                       key={item}
+                      tabIndex={active ? 0 : -1}
+                      onKeyDown={e => handlePickerGroupKeyDown(e)}
                       type="button"
                       onClick={() => {
                         setCurrentDate(new Date(item, month, 1));
@@ -387,10 +405,13 @@ export default function ExDatePickerCalendar({
 
               return (
                 <button
+                  {...dayProps(value)}
+                  aria-current={isToday ? "date" : undefined}
+                  aria-pressed={Boolean(isSelected)}
                   key={value.toISOString()}
                   type="button"
                   disabled={disabled}
-                  onClick={() => onSelect?.(formatDate(value))}
+                  onClick={() => { if (!disabled) onSelect?.(formatDate(value)); }}
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-center text-xs transition
           ${current ? "" : "text-muted opacity-40"}
           ${disabled ? "cursor-not-allowed opacity-35" : "cursor-pointer"}
@@ -419,8 +440,10 @@ export default function ExDatePickerCalendar({
             </button>
             <button
               type="button"
+              disabled={!isSelectable(today) || isDisabledDate(today)}
               onClick={() => {
                 const today = new Date();
+                if (!isSelectable(today) || isDisabledDate(today)) return;
                 setCurrentDate(today);
                 onSelect?.(formatDate(today));
               }}

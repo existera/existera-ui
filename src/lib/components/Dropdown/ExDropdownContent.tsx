@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useExDropdown } from "./ExDropdownProps";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 type Props = {
   children: ReactNode;
@@ -14,7 +15,9 @@ type Placement = "top" | "bottom";
 const GAP = 6;
 
 export default function ExDropdownContent({ children, id }: Props) {
-  const { open, triggerRef, contentRef, setContentRef, align, handleContentKeyDown } = useExDropdown();
+  const { open, triggerRef, contentRef, setContentRef, align, handleContentKeyDown, menuId, triggerId, setMenuId } = useExDropdown();
+  useEffect(() => { if (id) setMenuId(id); }, [id, setMenuId]);
+  const registerPortalRef = useRegisterModalPortal<HTMLDivElement>();
 
   const [pos, setPos] = useState({
     top: 0,
@@ -123,9 +126,10 @@ export default function ExDropdownContent({ children, id }: Props) {
 
   return createPortal(
     <div
-      id={id}
-      ref={setContentRef}
-      role="listbox"
+      id={id ?? menuId}
+      ref={(element) => { setContentRef(element); registerPortalRef(element); }}
+      role="menu"
+      aria-labelledby={triggerId}
       style={{
         position: "absolute",
         top: pos.top,
@@ -140,9 +144,6 @@ export default function ExDropdownContent({ children, id }: Props) {
       }}
       className="rounded-lg border border-border bg-surface p-1 shadow-sm"
       onKeyDown={(e) => {
-        if (e.key === "Tab") {
-          return;
-        }
         handleContentKeyDown(e);
       }}
       onClick={(e) => {

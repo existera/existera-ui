@@ -3,6 +3,7 @@
 import { createPortal } from "react-dom";
 import { useLayoutEffect, useState, useCallback } from "react";
 import type { ExTimeSelectorClockProps } from "./props/ExTimeSelectorClockProps";
+import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
 const GAP = 2;
 const VIEWPORT_PADDING = 8;
@@ -16,9 +17,12 @@ type ContentStyle = {
 export default function ExTimeSelectorClock({
   children,
   open,
+  popupId,
+  onPopupKeyDown,
   triggerRef,
   contentRef,
 }: ExTimeSelectorClockProps) {
+  const registerPortalRef = useRegisterModalPortal<HTMLDivElement>();
   const [style, setStyle] = useState<ContentStyle>({
     top: -99999,
     left: -99999,
@@ -76,7 +80,11 @@ export default function ExTimeSelectorClock({
 
   return createPortal(
     <div
-      ref={contentRef}
+      role="dialog"
+      aria-label="Choose time"
+      id={popupId}
+      onKeyDown={onPopupKeyDown}
+      ref={(element) => { contentRef.current = element; registerPortalRef(element); }}
       style={{
         position: "absolute",
         top: style.top,

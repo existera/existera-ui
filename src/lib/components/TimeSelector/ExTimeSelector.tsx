@@ -1,4 +1,8 @@
 "use client";
+import { handlePickerGroupKeyDown } from "../../hooks/useCalendarKeyboard";
+import { usePickerKeyboard } from "../../hooks/usePickerKeyboard";
+import { useNativeField } from "../../hooks/useNativeField";
+import { useTextField } from "../../hooks/useTextField";
 
 import React, { Children, isValidElement, useEffect, useMemo, useRef, useState } from "react";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
@@ -17,23 +21,31 @@ import ExTimeSelectorClock from "./ExTimeSelectorClock";
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 
-const ExTimeSelector: CompoundTimeSelector = ({
-  children,
-  id,
-  type = "text",
-  value,
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  loading = false,
-  clearable = false,
-  format = 24,
-  debounce = 0,
-  disabled = false,
-  onType,
-}) => {
+const ExTimeSelector: CompoundTimeSelector = (props) => {
+  const {
+    children,
+    id,
+    type = "text",
+    value,
+    defaultValue = "",
+    onChange,
+    ref,
+    readOnly = false,
+    name,
+    form,
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    loading = false,
+    clearable = false,
+    format = 24,
+    debounce = 0,
+    disabled = false,
+    onType,
+    ...nativeProps
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
@@ -50,10 +62,10 @@ const ExTimeSelector: CompoundTimeSelector = ({
   const VISIBLE_ITEMS = 5;
   const PICKER_HEIGHT = ITEM_HEIGHT * VISIBLE_ITEMS;
   const PICKER_PADDING = (PICKER_HEIGHT - ITEM_HEIGHT) / 2;
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const hourRef = useRef<HTMLDivElement>(null);
   const minuteRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+
   const triggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const hourItemRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -61,9 +73,12 @@ const ExTimeSelector: CompoundTimeSelector = ({
   const formatItemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [open, setOpen] = useState(false);
-  const controlled = value !== undefined;
-  const [internalValue, setInternalValue] = useState(value ?? "");
-  const inputValue = controlled ? (value ?? "") : internalValue;
+  const picker = usePickerKeyboard(open, setOpen, triggerRef, contentRef, disabled || readOnly);
+  const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
+  const inputValue = field.value;
+  const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+    element.value = field.reset().split(":")[0] ?? ""; setOpen(false);
+  });
   const { hour, minute, formatValue } = useMemo(() => {
     if (!inputValue.trim()) {
       return {
@@ -102,7 +117,7 @@ const ExTimeSelector: CompoundTimeSelector = ({
 
     if (!disabled && open && (hourIndex !== -1 || minuteIndex !== -1)) {
       requestAnimationFrame(() => {
-        if (disabled) return;
+        if (disabled || readOnly) return;
         if (hourIndex !== -1) {
           hourItemRefs.current[hourIndex]?.scrollIntoView({
             block: "center",
@@ -126,7 +141,7 @@ const ExTimeSelector: CompoundTimeSelector = ({
         }
       });
     }
-  }, [hour, minute, formatValue, open, format, HOURS, MINUTES, FORMATVALUE, disabled]);
+  }, [hour, minute, formatValue, open, format, HOURS, MINUTES, FORMATVALUE, disabled, readOnly]);
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -141,82 +156,18 @@ const ExTimeSelector: CompoundTimeSelector = ({
     }
   });
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (disabled) return;
-    const nextInputValue = e.target.value;
-    const nextValue = format === 12 ? `${nextInputValue} ${formatValue || ""}`.trim() : nextInputValue;
-    if (!controlled) {
-      setInternalValue(nextValue);
-    }
-    if (!onType) return;
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    if (debounce <= 0) {
-      onType(nextValue);
-      return;
-    }
-    debounceRef.current = setTimeout(() => {
-      onType(nextValue);
-    }, debounce);
-  };
-
-  const handleClear = () => {
-    if (disabled) return;
-    if (!controlled) {
-      setInternalValue("");
-    }
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    onType?.("");
-  };
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => field.change(e.target.value);
+  const handleClear = () => field.change("", true);
+  const handleReset = handleClear;
   const updateTime = (nextHour: string, nextMinute: string, nextFormat?: "AM" | "PM") => {
-    if (disabled) return;
-    const period = nextFormat;
-    const nextValue = format === 12 ? `${nextHour}:${nextMinute} ${period}`.trim() : `${nextHour}:${nextMinute}`;
-    if (!controlled) {
-      setInternalValue(nextValue);
-    }
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    if (onType) {
-      if (debounce <= 0) {
-        onType(nextValue);
-      } else {
-        debounceRef.current = setTimeout(() => {
-          onType(nextValue);
-        }, debounce);
-      }
-    }
-    setFocused(false);
-    setOpen(false);
-    inputRef.current?.blur();
-  };
-
-  const handleReset = () => {
-    if (disabled) return;
-    if (!controlled) {
-      setInternalValue("");
-    }
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    onType?.("");
+    if (disabled || readOnly) return;
+    const next = format === 12 ? `${nextHour}:${nextMinute} ${nextFormat ?? formatValue ?? "AM"}` : `${nextHour}:${nextMinute}`;
+    field.change(next);
+    picker.dismiss();
   };
 
   const handleThisTime = () => {
-    if (disabled) return;
+    if (disabled || readOnly) return;
     const now = new Date();
     const currentHour = now.getHours();
     const displayHour = format === 12 ? currentHour % 12 || 12 : currentHour;
@@ -231,6 +182,7 @@ const ExTimeSelector: CompoundTimeSelector = ({
 
   return (
     <>
+      <input type="hidden" name={name} form={form} value={inputValue} disabled={disabled} />
       <div
         ref={triggerRef}
         className={cn(
@@ -265,6 +217,8 @@ const ExTimeSelector: CompoundTimeSelector = ({
 
           <div className="flex">
             <input
+              {...nativeProps}
+              form={form}
               id={id}
               type={type}
               ref={inputRef}
@@ -273,19 +227,28 @@ const ExTimeSelector: CompoundTimeSelector = ({
               readOnly
               disabled={disabled}
               onChange={handleChange}
-              aria-label="Hour"
+              aria-label={nativeProps["aria-label"] ? `${nativeProps["aria-label"]} hour` : "Hour"}
               className={cn(
                 "w-full bg-transparent pl-1 outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
-              onFocus={() => {
-                if (disabled) return;
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              aria-controls={open ? picker.popupId : undefined}
+              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
+              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onFocus={(e) => {
+                nativeProps.onFocus?.(e);
+                picker.rememberTrigger(e.currentTarget);
+                if (disabled || readOnly) return;
 
                 setFocused(true);
                 setOpen(true);
               }}
-              onBlur={() => {
+              onBlur={(e) => {
+                nativeProps.onBlur?.(e);
                 setFocused(false);
+                if (e.relatedTarget && (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))) return;
                 setOpen(false);
               }}
             />
@@ -295,27 +258,37 @@ const ExTimeSelector: CompoundTimeSelector = ({
             </span>
 
             <input
-              id={id}
+              {...nativeProps}
+              form={form}
+              id={id ? `${id}-minute` : undefined}
               type={type}
-              ref={inputRef}
               value={minute}
               placeholder="Minute"
               readOnly
               disabled={disabled}
               onChange={handleChange}
-              aria-label="Minute"
+              aria-label={nativeProps["aria-label"] ? `${nativeProps["aria-label"]} minute` : "Minute"}
               className={cn(
                 "w-full bg-transparent pr-1 outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
-              onFocus={() => {
-                if (disabled) return;
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              aria-controls={open ? picker.popupId : undefined}
+              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
+              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onFocus={(e) => {
+                nativeProps.onFocus?.(e);
+                picker.rememberTrigger(e.currentTarget);
+                if (disabled || readOnly) return;
 
                 setFocused(true);
                 setOpen(true);
               }}
-              onBlur={() => {
+              onBlur={(e) => {
+                nativeProps.onBlur?.(e);
                 setFocused(false);
+                if (e.relatedTarget && (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))) return;
                 setOpen(false);
               }}
             />
@@ -333,11 +306,12 @@ const ExTimeSelector: CompoundTimeSelector = ({
             </div>
           )}
 
-          {clearable && inputValue.length > 0 && !disabled && (
+          {clearable && inputValue.length > 0 && !disabled && !readOnly && (
             <div className="flex items-center pl-2">
               <button
                 type="button"
                 disabled={disabled}
+                aria-label="Clear time"
                 onClick={handleClear}
                 className={cn(
                   TimeSelectorStateIconSize[inputSize],
@@ -374,8 +348,8 @@ const ExTimeSelector: CompoundTimeSelector = ({
         )}
       </div>
 
-      {!disabled && (
-        <ExTimeSelectorClock open={open} triggerRef={triggerRef} contentRef={contentRef}>
+      {!disabled && !readOnly && (
+        <ExTimeSelectorClock popupId={picker.popupId} onPopupKeyDown={picker.onPopupKeyDown} open={open} triggerRef={triggerRef} contentRef={contentRef}>
           <div className={cn("grid w-full grid-cols-3 pb-2", format === 12 ? "grid-cols-3" : "grid-cols-2")}>
             <div className="relative w-full">
               <div
@@ -393,17 +367,22 @@ const ExTimeSelector: CompoundTimeSelector = ({
                   return (
                     <button
                       key={item}
+                      data-time-part="hour"
+                      aria-label={"hour " + item}
+                      aria-pressed={active}
+                      tabIndex={active || (!hour && index === 0) ? 0 : -1}
+                      onKeyDown={e => handlePickerGroupKeyDown(e)}
                       ref={(el) => {
                         hourItemRefs.current[index] = el;
                       }}
                       type="button"
                       disabled={disabled}
-                      onMouseDown={(e) => {
+                      onClick={(e) => {
                         e.preventDefault();
 
-                        if (disabled) return;
+                        if (disabled || readOnly) return;
 
-                        updateTime(item, minute, formatValue);
+                        updateTime(item, minute || "00", formatValue);
                       }}
                       style={{
                         height: ITEM_HEIGHT,
@@ -438,17 +417,22 @@ const ExTimeSelector: CompoundTimeSelector = ({
                   return (
                     <button
                       key={item}
+                      data-time-part="minute"
+                      aria-label={"minute " + item}
+                      aria-pressed={active}
+                      tabIndex={active || (!minute && index === 0) ? 0 : -1}
+                      onKeyDown={e => handlePickerGroupKeyDown(e)}
                       ref={(el) => {
                         minuteItemRefs.current[index] = el;
                       }}
                       type="button"
                       disabled={disabled}
-                      onMouseDown={(e) => {
+                      onClick={(e) => {
                         e.preventDefault();
 
-                        if (disabled) return;
+                        if (disabled || readOnly) return;
 
-                        updateTime(hour, item, formatValue);
+                        updateTime(hour || HOURS[0], item, formatValue);
                       }}
                       style={{
                         height: ITEM_HEIGHT,
@@ -484,17 +468,22 @@ const ExTimeSelector: CompoundTimeSelector = ({
                     return (
                       <button
                         key={item}
+                        data-time-part="period"
+                        aria-label={"period " + item}
+                        aria-pressed={active}
+                        tabIndex={active || (!formatValue && index === 0) ? 0 : -1}
+                        onKeyDown={e => handlePickerGroupKeyDown(e)}
                         ref={(el) => {
                           formatItemRefs.current[index] = el;
                         }}
                         type="button"
                         disabled={disabled}
-                        onMouseDown={(e) => {
+                        onClick={(e) => {
                           e.preventDefault();
 
-                          if (disabled) return;
+                          if (disabled || readOnly) return;
 
-                          updateTime(hour, minute, item);
+                          updateTime(hour || HOURS[0], minute || "00", item);
                         }}
                         style={{
                           height: ITEM_HEIGHT,
@@ -520,10 +509,10 @@ const ExTimeSelector: CompoundTimeSelector = ({
               type="button"
               disabled={disabled}
               className="flex cursor-pointer items-center rounded-sm px-2 py-1 text-xs font-medium text-primary transition hover:bg-primary-soft hover:opacity-90 disabled:cursor-not-allowed disabled:text-muted"
-              onMouseDown={(e) => {
+              onClick={(e) => {
                 e.preventDefault();
 
-                if (disabled) return;
+                if (disabled || readOnly) return;
 
                 handleReset();
               }}>
@@ -533,10 +522,10 @@ const ExTimeSelector: CompoundTimeSelector = ({
             <button
               type="button"
               disabled={disabled}
-              onMouseDown={(e) => {
+              onClick={(e) => {
                 e.preventDefault();
 
-                if (disabled) return;
+                if (disabled || readOnly) return;
 
                 handleThisTime();
               }}
@@ -553,5 +542,5 @@ const ExTimeSelector: CompoundTimeSelector = ({
 ExTimeSelector.Prefix = Prefix;
 ExTimeSelector.Suffix = Suffix;
 
-(ExTimeSelector as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+Object.assign(ExTimeSelector, { [EX_INPUT_OPERATOR_COMPONENT]: true });
 export default ExTimeSelector;

@@ -4,6 +4,10 @@ export type ExDropdownAlign = "left" | "center" | "right";
 
 export type ExDropdownCtxType = {
   open: boolean;
+  menuId: string;
+  triggerId: string;
+  setMenuId: (id: string) => void;
+  setTriggerId: (id: string) => void;
   disabled: boolean;
   align: ExDropdownAlign;
   arrowKeyNavigation: boolean;

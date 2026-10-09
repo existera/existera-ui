@@ -5,11 +5,14 @@ import ExCanvas from "../shared/components/ExCanvas";
 import type { OnThisPage } from "../shared/documentation/OnThisPageDocumentation";
 import PageContent from "../shared/documentation/PageContent";
 import { useState } from "react";
+import ExButton from "../lib/components/Button/ExButton";
 
 export default function DatePickerPage() {
+  const [selectedDate, setSelectedDate] = useState("");
   const section: OnThisPage[] = [
     { name: "Introduction", link: "#intro" },
     { name: "Basic Usage", link: "#basic-usage" },
+    { name: "Controlled Value", link: "#controlled-value" },
     { name: "Radius", link: "#radius" },
     { name: "Size", link: "#size" },
     { name: "Icon", link: "#icon" },
@@ -68,6 +71,37 @@ export default function DatePickerPage() {
           </ExCanvas>
 
           <ExCodeBlock language="tsx">{`<ExDatePicker />`}</ExCodeBlock>
+        </section>
+
+        <section id="controlled-value" className="grid gap-5 section-anchor">
+          <div>
+            <h3 className="text-2xl font-semibold">Controlled Value</h3>
+            <p className="text-muted text-md">
+              Use value and onChange to control the date from your parent. Selection
+              notifies onChange immediately; clearing emits an empty string. For an
+              initial date only, omit value and use defaultValue. The existing onType
+              callback is also supported and respects debounce for date selection;
+              clearing is immediate.
+            </p>
+          </div>
+          <ExCanvas>
+            <div className="flex flex-col gap-3">
+              <ExDatePicker value={selectedDate} onChange={setSelectedDate} clearable />
+              <p>Selected: {selectedDate || "None"}</p>
+              <ExButton variant="outline" onClick={() => setSelectedDate("")}>Reset from parent</ExButton>
+            </div>
+          </ExCanvas>
+          <ExCodeBlock language="tsx">
+            {`const [date, setDate] = useState("");
+
+<ExDatePicker value={date} onChange={setDate} clearable />
+
+// Reset from the parent:
+setDate("");
+
+// Initial value without controlling subsequent changes:
+<ExDatePicker defaultValue="08-10-2026" onChange={console.log} />`}
+          </ExCodeBlock>
         </section>
 
         <section id="radius" className="grid section-anchor">

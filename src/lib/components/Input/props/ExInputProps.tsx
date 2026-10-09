@@ -1,11 +1,13 @@
+import type { ExFormFieldProps } from "../../../types/Form";
 import type { ReactNode } from "react";
 import type { ExInputType, InputRadius, InputSize, InputState } from "../types/ExInputType";
 
-export interface ExInputProps {
+export interface ExInputProps extends ExFormFieldProps<HTMLInputElement> {
   id?: string;
   type?: ExInputType;
   placeholder?: string;
   value?: string;
+  defaultValue?: string;
   children?: ReactNode;
   state?: InputState;
   disabled?: boolean;
@@ -16,6 +18,7 @@ export interface ExInputProps {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   debounce?: number;
+  onChange?: (value: string) => void;
   onType?: (value: string) => void;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;

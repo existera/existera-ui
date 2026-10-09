@@ -1,4 +1,5 @@
 "use client";
+import { useNativeField } from "../../hooks/useNativeField";
 
 import React, { Children, isValidElement, useState } from "react";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
@@ -9,7 +10,6 @@ import ExPrefix from "../Prefix/ExPrefix";
 import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundSelect } from "./types/ExSelectType";
-import type { SelectOption } from "./props/ExSelectProps";
 
 import { cn } from "../../utils/Utils";
 
@@ -17,27 +17,55 @@ import { SelectHeight, SelectPadding, SelectSizeClass, SelectStateClass, SelectS
 import { EX_INPUT_OPERATOR_COMPONENT } from "../InputOperator/context/ExInputOperatorMarker";
 import { useInputOperator } from "../InputOperator/context/ExInputOperatorContext";
 
-const ExSelect: CompoundSelect = ({
-  id,
-  children,
-  selected,
-  option = [],
-  placeholder = "Please Select Item",
-  leftIcon,
-  rightIcon,
-  size = "md",
-  radius = "default",
-  state = "default",
-  disabled = false,
-  clearable = false,
-  loading = false,
-  className,
-  textAlign = "left",
-}) => {
+const ExSelect: CompoundSelect = (props) => {
+  const {
+    id,
+    children,
+    selected: legacySelected,
+    value,
+    defaultValue,
+    ref,
+    readOnly = false,
+    defaultSelected,
+    onChange,
+    name,
+    required,
+    autoComplete,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+    option = [],
+    placeholder = "Please Select Item",
+    leftIcon,
+    rightIcon,
+    size = "md",
+    radius = "default",
+    state = "default",
+    disabled = false,
+    clearable = false,
+    loading = false,
+    className,
+    textAlign = "left",
+    ...nativeProps
+  } = props;
   const { operator, size: operatorSize } = useInputOperator();
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<SelectOption | undefined>(selected);
+  const controlled = "value" in props || "selected" in props;
+  const selected = "value" in props ? value : legacySelected;
+  const initial = "defaultValue" in props ? defaultValue : defaultSelected;
+  const [internalValue, setInternalValue] = useState<string | null>(initial?.value ?? null);
+  const selectedValue = controlled ? selected?.value : internalValue;
+  // Resolve against current options so async option updates cannot leave a stale
+  // label or make the browser silently display an unrelated first option.
+  const selectedOption = option.find((item) => item.value === selectedValue) ?? null;
+
+  const inputRef = useNativeField<HTMLSelectElement>(ref, element => {
+    const next = controlled ? selected?.value : initial?.value;
+    if (!controlled) setInternalValue(next ?? null);
+    element.value = option.some(item => item.value === next) ? next! : "";
+  });
 
   let prefix: React.ReactNode = null;
   let suffix: React.ReactNode = null;
@@ -57,18 +85,20 @@ const ExSelect: CompoundSelect = ({
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
-    const nextSelected = option.find((item) => item.value === e.target.value);
-    setSelectedOption(nextSelected);
+    const nextSelected = option.find((item) => item.value === e.target.value) ?? null;
+    if (!controlled) setInternalValue(nextSelected?.value ?? null);
+    onChange?.(nextSelected);
   };
 
   const handleClear = () => {
-    if (disabled) {
+    if (disabled || readOnly) {
       return;
     }
-    setSelectedOption(undefined);
+    if (!controlled) setInternalValue(null);
+    onChange?.(null);
   };
 
   return (
@@ -80,10 +110,7 @@ const ExSelect: CompoundSelect = ({
           ? "min-w-0 flex-1"
           : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
         disabled ? "cursor-not-allowed bg-secondary" : !operator ? "bg-surface-2" : "transparent",
-      )}
-      role="combobox"
-      aria-haspopup="listbox"
-      aria-expanded={false}>
+      )}>
       {!operator && prefix && (
         <ExPrefix radius={radius} size={size}>
           {prefix}
@@ -105,13 +132,21 @@ const ExSelect: CompoundSelect = ({
         )}
 
         <select
+          {...nativeProps}
+          ref={inputRef}
+          aria-readonly={readOnly}
           id={id}
+          name={name}
+          required={required}
           disabled={disabled}
-          aria-label={selectedOption?.label || placeholder}
+          aria-label={ariaLabel ?? (ariaLabelledBy || id ? undefined : placeholder)}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           value={selectedOption?.value ?? ""}
           onChange={handleChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onFocus={(e) => { setFocused(true); nativeProps.onFocus?.(e); }}
+          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
           className={cn(
             SelectHeight[inputSize],
             selectedOption ? "text-foreground" : "text-muted",
@@ -120,8 +155,7 @@ const ExSelect: CompoundSelect = ({
             className,
           )}
           style={{ textAlign }}
-          inputMode="numeric"
-          autoComplete="one-time-code">
+          autoComplete={autoComplete}>
           <option value="" disabled className="text-muted">
             {placeholder}
           </option>
@@ -139,7 +173,7 @@ const ExSelect: CompoundSelect = ({
           </div>
         )}
 
-        {clearable && selectedOption && !disabled && (
+        {clearable && selectedOption && !disabled && !readOnly && (
           <button
             type="button"
             onClick={handleClear}
@@ -179,5 +213,5 @@ const ExSelect: CompoundSelect = ({
 ExSelect.Prefix = Prefix;
 ExSelect.Suffix = Suffix;
 
-(ExSelect as any)[EX_INPUT_OPERATOR_COMPONENT] = true;
+ExSelect[EX_INPUT_OPERATOR_COMPONENT] = true;
 export default ExSelect;

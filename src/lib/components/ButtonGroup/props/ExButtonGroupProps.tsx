@@ -1,16 +1,22 @@
-import type React from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import type {
   ButtonGroupColor,
   ButtonGroupRadius,
+  ButtonGroupResponsive,
   ButtonGroupSize,
   ButtonGroupVariant,
 } from "../types/ExButtonGroupType";
 
-export interface ButtonGroupProps {
+export interface ButtonGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> {
   color?: ButtonGroupColor;
   variant?: ButtonGroupVariant;
   size?: ButtonGroupSize;
   radius?: ButtonGroupRadius;
   fit?: boolean;
-  children?: React.ReactNode;
+  disabled?: boolean;
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  responsive?: ButtonGroupResponsive;
+  children?: ReactNode;
 }

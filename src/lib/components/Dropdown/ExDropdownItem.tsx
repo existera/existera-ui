@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { useExDropdown } from "./ExDropdownProps";
 
 type Props = {
@@ -20,24 +20,23 @@ export default function ExDropdownItem({
   value,
   id,
 }: Props) {
-  const { registerMenuItem, unregisterMenuItem, close, arrowKeyNavigation } =
+  const { registerMenuItem, unregisterMenuItem, close } =
     useExDropdown();
 
+  const itemRef = useRef<HTMLDivElement>(null);
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
 
     switch (e.key) {
       case "Enter":
       case " ":
+        e.preventDefault();
         e.stopPropagation();
         if (!disabled) {
           close();
           onClick?.();
           onSelect?.();
         }
-        break;
-      case "Escape":
-        close();
         break;
     }
   };
@@ -51,7 +50,7 @@ export default function ExDropdownItem({
   };
 
   useEffect(() => {
-    const el = document.getElementById(id || "");
+    const el = itemRef.current;
     if (el) {
       registerMenuItem(el as HTMLDivElement);
       return () => {
@@ -63,10 +62,11 @@ export default function ExDropdownItem({
   return (
     <div
       id={id}
-      role="option"
-      aria-selected="false"
+      ref={itemRef}
+      data-value={value}
+      role="menuitem"
       aria-disabled={disabled || undefined}
-      tabIndex={disabled ? -1 : 0}
+      tabIndex={-1}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
       className={`

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useRef, useEffect, useCallback, Fragment, useId, isValidElement, cloneElement, type HTMLAttributes } from "react";
 import { createPortal } from "react-dom";
 import { cn, usePrefersReducedMotion } from "../../utils/Utils";
 import type { ExTooltipProps } from "./props/ExTooltipProps";
@@ -15,6 +15,9 @@ export default function ExTooltip({
   className,
   contentClassName,
 }: ExTooltipProps) {
+  const tooltipId = useId();
+  const childElement = isValidElement<HTMLAttributes<HTMLElement>>(children) && children.type !== Fragment ? children : null;
+  const childIsControl = childElement && (typeof childElement.type !== "string" || ["button", "a", "input", "select", "textarea"].includes(childElement.type) || (childElement.props.tabIndex ?? -1) >= 0);
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
 
@@ -103,16 +106,6 @@ export default function ExTooltip({
     }, delay);
   };
 
-  const hide = () => {
-    if (clickable) return;
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    setOpen(false);
-  };
-
   const toggle = () => {
     if (!clickable) return;
 
@@ -124,6 +117,8 @@ export default function ExTooltip({
     updatePosition();
     setOpen(true);
   };
+
+  useEffect(() => () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }, []);
 
   useEffect(() => {
     if (!open) {
@@ -208,36 +203,36 @@ export default function ExTooltip({
               ? "left-[-6px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-neutral-800/90"
               : "left-[-6px] bottom-3 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-neutral-800/90";
 
-  const tooltipId = `tooltip-${typeof children === "string" ? children.replace(/\s+/g, "-").toLowerCase() : "tooltip"}`;
 
   return (
     <>
       <span
         ref={wrapperRef}
-        id={tooltipId}
         className={cn(
           "inline-flex rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           className,
         )}
         onMouseEnter={show}
-        onMouseLeave={hide}
+        onMouseLeave={() => {
+          if (clickable || wrapperRef.current?.contains(document.activeElement)) return;
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          timeoutRef.current = setTimeout(() => setOpen(false), 150);
+        }}
+        onFocus={() => { if (!clickable) { if (timeoutRef.current) clearTimeout(timeoutRef.current); updatePosition(); setOpen(true); } }}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) { if (timeoutRef.current) clearTimeout(timeoutRef.current); setOpen(false); } }}
         onClick={toggle}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-
-            if (clickable) {
-              toggle();
-            }
-          } else if (e.key === "Escape" && clickable && open) {
-            e.preventDefault();
-            setOpen(false);
+          if (e.key === "Escape") {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            if (open) { e.preventDefault(); e.stopPropagation(); setOpen(false); }
+          } else if (clickable && e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+            e.preventDefault(); toggle();
           }
         }}
-        tabIndex={0}
-        role="button"
-        aria-describedby={open ? tooltipId : undefined}>
-        {children}
+        tabIndex={childIsControl ? undefined : 0}
+        role={!childIsControl && clickable ? "button" : undefined}
+        aria-describedby={!childIsControl && open ? tooltipId : undefined}>
+        {childIsControl && childElement ? cloneElement(childElement, { "aria-describedby": [childElement.props["aria-describedby"], open ? tooltipId : undefined].filter(Boolean).join(" ") || undefined }) : children}
       </span>
 
       {open &&
@@ -245,10 +240,12 @@ export default function ExTooltip({
           <div
             id={tooltipId}
             ref={tooltipRef}
+            onMouseEnter={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }}
+            onMouseLeave={() => { if (!clickable && !wrapperRef.current?.contains(document.activeElement)) setOpen(false); }}
             className={cn(
               "fixed z-99999 w-fit rounded-md bg-neutral-800/90 px-2 py-1.5 text-xs text-white shadow-md",
               "will-change-transform",
-              clickable ? "pointer-events-auto" : "pointer-events-none",
+              "pointer-events-auto",
               contentClassName,
             )}
             style={{

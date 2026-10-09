@@ -1,7 +1,11 @@
-export interface ExCheckboxProps {
+import type { ExFormFieldProps } from "../../../types/Form";
+export interface ExCheckboxProps extends ExFormFieldProps<HTMLInputElement> {
   label?: string;
   description?: string;
   error?: string;
+  id?: string;
+  value?: string;
+  onChange?: (checked: boolean) => void;
   checked?: boolean;
   defaultChecked?: boolean;
   indeterminate?: boolean;

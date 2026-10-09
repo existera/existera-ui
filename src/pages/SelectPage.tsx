@@ -1,4 +1,7 @@
 import { BoomBox, Earth, User } from "lucide-react";
+import { useState } from "react";
+import type { SelectOption } from "../lib/components/Select/props/ExSelectProps";
+import ExButton from "../lib/components/Button/ExButton";
 import ExCodeBlock from "../lib/components/CodeBlock/ExCodeBlock";
 import ExSelect from "../lib/components/Select/ExSelect";
 import ExCanvas from "../shared/components/ExCanvas";
@@ -6,9 +9,15 @@ import type { OnThisPage } from "../shared/documentation/OnThisPageDocumentation
 import PageContent from "../shared/documentation/PageContent";
 
 export default function SelectPage() {
+  const options: SelectOption[] = [
+    { label: "Option One", value: "ONE" },
+    { label: "Option Two", value: "TWO" },
+  ];
+  const [selected, setSelected] = useState<SelectOption | null>(null);
   const section: OnThisPage[] = [
     { name: "Introduction", link: "#intro" },
     { name: "Basic Usage", link: "#basic-usage" },
+    { name: "Controlled Selection", link: "#controlled" },
     { name: "Radius", link: "#radius" },
     { name: "Size", link: "#size" },
     { name: "Icon", link: "#icon" },
@@ -65,6 +74,47 @@ export default function SelectPage() {
       },
     ]}
 />`}
+          </ExCodeBlock>
+        </section>
+
+        <section id="controlled" className="grid gap-5 section-anchor">
+          <div>
+            <h3 className="text-2xl font-semibold">Controlled Selection</h3>
+            <p className="text-muted text-md">
+              Use selected with onChange to manage the selection in your parent.
+              Clearing emits null. To set only an initial value, omit selected
+              and use defaultSelected instead. Values must match an available option.
+            </p>
+          </div>
+          <ExCanvas>
+            <div className="flex flex-col gap-3">
+              <ExSelect option={options} selected={selected} onChange={setSelected} clearable aria-label="Example selection" />
+              <p>Selected: {selected?.label ?? "None"}</p>
+              <div className="flex gap-2">
+                <ExButton onClick={() => setSelected(options[1])}>Select Option Two</ExButton>
+                <ExButton onClick={() => setSelected(null)} variant="outline">Reset</ExButton>
+              </div>
+            </div>
+          </ExCanvas>
+          <ExCodeBlock language="tsx">
+            {`const options = [
+  { label: "Option One", value: "ONE" },
+  { label: "Option Two", value: "TWO" },
+];
+const [selected, setSelected] = useState<SelectOption | null>(null);
+
+<ExSelect
+  option={options}
+  selected={selected}
+  onChange={setSelected}
+  clearable
+/>
+
+// Reset from the parent:
+setSelected(null);
+
+// Uncontrolled, with an initial selection:
+<ExSelect option={options} defaultSelected={options[0]} onChange={console.log} />`}
           </ExCodeBlock>
         </section>
 

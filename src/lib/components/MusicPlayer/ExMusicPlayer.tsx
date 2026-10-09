@@ -1,32 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  LoaderCircle,
-  Music,
-  Pause,
-  Play,
-  Volume2,
-  VolumeX,
-  X,
-} from "lucide-react";
+import { LoaderCircle, Music, Pause, Play, Volume2, VolumeX, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ExButton from "../Button/ExButton";
 import type { ExMusicPlayerProps } from "./props/ExMusicPlayerProps";
 
-const VISUALIZER_HEIGHTS = [
-  12, 20, 8, 26, 16, 22, 10, 30, 14, 24, 18, 28, 12, 26, 16, 22, 10, 30, 14, 24,
-  18, 28, 12, 20,
-];
+const VISUALIZER_HEIGHTS = [12, 20, 8, 26, 16, 22, 10, 30, 14, 24, 18, 28, 12, 26, 16, 22, 10, 30, 14, 24, 18, 28, 12, 20];
 
-export default function ExMusicPlayer({
-  name,
-  url,
-  autoPlay = false,
-  loop = false,
-  muted = false,
-  onClose,
-}: ExMusicPlayerProps) {
+export default function ExMusicPlayer({ name, url, autoPlay = false, loop = false, muted = false, onClose }: ExMusicPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const volumeRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -44,24 +26,34 @@ export default function ExMusicPlayer({
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     setLoading(true);
     setDuration(0);
     setCurrent(0);
+
     audio.src = url;
     audio.loop = loop;
-    audio.volume = volume;
     audio.muted = muted;
+
     if (autoPlay) {
       audio.play().catch(() => {
         setPlaying(false);
       });
     }
+
     return () => {
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
     };
   }, [url, loop, autoPlay, muted]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = volume;
+  }, [volume]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -72,10 +64,7 @@ export default function ExMusicPlayer({
 
   useEffect(() => {
     const handler = (event: MouseEvent) => {
-      if (
-        volumeRef.current &&
-        !volumeRef.current.contains(event.target as Node)
-      ) {
+      if (volumeRef.current && !volumeRef.current.contains(event.target as Node)) {
         setVolumeOpen(false);
       }
     };
@@ -121,8 +110,7 @@ export default function ExMusicPlayer({
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
         className="fixed bottom-5 left-1/2 z-9999 w-[calc(100%-32px)] max-w-md -translate-x-1/2"
         role="region"
-        aria-label={name ? `Music player: ${name}` : "Music player"}
-      >
+        aria-label={name ? `Music player: ${name}` : "Music player"}>
         <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-linear-to-br from-white via-white to-neutral-100 p-5 shadow-[0_30px_80px_rgba(0,0,0,.15)] backdrop-blur-2xl dark:border-white/10 dark:bg-none dark:bg-neutral-950/80 dark:shadow-[0_30px_80px_rgba(0,0,0,.55)]">
           <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-black/5 via-transparent to-transparent dark:from-white/10" />
           <div className="relative flex items-center justify-between">
@@ -135,19 +123,14 @@ export default function ExMusicPlayer({
                   ease: "linear",
                 }}
                 className="relative flex size-14 items-center justify-center rounded-full bg-linear-to-br from-black/10 to-black/5 ring-1 ring-black/10 dark:from-white/20 dark:to-white/5 dark:ring-white/10"
-                aria-hidden="true"
-              >
+                aria-hidden="true">
                 <div className="absolute inset-1 rounded-full bg-background dark:bg-black" />
                 <Music size={22} className="relative" />
               </motion.div>
 
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
-                  {name}
-                </p>
-                <p className="mt-1 text-xs text-neutral-500 dark:text-white/50">
-                  {playing ? "Playing now" : "Paused"}
-                </p>
+                <p className="truncate text-sm font-semibold text-neutral-900 dark:text-white">{name}</p>
+                <p className="mt-1 text-xs text-neutral-500 dark:text-white/50">{playing ? "Playing now" : "Paused"}</p>
               </div>
             </div>
 
@@ -158,10 +141,7 @@ export default function ExMusicPlayer({
 
           <div className="mt-5 flex h-8 items-center justify-center gap-1" aria-hidden={playing ? "false" : "true"}>
             {loading ? (
-              <LoaderCircle
-                size={24}
-                className="animate-spin text-neutral-400 dark:text-white/50"
-              />
+              <LoaderCircle size={24} className="animate-spin text-neutral-400 dark:text-white/50" />
             ) : (
               VISUALIZER_HEIGHTS.map((height, index) => (
                 <motion.span
@@ -225,24 +205,12 @@ export default function ExMusicPlayer({
           </div>
 
           <div className="flex items-center justify-center gap-1">
-            <ExButton
-              variant="text"
-              iconOnly
-              color="secondary"
-              onClick={togglePlay}
-              aria-label={playing ? "Pause" : "Play"}
-            >
+            <ExButton variant="text" iconOnly color="secondary" onClick={togglePlay} aria-label={playing ? "Pause" : "Play"}>
               {playing ? <Pause size={16} /> : <Play size={16} />}
             </ExButton>
 
             <div ref={volumeRef} className="relative">
-              <ExButton
-                variant="text"
-                color="secondary"
-                iconOnly
-                onClick={() => setVolumeOpen((value) => !value)}
-                aria-label="Volume"
-              >
+              <ExButton variant="text" color="secondary" iconOnly onClick={() => setVolumeOpen((value) => !value)} aria-label="Volume">
                 {volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
               </ExButton>
 
@@ -258,17 +226,14 @@ export default function ExMusicPlayer({
                     aria-label="Volume control"
                     aria-valuemin={0}
                     aria-valuemax={1}
-                    aria-valuenow={volume}
-                  >
+                    aria-valuenow={volume}>
                     <input
                       type="range"
                       min={0}
                       max={1}
                       step={0.01}
                       value={volume}
-                      onChange={(event) =>
-                        updateVolume(Number(event.target.value))
-                      }
+                      onChange={(event) => updateVolume(Number(event.target.value))}
                       className="h-28 w-1 cursor-pointer appearance-none"
                       style={{
                         writingMode: "vertical-lr",

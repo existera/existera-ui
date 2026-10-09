@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
 import type { ExModalProps } from "./props/ExModalProps";
@@ -11,6 +12,11 @@ import ExButton from "../Button/ExButton";
 
 import { cn } from "../../utils/Utils";
 import { ModalSizeMap, ModalVariantMap } from "./class/ExModalClass";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+
+const subscribe = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 export default function ExModal({
   variant = "center",
@@ -21,55 +27,33 @@ export default function ExModal({
   onClose,
   children,
   titleId,
+  id,
+  initialFocusRef,
+  returnFocusRef,
+  "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedBy,
 }: ExModalProps) {
   const isFullscreen = size === "fullscreen";
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const portalRootsRef = useRef(new Set<HTMLElement>());
+  const registerPortal = useCallback((element: HTMLElement) => {
+    portalRootsRef.current.add(element);
+    return () => portalRootsRef.current.delete(element);
+  }, []);
+  const getAllowedElements = useCallback(() => [...portalRootsRef.current], []);
+  const contextValue = useMemo(() => ({ onClose, isFullscreen, registerPortal }), [onClose, isFullscreen, registerPortal]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose?.();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    const originalOverflow = document.documentElement.style.overflow;
-
-    document.documentElement.style.overflow = "hidden";
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-
-      document.documentElement.style.overflow = originalOverflow;
-    };
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (!modalRef.current) return;
-
-    const modalTriggerId = `modal-trigger-${titleId || "default"}`;
-
-    modalRef.current.setAttribute("aria-labelledby", modalTriggerId);
-
-    modalRef.current.setAttribute("role", "dialog");
-
-    modalRef.current.setAttribute("aria-modal", isOpen ? "true" : "false");
-
-    modalRef.current.setAttribute("aria-hidden", isOpen ? "false" : "true");
-  }, [isOpen, titleId]);
+  const mounted = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
+  useFocusTrap(isOpen && mounted, modalRef, returnFocusRef, initialFocusRef, onClose, getAllowedElements);
 
   const modalPosition = isFullscreen ? "inset-0" : ModalVariantMap[variant];
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <ExModalContext.Provider
-      value={{
-        onClose,
-        isFullscreen,
-      }}>
+      value={contextValue}>
       <AnimatePresence>
         {isOpen && (
           <>
@@ -102,7 +86,8 @@ export default function ExModal({
             {/* Modal */}
             <motion.div
               ref={modalRef}
-              id={titleId}
+              id={id}
+              tabIndex={-1}
               className={cn(
                 "fixed z-99 flex flex-col overflow-hidden",
                 "rounded-xl border border-black/30",
@@ -114,6 +99,8 @@ export default function ExModal({
               role="dialog"
               aria-modal="true"
               aria-labelledby={titleId}
+              aria-label={ariaLabel ?? (titleId ? undefined : "Dialog")}
+              aria-describedby={ariaDescribedBy}
               aria-hidden={!isOpen}
               initial={
                 isFullscreen
@@ -166,6 +153,7 @@ export default function ExModal({
           </>
         )}
       </AnimatePresence>
-    </ExModalContext.Provider>
+    </ExModalContext.Provider>,
+    document.body,
   );
 }

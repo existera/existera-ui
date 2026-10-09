@@ -1,9 +1,5 @@
 import { cn } from "../../../utils/Utils";
-import type {
-  ButtonColor,
-  ButtonRadius,
-  ButtonSize,
-} from "../types/ExButtonType";
+import type { ButtonColor, ButtonRadius, ButtonSize } from "../types/ExButtonType";
 
 export const ButtonBaseClass =
   "relative inline-flex items-center justify-center select-none overflow-hidden transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background leading-none";
@@ -66,8 +62,7 @@ export const ButtonColorTokens: Record<
     softBg: "bg-primary/25 dark:bg-primary/30",
     softText: "text-primary",
     border: "border-primary",
-    hoverSoft:
-      "hover:bg-primary/25 active:bg-primary/30 dark:hover:bg-primary/25 dark:active:bg-primary/30",
+    hoverSoft: "hover:bg-primary/25 active:bg-primary/30 dark:hover:bg-primary/25 dark:active:bg-primary/30",
     hoverSolid: "hover:opacity-90 active:opacity-80",
   },
 
@@ -77,8 +72,7 @@ export const ButtonColorTokens: Record<
     softBg: "bg-secondary/25 dark:bg-secondary/30",
     softText: "",
     border: "border-secondary/70",
-    hoverSoft:
-      "hover:bg-secondary/25 active:bg-secondary/30 dark:hover:bg-secondary/25 dark:active:bg-secondary/30",
+    hoverSoft: "hover:bg-secondary/25 active:bg-secondary/30 dark:hover:bg-secondary/25 dark:active:bg-secondary/30",
     hoverSolid: "hover:opacity-90 active:opacity-80",
   },
 
@@ -88,8 +82,7 @@ export const ButtonColorTokens: Record<
     softBg: "bg-success/25 dark:bg-success/30",
     softText: "text-success",
     border: "border-success",
-    hoverSoft:
-      "hover:bg-success/25 active:bg-success/30 dark:hover:bg-success/25 dark:active:bg-success/30",
+    hoverSoft: "hover:bg-success/25 active:bg-success/30 dark:hover:bg-success/25 dark:active:bg-success/30",
     hoverSolid: "hover:opacity-90 active:opacity-80",
   },
 
@@ -99,8 +92,7 @@ export const ButtonColorTokens: Record<
     softBg: "bg-warning/25 dark:bg-warning/30",
     softText: "text-warning",
     border: "border-warning",
-    hoverSoft:
-      "hover:bg-warning/25 active:bg-warning/30 dark:hover:bg-warning/25 dark:active:bg-warning/30",
+    hoverSoft: "hover:bg-warning/25 active:bg-warning/30 dark:hover:bg-warning/25 dark:active:bg-warning/30",
     hoverSolid: "hover:opacity-90 active:opacity-80",
   },
 
@@ -110,8 +102,7 @@ export const ButtonColorTokens: Record<
     softBg: "bg-danger/25 dark:bg-danger/30",
     softText: "text-danger",
     border: "border-danger",
-    hoverSoft:
-      "hover:bg-danger/25 active:bg-danger/30 dark:hover:bg-danger/25 dark:active:bg-danger/30",
+    hoverSoft: "hover:bg-danger/25 active:bg-danger/30 dark:hover:bg-danger/25 dark:active:bg-danger/30",
     hoverSolid: "hover:opacity-90 active:opacity-80",
   },
 };
@@ -126,26 +117,10 @@ export const ButtonVariantClass = {
     ),
 
   soft: (color: ButtonColor) =>
-    cn(
-      ButtonColorTokens[color].softBg,
-      ButtonColorTokens[color].softText,
-      ButtonColorTokens[color].hoverSoft,
-      "border border-transparent",
-    ),
+    cn(ButtonColorTokens[color].softBg, ButtonColorTokens[color].softText, ButtonColorTokens[color].hoverSoft, "border border-transparent"),
 
-  outline: (color: ButtonColor) =>
-    cn(
-      "bg-transparent",
-      ButtonColorTokens[color].softText,
-      ButtonColorTokens[color].border,
-      "border",
-    ),
+  outline: (color: ButtonColor) => cn("bg-transparent", ButtonColorTokens[color].softText, ButtonColorTokens[color].border, "border"),
 
   text: (color: ButtonColor) =>
-    cn(
-      "bg-transparent",
-      ButtonColorTokens[color].softText,
-      ButtonColorTokens[color].hoverSoft,
-      "border border-transparent",
-    ),
+    cn("bg-transparent", ButtonColorTokens[color].softText, ButtonColorTokens[color].hoverSoft, "border border-transparent"),
 };
