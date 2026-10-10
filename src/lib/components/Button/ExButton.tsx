@@ -1,11 +1,13 @@
 "use client";
 
 import { cn } from "../../utils/Utils";
+import { useId } from "react";
 import type { AnchorHTMLAttributes, ElementType, MouseEvent, ReactElement } from "react";
 import type { ExButtonLinkProps, ExButtonNativeProps, ExButtonRouterProps, ExButtonStyleProps } from "./props/ExButtonProps";
 
 import {
   ButtonBaseClass,
+  ButtonCounterSizeClass,
   ButtonIconOnlyClass,
   ButtonLoadingClass,
   ButtonPaddingClass,
@@ -36,6 +38,7 @@ export default function ExButton({
   variant = "solid",
   color = "primary",
   size = "md",
+  counter,
   textAlign = "center",
   radius = "default",
   loading = false,
@@ -46,9 +49,13 @@ export default function ExButton({
   disabled = false,
   children,
   className,
+  "aria-describedby": describedBy,
   ...props
 }: ExButtonNativeProps | ExButtonLinkProps | RouterRuntimeProps) {
   const isDisabled = disabled || loading;
+  const counterId = useId();
+  const hasCounter = counter != null;
+  const descriptionIds = [describedBy, hasCounter ? counterId : undefined].filter(Boolean).join(" ") || undefined;
 
   const buttonClassName = cn(
     className,
@@ -59,6 +66,7 @@ export default function ExButton({
     ButtonRadiusClass[radius],
     fit ? "min-w-fit" : "w-full",
     !iconOnly && buttonTextAlignClass[textAlign],
+    iconOnly && hasCounter && cn("w-auto", ButtonPaddingClass[size]),
     isDisabled ? "cursor-not-allowed opacity-70 pointer-events-none" : "cursor-pointer hover:scale-[1.01] active:scale-[0.98]",
   );
 
@@ -71,6 +79,19 @@ export default function ExButton({
       {children}
 
       {!loading && !iconOnly && rightIcon}
+      {hasCounter && (
+        <span
+          id={counterId}
+          aria-hidden="true"
+          className={cn(
+            "inline-flex shrink-0 items-center justify-center rounded-full bg-surface-4 font-medium leading-none tabular-nums",
+            variant === "solid" ? `bg-foreground text-${color}` : `bg-${color} text-foreground`,
+            ButtonCounterSizeClass[size],
+          )}>
+          <span className="sr-only">Total: </span>
+          {counter}
+        </span>
+      )}
     </>
   );
 
@@ -92,6 +113,7 @@ export default function ExButton({
       <LinkComponent
         {...forwardedProps}
         id={id}
+        aria-describedby={descriptionIds}
         href={isDisabled ? undefined : href}
         target={target}
         rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
@@ -123,7 +145,14 @@ export default function ExButton({
 
   const { type = "button", ...buttonProps } = props as ExButtonNativeProps;
   return (
-    <button {...buttonProps} id={id} type={type} disabled={isDisabled} aria-busy={loading} className={buttonClassName}>
+    <button
+      {...buttonProps}
+      id={id}
+      type={type}
+      disabled={isDisabled}
+      aria-busy={loading}
+      aria-describedby={descriptionIds}
+      className={buttonClassName}>
       {content}
     </button>
   );

@@ -47,48 +47,51 @@ export default function ButtonPage() {
         <section id="intro" className="grid gap-2 section-anchor">
           <h2 className="text-3xl font-semibold">Button</h2>
           <p>
-            Buttons are the primary interactive elements used to trigger
-            actions, submit forms, navigate interfaces, and execute workflows. A
-            consistent button system improves usability, accessibility, and
-            visual hierarchy throughout an application.
+            Buttons are the primary interactive elements used to trigger actions, submit forms, navigate interfaces, and execute workflows.
+            A consistent button system improves usability, accessibility, and visual hierarchy throughout an application.
           </p>
         </section>
 
         <section id="basic-usage" className="grid section-anchor">
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Basic Usage</h3>
-            <p className="text-muted text-md">
-              Create interactive actions with a default button style suitable
-              for most use cases.
-            </p>
+            <p className="text-muted text-md">Create interactive actions with a default button style suitable for most use cases.</p>
           </div>
           <ExCanvas>
             <ExButton>Button</ExButton>
+            <ExButton size="md" counter={5}>
+              Documents
+            </ExButton>
           </ExCanvas>
-          <ExCodeBlock language="html">
-            {`<ExButton>Button</ExButton>`}
-          </ExCodeBlock>
+          <ExCodeBlock language="html">{`<ExButton>Button</ExButton>`}</ExCodeBlock>
         </section>
 
         <section id="link-button" className="grid gap-5 section-anchor">
           <div>
             <h3 className="text-2xl font-semibold">Link Button</h3>
             <p className="text-muted text-md">
-              Use as with your router's Link component for SPA navigation, or href
-              for a native link. Use target="_blank" to open a new tab. Disabled and loading links
-              cannot navigate and are removed from the keyboard tab order.
+              Use as with your router's Link component for SPA navigation, or href for a native link. Use target="_blank" to open a new tab.
+              Disabled and loading links cannot navigate and are removed from the keyboard tab order.
             </p>
           </div>
           <ExCanvas>
             <div className="flex flex-wrap gap-2">
-              <ExButton as={Link} to="/docs/components/input">SPA: Input</ExButton>
-              <ExButton as={Link} to="/docs/components/input" disabled>Disabled SPA link</ExButton>
+              <ExButton as={Link} to="/docs/components/input">
+                SPA: Input
+              </ExButton>
+              <ExButton as={Link} to="/docs/components/input" disabled>
+                Disabled SPA link
+              </ExButton>
               <ExButton href="#basic-usage">Basic Usage</ExButton>
               <ExButton href="#variant" variant="outline" target="_blank">
                 Open in new tab
               </ExButton>
-              <ExButton href="#variant" disabled>Disabled link</ExButton>
-              <ExButton href="#variant" loading>Loading link</ExButton>
+              <ExButton href="#variant" disabled>
+                Disabled link
+              </ExButton>
+              <ExButton href="#variant" loading>
+                Loading link
+              </ExButton>
             </div>
           </ExCanvas>
           <ExCodeBlock language="tsx">
@@ -119,8 +122,7 @@ export default function ButtonPage() {
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Variant</h3>
             <p className="text-muted text-md">
-              Choose from multiple visual styles to communicate emphasis,
-              hierarchy, and interaction intent.
+              Choose from multiple visual styles to communicate emphasis, hierarchy, and interaction intent.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-10">
@@ -175,67 +177,66 @@ export default function ButtonPage() {
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Color</h3>
             <p className="text-muted text-md">
-              Apply semantic color variants to represent primary actions,
-              statuses, and contextual meanings throughout the interface.
+              Apply semantic color variants to represent primary actions, statuses, and contextual meanings throughout the interface.
             </p>
           </div>
           <ExCanvas>
             <div className="grid gap-2">
               <div className="flex flex-wrap gap-2">
-                <ExButton color="primary">Button</ExButton>
-                <ExButton color="secondary">Button</ExButton>
-                <ExButton color="warning">Button</ExButton>
-                <ExButton color="success">Button</ExButton>
-                <ExButton color="danger">Button</ExButton>
+                <ExButton counter={5} color="primary">Button</ExButton>
+                <ExButton counter={5} color="secondary">Button</ExButton>
+                <ExButton counter={5} color="warning">Button</ExButton>
+                <ExButton counter={5} color="success">Button</ExButton>
+                <ExButton counter={5} color="danger">Button</ExButton>
               </div>
               <div className="flex flex-wrap gap-2">
-                <ExButton variant="soft" color="primary">
+                <ExButton counter={5} variant="soft" color="primary">
                   Button
                 </ExButton>
-                <ExButton variant="soft" color="secondary">
+                <ExButton counter={5} variant="soft" color="secondary">
                   Button
                 </ExButton>
-                <ExButton variant="soft" color="warning">
+                <ExButton counter={5} variant="soft" color="warning">
                   Button
                 </ExButton>
-                <ExButton variant="soft" color="success">
+                <ExButton counter={5} variant="soft" color="success">
                   Button
                 </ExButton>
-                <ExButton variant="soft" color="danger">
-                  Button
-                </ExButton>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <ExButton variant="outline" color="primary">
-                  Button
-                </ExButton>
-                <ExButton variant="outline" color="secondary">
-                  Button
-                </ExButton>
-                <ExButton variant="outline" color="warning">
-                  Button
-                </ExButton>
-                <ExButton variant="outline" color="success">
-                  Button
-                </ExButton>
-                <ExButton variant="outline" color="danger">
+                <ExButton counter={5} variant="soft" color="danger">
                   Button
                 </ExButton>
               </div>
               <div className="flex flex-wrap gap-2">
-                <ExButton variant="text" color="primary">
+                <ExButton counter={5} variant="outline" color="primary">
                   Button
                 </ExButton>
-                <ExButton variant="text" color="secondary">
+                <ExButton counter={5} variant="outline" color="secondary">
                   Button
                 </ExButton>
-                <ExButton variant="text" color="warning">
+                <ExButton counter={5} variant="outline" color="warning">
                   Button
                 </ExButton>
-                <ExButton variant="text" color="success">
+                <ExButton counter={5} variant="outline" color="success">
                   Button
                 </ExButton>
-                <ExButton variant="text" color="danger">
+                <ExButton counter={5} variant="outline" color="danger">
+                  Button
+                </ExButton>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <ExButton counter={5} variant="text" color="primary">
+                  Button
+                </ExButton>
+                <ExButton counter={5} variant="text" color="secondary">
+                  Button
+                </ExButton>
+                <ExButton counter={5} variant="text" color="warning">
+                  Button
+                </ExButton>
+                <ExButton counter={5} variant="text" color="success">
+                  Button
+                </ExButton>
+                <ExButton counter={5} variant="text" color="danger">
                   Button
                 </ExButton>
               </div>
@@ -254,8 +255,7 @@ export default function ButtonPage() {
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Radius</h3>
             <p className="text-muted text-md">
-              Select from predefined sizes to fit dense toolbars, forms,
-              dialogs, and page-level actions.
+              Select from predefined sizes to fit dense toolbars, forms, dialogs, and page-level actions.
             </p>
           </div>
           <ExCanvas>
@@ -274,29 +274,28 @@ export default function ButtonPage() {
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Size</h3>
             <p className="text-muted text-md">
-              Select from predefined sizes to fit dense toolbars, forms,
-              dialogs, and page-level actions.
+              Select from predefined sizes to fit dense toolbars, forms, dialogs, and page-level actions.
             </p>
           </div>
           <ExCanvas>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col md:flex-row gap-5">
-                <ExButton size="xs">Button</ExButton>
-                <ExButton size="sm">Button</ExButton>
-                <ExButton size="md">Button</ExButton>
-                <ExButton size="lg">Button</ExButton>
+                <ExButton counter={5} size="xs">Button</ExButton>
+                <ExButton counter={5} size="sm">Button</ExButton>
+                <ExButton counter={5} size="md">Button</ExButton>
+                <ExButton counter={5} size="lg">Button</ExButton>
               </div>
               <div className="flex flex-col md:flex-row gap-5">
-                <ExButton size="xs" radius="full">
+                <ExButton counter={5} size="xs" radius="full">
                   Button
                 </ExButton>
-                <ExButton size="sm" radius="full">
+                <ExButton counter={5} size="sm" radius="full">
                   Button
                 </ExButton>
-                <ExButton size="md" radius="full">
+                <ExButton counter={5} size="md" radius="full">
                   Button
                 </ExButton>
-                <ExButton size="lg" radius="full">
+                <ExButton counter={5} size="lg" radius="full">
                   Button
                 </ExButton>
               </div>
@@ -318,10 +317,7 @@ export default function ButtonPage() {
         <section id="icon" className="grid section-anchor">
           <div className="mb-5">
             <h3 className="text-2xl font-semibold">Icon</h3>
-            <p className="text-muted text-md">
-              Enhance button clarity by placing icons before, after, or without
-              accompanying text.
-            </p>
+            <p className="text-muted text-md">Enhance button clarity by placing icons before, after, or without accompanying text.</p>
           </div>
           <ExCanvas>
             <div className="flex gap-5">

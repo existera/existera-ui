@@ -18,6 +18,13 @@ export const ButtonPaddingClass: Record<ButtonSize, string> = {
   lg: "px-[var(--padding-x-lg)]",
 };
 
+export const ButtonCounterSizeClass: Record<ButtonSize, string> = {
+  xs: "h-4 min-w-4 px-0.5 text-[10px]",
+  sm: "h-4.5 min-w-4.5 px-0.5 text-[11px]",
+  md: "h-5 min-w-5 px-1 text-xs",
+  lg: "h-6 min-w-6 px-1 text-sm",
+};
+
 export const ButtonPaddingRadiusFullClass: Record<ButtonSize, string> = {
   xs: "px-2.5",
   sm: "px-3",
