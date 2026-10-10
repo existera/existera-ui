@@ -50,9 +50,9 @@ export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonG
     outline: "text-primary",
   },
   secondary: {
-    solid: "text-white",
-    soft: "text-secondary",
-    outline: "text-secondary",
+    solid: "text-foreground",
+    soft: "text-foreground",
+    outline: "text-foreground",
   },
   danger: {
     solid: "text-white",
@@ -80,7 +80,7 @@ export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGr
   secondary: {
     solid: "bg-secondary",
     soft: "bg-secondary-soft",
-    outline: "border border-secondary/70",
+    outline: "border border-secondary",
   },
   danger: {
     solid: "bg-danger",
@@ -101,7 +101,7 @@ export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGr
 
 export const ButtonGroupInactiveClass: Record<ButtonGroupColor, string> = {
   primary: ["bg-transparent text-primary", "hover:bg-primary-soft hover:text-primary"].join(" "),
-  secondary: ["bg-transparent text-secondary", "hover:bg-secondary-soft hover:text-secondary"].join(" "),
+  secondary: ["bg-transparent text-foreground", "hover:bg-secondary-soft hover:text-foreground"].join(" "),
   danger: ["bg-transparent text-danger", "hover:bg-danger-soft hover:text-danger"].join(" "),
   success: ["bg-transparent text-success", "hover:bg-success-soft hover:text-success"].join(" "),
   warning: ["bg-transparent text-warning", "hover:bg-warning-soft hover:text-warning"].join(" "),
