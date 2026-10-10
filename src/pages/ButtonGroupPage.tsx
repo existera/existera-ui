@@ -129,17 +129,17 @@ export default function ButtonGroupPage() {
 
           <ExCanvas>
             <div className="flex flex-col items-center w-full max-w-100 min-w-0 gap-3">
-              <ExButtonGroup variant="solid">
+              <ExButtonGroup variant="solid" color="secondary">
                 <ExButtonGroupItem active>Button One</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Two</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Three</ExButtonGroupItem>
               </ExButtonGroup>
-              <ExButtonGroup variant="soft">
+              <ExButtonGroup variant="soft" color="secondary">
                 <ExButtonGroupItem active>Button One</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Two</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Three</ExButtonGroupItem>
               </ExButtonGroup>
-              <ExButtonGroup variant="outline">
+              <ExButtonGroup variant="outline" color="secondary">
                 <ExButtonGroupItem active>Button One</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Two</ExButtonGroupItem>
                 <ExButtonGroupItem>Button Three</ExButtonGroupItem>
