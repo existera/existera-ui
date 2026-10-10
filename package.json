@@ -1,8 +1,8 @@
 {
   "name": "@existera/ui",
   "version": "1.0.5",
-  "description": "Free React component library for modern web applications",
-  "license": "SEE LICENSE IN LICENSE",
+  "description": "Open-source React component library for modern web applications",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,7 +16,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE.md",
+    "NOTICE.md"
   ],
   "sideEffects": [
     "**/*.css"
