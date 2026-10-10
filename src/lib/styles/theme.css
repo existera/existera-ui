@@ -1,0 +1,99 @@
+@theme {
+  --height-xs: 22px;
+  --height-sm: 26px;
+  --height-md: 30px;
+  --height-lg: 34px;
+
+  --radius-xs: 5px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --radius-full-xs: 13px;
+  --radius-full-sm: 15px;
+  --radius-full-md: 17px;
+  --radius-full-lg: 19px;
+  --radius-full-xl: 21px;
+
+  --radius-pre-suffix-xs: 5px;
+  --radius-pre-suffix-sm: 6px;
+  --radius-pre-suffix-md: 7px;
+  --radius-pre-suffix-lg: 10px;
+  --radius-pre-suffix-xl: 13px;
+
+  --padding-x-xs: 7px;
+  --padding-x-sm: 8px;
+  --padding-x-md: 10px;
+  --padding-x-lg: 12px;
+
+  --gap-x-xs: 3px;
+  --gap-x-sm: 4px;
+  --gap-x-md: 5px;
+  --gap-x-lg: 6px;
+
+  --color-background: #f8fafc;
+
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-surface-3: #f1f5f9;
+  --color-surface-4: #e2e8f0;
+
+  --color-foreground: #0f172a;
+  --color-muted: #64748b;
+
+  --color-border: #e8edf4;
+
+  --color-primary: #3478f6;
+  --color-primary-hover: #2568e8;
+  --color-primary-soft: #e8f1ff;
+
+  --color-secondary: #cbd5e1;
+  --color-secondary-foreground: #334155;
+  --color-secondary-soft: #f5f7fa;
+
+  --color-success: #16a56a;
+  --color-success-soft: #eaf9f2;
+
+  --color-warning: #d68a18;
+  --color-warning-soft: #fff6de;
+
+  --color-danger: #e0345b;
+  --color-danger-soft: #ffe9ee;
+
+  --color-ring: rgba(52, 120, 246, 0.35);
+}
+
+[data-theme="dark"] {
+  --color-background: #09090b;
+
+  --color-surface: #111113;
+  --color-surface-2: #17171a;
+  --color-surface-3: #202024;
+  --color-surface-4: #29292e;
+
+  --color-foreground: #fafafa;
+  --color-muted: #a1a1aa;
+
+  --color-border: rgba(255, 255, 255, 0.075);
+
+  --color-primary: #5a96ff;
+  --color-primary-hover: #77abff;
+  --color-primary-soft: #13294d;
+
+  --color-secondary: #52525b;
+  --color-secondary-foreground: #f4f4f5;
+  --color-secondary-soft: #18181b;
+
+  --color-success: #32d399;
+  --color-success-soft: #0d241d;
+
+  --color-warning: #f8c24a;
+  --color-warning-soft: #2a1c05;
+
+  --color-danger: #fb5c7b;
+  --color-danger-soft: #2b0d15;
+
+  --color-ring: rgba(90, 150, 255, 0.45);
+}

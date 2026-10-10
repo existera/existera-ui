@@ -1,0 +1,104 @@
+[
+    {
+        "id": "pdf1",
+        "name": "Company Profilne.pdf",
+        "type": "application/pdf",
+        "url": "https://example.com/files/company-profile.pdf"
+    },
+    {
+        "id": "docx1",
+        "name": "Project Proposal.docx",
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "url": "https://example.com/files/project-proposal.docx"
+    },
+    {
+        "id": "dotx1",
+        "name": "Template.dotx",
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+        "url": "https://example.com/files/template.dotx"
+    },
+    {
+        "id": "xlsx1",
+        "name": "Financial Report.xlsx",
+        "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "url": "https://example.com/files/financial-report.xlsx"
+    },
+    {
+        "id": "xlsm1",
+        "name": "Macro Sheet.xlsm",
+        "type": "application/vnd.ms-excel.sheet.macroEnabled.12",
+        "url": "https://example.com/files/macro-sheet.xlsm"
+    },
+    {
+        "id": "xltx1",
+        "name": "Excel Template.xltx",
+        "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+        "url": "https://example.com/files/excel-template.xltx"
+    },
+    {
+        "id": "pptx1",
+        "name": "Pitch Deck.pptx",
+        "type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "url": "https://example.com/files/pitch-deck.pptx"
+    },
+    {
+        "id": "ppsx1",
+        "name": "Slideshow.ppsx",
+        "type": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+        "url": "https://example.com/files/slideshow.ppsx"
+    },
+    {
+        "id": "potx1",
+        "name": "Template.potx",
+        "type": "application/vnd.openxmlformats-officedocument.presentationml.template",
+        "url": "https://example.com/files/template.potx"
+    },
+    {
+        "id": "txt1",
+        "name": "Notes.txt",
+        "type": "text/plain",
+        "url": "https://example.com/files/notes.txt"
+    },
+    {
+        "id": "md1",
+        "name": "README.md",
+        "type": "text/markdown",
+        "url": "https://example.com/files/readme.md"
+    },
+    {
+        "id": "csv1",
+        "name": "Users Data.csv",
+        "type": "text/csv",
+        "url": "https://example.com/files/users-data.csv"
+    },
+    {
+        "id": "json1",
+        "name": "Config.json",
+        "type": "application/json",
+        "url": "https://example.com/files/config.json"
+    },
+    {
+        "id": "xml1",
+        "name": "Data Feed.xml",
+        "type": "application/xml",
+        "url": "https://example.com/files/data-feed.xml"
+    },
+    {
+        "id": "sql1",
+        "name": "Database Backup.sql",
+        "type": "application/sql",
+        "url": "https://example.com/files/database-backup.sql"
+    },
+    {
+        "id": "zip1",
+        "name": "Assets.zip",
+        "type": "application/zip",
+        "url": "https://example.com/files/assets.zip"
+    },
+    {
+        "id": "mp31",
+        "name": "Summer Vibes.mp3",
+        "type": "audio/mpeg",
+        "url": "https://example.com/files/summer-vibes.mp3"
+    }
+]
