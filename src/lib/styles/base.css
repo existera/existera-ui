@@ -1,0 +1,116 @@
+@import "./theme.css";
+
+/* Variants */
+@custom-variant dark (&:where([data-theme="dark"] *));
+
+/* Base */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        background: var(--color-background);
+        color: var(--color-foreground);
+    }
+
+    body {
+        min-height: 100vh;
+        background: var(--color-background);
+        color: var(--color-foreground);
+    }
+
+    *,
+    *::before,
+    *::after {
+        border-color: var(--color-border);
+    }
+
+    input,
+    textarea,
+    button,
+    select {
+        color: var(--color-foreground);
+    }
+
+    textarea {
+        min-height: 26px;
+        line-height: 26px;
+    }
+
+    ::selection {
+        background: var(--color-primary);
+        color: #fff;
+    }
+
+    :focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--color-ring);
+    }
+}
+
+/* Textarea scrollbar */
+.ex-textarea-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface-4) transparent;
+}
+
+.ex-textarea-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ex-textarea-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ex-textarea-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-surface-4);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease;
+}
+
+.ex-textarea-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+}
+
+.ex-textarea-scroll::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Number input */
+.ex-input-number {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.ex-input-number::-webkit-outer-spin-button,
+.ex-input-number::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+/* Animations */
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 1.5s linear infinite;
+}
+
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}

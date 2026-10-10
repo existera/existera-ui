@@ -1,0 +1,32 @@
+[
+    {
+        "id": "folder-5",
+        "hexColor": "#9CA3AF",
+        "name": "Profile",
+        "type": "folder"
+    },
+    {
+        "id": "folder-1",
+        "hexColor": "#4F46E5",
+        "name": "Documents",
+        "type": "folder"
+    },
+    {
+        "id": "folder-2",
+        "hexColor": "#06B6D4",
+        "name": "Pictures",
+        "type": "folder"
+    },
+    {
+        "id": "folder-3",
+        "hexColor": "#F59E0B",
+        "name": "Videos",
+        "type": "folder"
+    },
+    {
+        "id": "folder-4",
+        "hexColor": "#22C55E",
+        "name": "Music",
+        "type": "folder"
+    }
+]

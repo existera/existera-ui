@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/lib/**/*",
+    "src/vite-env.d.ts"
+  ],
+  "exclude": [
+    "src/pages/**/*",
+    "src/router/**/*",
+    "src/shared/**/*",
+    "src/docs/**/*",
+    "src/examples/**/*",
+    "src/playground/**/*"
+  ]
+}

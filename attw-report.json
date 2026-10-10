@@ -1,0 +1,1726 @@
+{
+  "analysis": {
+    "packageName": "@existera/ui",
+    "packageVersion": "1.0.3",
+    "types": {
+      "kind": "included"
+    },
+    "buildTools": {
+      "@arethetypeswrong/cli": "^0.18.5",
+      "typescript": "~6.0.2",
+      "vite": "^8.1.5"
+    },
+    "entrypoints": {
+      ".": {
+        "subpath": ".",
+        "resolutions": {
+          "node10": {
+            "name": ".",
+            "resolutionKind": "node10",
+            "resolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.d.ts",
+              "isJson": false,
+              "isTypeScript": true,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.ts'. ========",
+                "Explicitly specified module resolution kind: 'Node10'.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, Declaration.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript, Declaration.",
+                "Found 'package.json' at '/node_modules/@existera/ui/package.json'.",
+                "File '/node_modules/@existera/ui.ts' does not exist.",
+                "File '/node_modules/@existera/ui.tsx' does not exist.",
+                "File '/node_modules/@existera/ui.d.ts' does not exist.",
+                "'package.json' does not have a 'typesVersions' field.",
+                "'package.json' does not have a 'typings' field.",
+                "'package.json' has 'types' field './dist/index.d.ts' that references '/node_modules/@existera/ui/dist/index.d.ts'.",
+                "File '/node_modules/@existera/ui/dist/index.d.ts' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.d.ts' with Package ID '@existera/ui/dist/index.d.ts@1.0.3'. ========"
+              ]
+            },
+            "implementationResolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.js",
+              "isJson": false,
+              "isTypeScript": false,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.ts'. ========",
+                "Explicitly specified module resolution kind: 'Node10'.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "Found 'package.json' at '/node_modules/@existera/ui/package.json'.",
+                "File '/node_modules/@existera/ui.ts' does not exist.",
+                "File '/node_modules/@existera/ui.tsx' does not exist.",
+                "'package.json' does not have a 'typesVersions' field.",
+                "'package.json' has 'main' field './dist/index.js' that references '/node_modules/@existera/ui/dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Loading module as file / folder, candidate module location '/node_modules/@existera/ui/dist/index.js', target file types: TypeScript.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.js.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.js.tsx' does not exist.",
+                "Directory '/node_modules/@existera/ui/dist/index.js' does not exist, skipping all lookups in it.",
+                "File '/node_modules/@existera/ui/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/index.tsx' does not exist.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: JavaScript, JSON.",
+                "Searching all ancestor node_modules directories for fallback extensions: JavaScript, JSON.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "File '/node_modules/@existera/ui.js' does not exist.",
+                "File '/node_modules/@existera/ui.jsx' does not exist.",
+                "'package.json' has 'main' field './dist/index.js' that references '/node_modules/@existera/ui/dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.js' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "Resolution of non-relative name failed; trying with '--moduleResolution bundler' to see if project may need configuration update.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "Entering conditional exports.",
+                "Saw non-matching condition 'types'.",
+                "Matched 'exports' condition 'import'.",
+                "Using 'exports' subpath '.' with target './dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Failed to resolve under condition 'import'.",
+                "Exiting conditional exports.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.js' with Package ID '@existera/ui/dist/index.js@1.0.3'. ========"
+              ]
+            },
+            "files": [
+              "/node_modules/typescript/lib/lib.d.ts",
+              "/node_modules/@existera/ui/dist/types/Types.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/types/ExAccordionType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordion.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordionItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/types/ExAlertType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/props/ExAlertProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/ExAlert.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/types/ExAvatarType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/props/ExAvatarProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/ExAvatar.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/types/ExBadgeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/props/ExBadgeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/ExBadge.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/props/ExChatBubbleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/ExChatBubble.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/types/ExBreadcrumbsType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbs.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbsItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/types/ExButtonType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/props/ExButtonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/ExButton.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/types/ExButtonGroupType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroup.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroupItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/props/ExCardProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/ExCard.d.ts",
+              "/node_modules/@existera/ui/dist/types/Form.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/props/ExCheckboxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/ExCheckbox.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/types/ExCodeBlockTypes.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/props/ExCodeBlockProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/ExCodeBlock.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/types/ExPrefixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/props/ExPrefixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/ExPrefix.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/types/ExSuffixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/props/ExSuffixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/ExSuffix.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/types/ExComboBoxType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBox.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBoxItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/props/ExDatePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/context/ExInputOperatorMarker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/types/ExDatePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/ExDatePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/props/ExDateRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/types/ExDateRangeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/ExDateRange.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownRoot.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownTrigger.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdown.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/props/ExExplorerItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/ExExplorerItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/types/ExFlyoutType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/props/ExFlyoutProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/ExFlyout.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/types/ExFilePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/props/ExFilePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/ExFilePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/props/ExFooterProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/ExFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/props/ExHeaderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/ExHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/props/ExImageViewerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/ExImageViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/props/ExInputProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/types/ExInputType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/ExInput.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/types/ExLinkType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/props/ExLinkProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/ExLink.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/types/ExModalType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/props/ExModalProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/ExModal.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/props/ExMusicPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/ExMusicPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/types/ExPaginationType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/props/ExPagintationProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/ExPagination.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/props/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/types/ExProgressType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/props/ExProgressProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/ExProgress.d.ts",
+              "/node_modules/@existera/ui/dist/components/Radio/ExRadio.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/props/ExSelectProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/types/ExSelectType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/ExSelect.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/props/ExSkeletonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/ExSkeleton.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/types/ExSwitchType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/props/ExSwitchProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/ExSwitch.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/types/ExToggleType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/props/ExToggleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/ExToggle.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTab.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabListProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabList.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabContentProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableCell.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableExpand.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/types/ExTableType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/props/ExTableProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTable.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableRow.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/props/ExTextareaProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/types/ExTextareaType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/ExTextarea.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/props/ExTimeSelectorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/types/ExTimeSelectorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/ExTimeSelector.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/types/ExToastType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/ExToastProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/types/ExTooltipType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/props/ExTooltipProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/ExTooltip.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadProviderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadContextValueProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadContext.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/props/ExVideoPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/ExVideoPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/utils/useExTheme.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/props/ExInputOperatorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/types/ExInputOperatorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/ExInputOperator.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/props/ExInputRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/ExInputRange.d.ts",
+              "/node_modules/@existera/ui/dist/index.d.ts"
+            ],
+            "visibleProblems": []
+          },
+          "node16-cjs": {
+            "name": ".",
+            "resolutionKind": "node16-cjs",
+            "resolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.d.ts",
+              "isJson": false,
+              "isTypeScript": true,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.ts'. ========",
+                "Explicitly specified module resolution kind: 'Node16'.",
+                "Resolving in CJS mode with conditions 'require', 'types', 'node'.",
+                "File '/package.json' does not exist.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, JavaScript, Declaration, JSON.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript, Declaration.",
+                "Found 'package.json' at '/node_modules/@existera/ui/package.json'.",
+                "Entering conditional exports.",
+                "Matched 'exports' condition 'types'.",
+                "Using 'exports' subpath '.' with target './dist/index.d.ts'.",
+                "File '/node_modules/@existera/ui/dist/index.d.ts' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "Resolved under condition 'types'.",
+                "Exiting conditional exports.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.d.ts' with Package ID '@existera/ui/dist/index.d.ts@1.0.3'. ========"
+              ]
+            },
+            "files": [
+              "/node_modules/typescript/lib/lib.d.ts",
+              "/node_modules/@existera/ui/dist/types/Types.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/types/ExAccordionType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordion.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordionItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/types/ExAlertType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/props/ExAlertProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/ExAlert.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/types/ExAvatarType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/props/ExAvatarProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/ExAvatar.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/types/ExBadgeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/props/ExBadgeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/ExBadge.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/props/ExChatBubbleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/ExChatBubble.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/types/ExBreadcrumbsType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbs.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbsItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/types/ExButtonType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/props/ExButtonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/ExButton.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/types/ExButtonGroupType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroup.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroupItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/props/ExCardProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/ExCard.d.ts",
+              "/node_modules/@existera/ui/dist/types/Form.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/props/ExCheckboxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/ExCheckbox.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/types/ExCodeBlockTypes.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/props/ExCodeBlockProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/ExCodeBlock.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/types/ExPrefixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/props/ExPrefixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/ExPrefix.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/types/ExSuffixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/props/ExSuffixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/ExSuffix.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/types/ExComboBoxType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBox.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBoxItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/props/ExDatePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/context/ExInputOperatorMarker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/types/ExDatePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/ExDatePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/props/ExDateRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/types/ExDateRangeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/ExDateRange.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownRoot.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownTrigger.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdown.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/props/ExExplorerItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/ExExplorerItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/types/ExFlyoutType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/props/ExFlyoutProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/ExFlyout.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/types/ExFilePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/props/ExFilePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/ExFilePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/props/ExFooterProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/ExFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/props/ExHeaderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/ExHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/props/ExImageViewerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/ExImageViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/props/ExInputProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/types/ExInputType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/ExInput.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/types/ExLinkType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/props/ExLinkProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/ExLink.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/types/ExModalType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/props/ExModalProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/ExModal.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/props/ExMusicPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/ExMusicPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/types/ExPaginationType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/props/ExPagintationProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/ExPagination.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/props/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/types/ExProgressType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/props/ExProgressProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/ExProgress.d.ts",
+              "/node_modules/@existera/ui/dist/components/Radio/ExRadio.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/props/ExSelectProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/types/ExSelectType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/ExSelect.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/props/ExSkeletonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/ExSkeleton.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/types/ExSwitchType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/props/ExSwitchProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/ExSwitch.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/types/ExToggleType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/props/ExToggleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/ExToggle.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTab.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabListProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabList.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabContentProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableCell.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableExpand.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/types/ExTableType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/props/ExTableProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTable.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableRow.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/props/ExTextareaProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/types/ExTextareaType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/ExTextarea.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/props/ExTimeSelectorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/types/ExTimeSelectorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/ExTimeSelector.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/types/ExToastType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/ExToastProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/types/ExTooltipType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/props/ExTooltipProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/ExTooltip.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadProviderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadContextValueProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadContext.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/props/ExVideoPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/ExVideoPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/utils/useExTheme.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/props/ExInputOperatorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/types/ExInputOperatorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/ExInputOperator.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/props/ExInputRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/ExInputRange.d.ts",
+              "/node_modules/@existera/ui/dist/index.d.ts"
+            ],
+            "visibleProblems": [
+              0,
+              1
+            ]
+          },
+          "node16-esm": {
+            "name": ".",
+            "resolutionKind": "node16-esm",
+            "resolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.d.ts",
+              "isJson": false,
+              "isTypeScript": true,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.mts'. ========",
+                "Explicitly specified module resolution kind: 'Node16'.",
+                "Resolving in ESM mode with conditions 'import', 'types', 'node'.",
+                "File '/package.json' does not exist according to earlier cached lookups.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, JavaScript, Declaration, JSON.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript, Declaration.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "Entering conditional exports.",
+                "Matched 'exports' condition 'types'.",
+                "Using 'exports' subpath '.' with target './dist/index.d.ts'.",
+                "File '/node_modules/@existera/ui/dist/index.d.ts' exists - use it as a name resolution result.",
+                "Resolved under condition 'types'.",
+                "Exiting conditional exports.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.d.ts' with Package ID '@existera/ui/dist/index.d.ts@1.0.3'. ========"
+              ]
+            },
+            "implementationResolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.js",
+              "isJson": false,
+              "isTypeScript": false,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.mts'. ========",
+                "Explicitly specified module resolution kind: 'Node16'.",
+                "Resolving in ESM mode with conditions 'import', 'node'.",
+                "File '/package.json' does not exist according to earlier cached lookups.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, JavaScript, JSON.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "Entering conditional exports.",
+                "Saw non-matching condition 'types'.",
+                "Matched 'exports' condition 'import'.",
+                "Using 'exports' subpath '.' with target './dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Failed to resolve under condition 'import'.",
+                "Exiting conditional exports.",
+                "Searching all ancestor node_modules directories for fallback extensions: JavaScript, JSON.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "Entering conditional exports.",
+                "Saw non-matching condition 'types'.",
+                "Matched 'exports' condition 'import'.",
+                "Using 'exports' subpath '.' with target './dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.js' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "Resolved under condition 'import'.",
+                "Exiting conditional exports.",
+                "Resolution of non-relative name failed; trying with modern Node resolution features disabled to see if npm library needs configuration update.",
+                "File '/package.json' does not exist according to earlier cached lookups.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "'package.json' does not have a 'typesVersions' field.",
+                "'package.json' has 'main' field './dist/index.js' that references '/node_modules/@existera/ui/dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Loading module as file / folder, candidate module location '/node_modules/@existera/ui/dist/index.js', target file types: TypeScript.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Directory '/node_modules/@existera/ui/dist/index.js' does not exist, skipping all lookups in it.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.js' with Package ID '@existera/ui/dist/index.js@1.0.3'. ========"
+              ]
+            },
+            "files": [
+              "/node_modules/typescript/lib/lib.d.ts",
+              "/node_modules/@existera/ui/dist/types/Types.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/types/ExAccordionType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordion.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordionItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/types/ExAlertType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/props/ExAlertProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/ExAlert.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/types/ExAvatarType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/props/ExAvatarProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/ExAvatar.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/types/ExBadgeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/props/ExBadgeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/ExBadge.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/props/ExChatBubbleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/ExChatBubble.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/types/ExBreadcrumbsType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbs.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbsItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/types/ExButtonType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/props/ExButtonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/ExButton.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/types/ExButtonGroupType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroup.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroupItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/props/ExCardProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/ExCard.d.ts",
+              "/node_modules/@existera/ui/dist/types/Form.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/props/ExCheckboxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/ExCheckbox.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/types/ExCodeBlockTypes.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/props/ExCodeBlockProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/ExCodeBlock.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/types/ExPrefixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/props/ExPrefixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/ExPrefix.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/types/ExSuffixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/props/ExSuffixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/ExSuffix.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/types/ExComboBoxType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBox.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBoxItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/props/ExDatePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/context/ExInputOperatorMarker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/types/ExDatePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/ExDatePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/props/ExDateRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/types/ExDateRangeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/ExDateRange.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownRoot.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownTrigger.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdown.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/props/ExExplorerItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/ExExplorerItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/types/ExFlyoutType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/props/ExFlyoutProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/ExFlyout.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/types/ExFilePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/props/ExFilePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/ExFilePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/props/ExFooterProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/ExFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/props/ExHeaderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/ExHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/props/ExImageViewerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/ExImageViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/props/ExInputProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/types/ExInputType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/ExInput.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/types/ExLinkType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/props/ExLinkProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/ExLink.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/types/ExModalType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/props/ExModalProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/ExModal.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/props/ExMusicPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/ExMusicPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/types/ExPaginationType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/props/ExPagintationProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/ExPagination.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/props/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/types/ExProgressType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/props/ExProgressProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/ExProgress.d.ts",
+              "/node_modules/@existera/ui/dist/components/Radio/ExRadio.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/props/ExSelectProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/types/ExSelectType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/ExSelect.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/props/ExSkeletonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/ExSkeleton.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/types/ExSwitchType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/props/ExSwitchProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/ExSwitch.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/types/ExToggleType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/props/ExToggleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/ExToggle.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTab.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabListProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabList.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabContentProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableCell.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableExpand.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/types/ExTableType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/props/ExTableProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTable.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableRow.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/props/ExTextareaProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/types/ExTextareaType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/ExTextarea.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/props/ExTimeSelectorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/types/ExTimeSelectorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/ExTimeSelector.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/types/ExToastType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/ExToastProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/types/ExTooltipType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/props/ExTooltipProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/ExTooltip.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadProviderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadContextValueProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadContext.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/props/ExVideoPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/ExVideoPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/utils/useExTheme.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/props/ExInputOperatorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/types/ExInputOperatorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/ExInputOperator.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/props/ExInputRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/ExInputRange.d.ts",
+              "/node_modules/@existera/ui/dist/index.d.ts"
+            ],
+            "visibleProblems": [
+              1
+            ]
+          },
+          "bundler": {
+            "name": ".",
+            "resolutionKind": "bundler",
+            "resolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.d.ts",
+              "isJson": false,
+              "isTypeScript": true,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.ts'. ========",
+                "Explicitly specified module resolution kind: 'Bundler'.",
+                "Resolving in CJS mode with conditions 'import', 'types'.",
+                "File '/package.json' does not exist.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, JavaScript, Declaration, JSON.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript, Declaration.",
+                "Found 'package.json' at '/node_modules/@existera/ui/package.json'.",
+                "Entering conditional exports.",
+                "Matched 'exports' condition 'types'.",
+                "Using 'exports' subpath '.' with target './dist/index.d.ts'.",
+                "File '/node_modules/@existera/ui/dist/index.d.ts' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "Resolved under condition 'types'.",
+                "Exiting conditional exports.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.d.ts' with Package ID '@existera/ui/dist/index.d.ts@1.0.3'. ========"
+              ]
+            },
+            "implementationResolution": {
+              "fileName": "/node_modules/@existera/ui/dist/index.js",
+              "isJson": false,
+              "isTypeScript": false,
+              "trace": [
+                "======== Resolving module '@existera/ui' from '/index.ts'. ========",
+                "Explicitly specified module resolution kind: 'Bundler'.",
+                "Resolving in CJS mode with conditions 'import'.",
+                "File '/package.json' does not exist.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript, JavaScript, JSON.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "Found 'package.json' at '/node_modules/@existera/ui/package.json'.",
+                "Entering conditional exports.",
+                "Saw non-matching condition 'types'.",
+                "Matched 'exports' condition 'import'.",
+                "Using 'exports' subpath '.' with target './dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Failed to resolve under condition 'import'.",
+                "Exiting conditional exports.",
+                "Searching all ancestor node_modules directories for fallback extensions: JavaScript, JSON.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "Entering conditional exports.",
+                "Saw non-matching condition 'types'.",
+                "Matched 'exports' condition 'import'.",
+                "Using 'exports' subpath '.' with target './dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.js' exists - use it as a name resolution result.",
+                "'package.json' has a 'peerDependencies' field.",
+                "Failed to find peerDependency 'react'.",
+                "Failed to find peerDependency 'react-dom'.",
+                "Resolved under condition 'import'.",
+                "Exiting conditional exports.",
+                "Resolution of non-relative name failed; trying with modern Node resolution features disabled to see if npm library needs configuration update.",
+                "File '/package.json' does not exist according to earlier cached lookups.",
+                "Loading module '@existera/ui' from 'node_modules' folder, target file types: TypeScript.",
+                "Searching all ancestor node_modules directories for preferred extensions: TypeScript.",
+                "File '/node_modules/@existera/ui/package.json' exists according to earlier cached lookups.",
+                "File '/node_modules/@existera/ui.ts' does not exist.",
+                "File '/node_modules/@existera/ui.tsx' does not exist.",
+                "'package.json' does not have a 'typesVersions' field.",
+                "'package.json' has 'main' field './dist/index.js' that references '/node_modules/@existera/ui/dist/index.js'.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "Loading module as file / folder, candidate module location '/node_modules/@existera/ui/dist/index.js', target file types: TypeScript.",
+                "File name '/node_modules/@existera/ui/dist/index.js' has a '.js' extension - stripping it.",
+                "File '/node_modules/@existera/ui/dist/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.tsx' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.js.ts' does not exist.",
+                "File '/node_modules/@existera/ui/dist/index.js.tsx' does not exist.",
+                "Directory '/node_modules/@existera/ui/dist/index.js' does not exist, skipping all lookups in it.",
+                "File '/node_modules/@existera/ui/index.ts' does not exist.",
+                "File '/node_modules/@existera/ui/index.tsx' does not exist.",
+                "======== Module name '@existera/ui' was successfully resolved to '/node_modules/@existera/ui/dist/index.js' with Package ID '@existera/ui/dist/index.js@1.0.3'. ========"
+              ]
+            },
+            "files": [
+              "/node_modules/typescript/lib/lib.d.ts",
+              "/node_modules/@existera/ui/dist/types/Types.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/types/ExAccordionType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordion.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Accordion/ExAccordionItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/types/ExAlertType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/props/ExAlertProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Alert/ExAlert.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/types/ExAvatarType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/props/ExAvatarProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Avatar/ExAvatar.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/types/ExBadgeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/props/ExBadgeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Badge/ExBadge.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/props/ExChatBubbleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ChatBubble/ExChatBubble.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/types/ExBreadcrumbsType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbs.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbsItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/types/ExButtonType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/props/ExButtonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Button/ExButton.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/types/ExButtonGroupType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroup.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroupItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/props/ExCardProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Card/ExCard.d.ts",
+              "/node_modules/@existera/ui/dist/types/Form.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/props/ExCheckboxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Checkbox/ExCheckbox.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/types/ExCodeBlockTypes.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/props/ExCodeBlockProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/CodeBlock/ExCodeBlock.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/types/ExPrefixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/props/ExPrefixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Prefix/ExPrefix.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/types/ExSuffixType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/props/ExSuffixProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Suffix/ExSuffix.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/types/ExComboBoxType.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBox.d.ts",
+              "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBoxItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/props/ExDatePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/context/ExInputOperatorMarker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/types/ExDatePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DatePicker/ExDatePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/props/ExDateRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/types/ExDateRangeType.d.ts",
+              "/node_modules/@existera/ui/dist/components/DateRange/ExDateRange.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownRoot.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownTrigger.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdown.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/props/ExExplorerItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ExplorerItem/ExExplorerItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/types/ExFlyoutType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/props/ExFlyoutProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Flyout/ExFlyout.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/types/ExFilePickerType.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/props/ExFilePickerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/FilePicker/ExFilePicker.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/props/ExFooterProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Footer/ExFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/props/ExHeaderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Header/ExHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/props/ExImageViewerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/ImageViewer/ExImageViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/props/ExInputProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/types/ExInputType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Input/ExInput.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/types/ExLinkType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/props/ExLinkProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Link/ExLink.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/types/ExModalType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/props/ExModalProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Modal/ExModal.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/props/ExMusicPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/MusicPlayer/ExMusicPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/types/ExPaginationType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/props/ExPagintationProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Pagination/ExPagination.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/props/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/PDFViewer/ExPDFViewer.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/types/ExProgressType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/props/ExProgressProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Progress/ExProgress.d.ts",
+              "/node_modules/@existera/ui/dist/components/Radio/ExRadio.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/props/ExSelectProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/types/ExSelectType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Select/ExSelect.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/props/ExSkeletonProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Skeleton/ExSkeleton.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/types/ExSwitchType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/props/ExSwitchProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Switch/ExSwitch.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/types/ExToggleType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/props/ExToggleProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toggle/ExToggle.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTab.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabListProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabList.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabContentProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabContent.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/props/ExTabItemProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tab/ExTabItem.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableCell.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableExpand.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableHeader.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/types/ExTableType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/props/ExTableProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTable.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableRow.d.ts",
+              "/node_modules/@existera/ui/dist/components/Table/ExTableFooter.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/props/ExTextareaProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/types/ExTextareaType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Textarea/ExTextarea.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/props/ExTimeSelectorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/types/ExTimeSelectorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/TimeSelector/ExTimeSelector.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/types/ExToastType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/ExToastProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/types/ExTooltipType.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/props/ExTooltipProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/Tooltip/ExTooltip.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadProviderProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadProvider.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadContextValueProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadContext.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/props/ExVideoPlayerProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/VideoPlayer/ExVideoPlayer.d.ts",
+              "/node_modules/@existera/ui/dist/utils/useExTheme.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/props/ExInputOperatorProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/types/ExInputOperatorType.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputOperator/ExInputOperator.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/props/ExInputRangeProps.d.ts",
+              "/node_modules/@existera/ui/dist/components/InputRange/ExInputRange.d.ts",
+              "/node_modules/@existera/ui/dist/index.d.ts"
+            ],
+            "visibleProblems": []
+          }
+        },
+        "hasTypes": true,
+        "isWildcard": false
+      }
+    },
+    "programInfo": {
+      "node10": {},
+      "node16": {
+        "moduleKinds": {
+          "/node_modules/typescript/lib/lib.d.ts": {
+            "detectedKind": 1,
+            "detectedReason": "no:type",
+            "reasonFileName": "/node_modules/typescript/lib/lib.d.ts"
+          },
+          "/node_modules/@existera/ui/dist/types/Types.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Accordion/types/ExAccordionType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Accordion/ExAccordion.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Accordion/props/ExAccordionItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Accordion/ExAccordionItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Alert/types/ExAlertType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Alert/props/ExAlertProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Alert/ExAlert.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Avatar/types/ExAvatarType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Avatar/props/ExAvatarProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Avatar/ExAvatar.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Badge/types/ExBadgeType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Badge/props/ExBadgeProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Badge/ExBadge.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ChatBubble/props/ExChatBubbleProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ChatBubble/ExChatBubble.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Breadcrumbs/types/ExBreadcrumbsType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbs.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Breadcrumbs/props/ExBreadcrumbsItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Breadcrumbs/ExBreadcrumbsItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Button/types/ExButtonType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Button/props/ExButtonProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Button/ExButton.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ButtonGroup/types/ExButtonGroupType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroup.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ButtonGroup/props/ExButtonGroupItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ButtonGroup/ExButtonGroupItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Card/props/ExCardProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Card/ExCard.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/types/Form.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Checkbox/props/ExCheckboxProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Checkbox/ExCheckbox.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/CodeBlock/types/ExCodeBlockTypes.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/CodeBlock/props/ExCodeBlockProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/CodeBlock/ExCodeBlock.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Prefix/types/ExPrefixType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Prefix/props/ExPrefixProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Prefix/ExPrefix.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Suffix/types/ExSuffixType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Suffix/props/ExSuffixProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Suffix/ExSuffix.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ComboBox/props/ExComboBoxProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ComboBox/types/ExComboBoxType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBox.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ComboBox/ExComboBoxItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DatePicker/props/ExDatePickerProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputOperator/context/ExInputOperatorMarker.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DatePicker/types/ExDatePickerType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DatePicker/ExDatePicker.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DateRange/props/ExDateRangeProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DateRange/types/ExDateRangeType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/DateRange/ExDateRange.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownRoot.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownTrigger.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownContent.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdownItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Dropdown/ExDropdown.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ExplorerItem/props/ExExplorerItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ExplorerItem/ExExplorerItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Flyout/types/ExFlyoutType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Flyout/props/ExFlyoutProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Flyout/ExFlyout.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/FilePicker/types/ExFilePickerType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/FilePicker/props/ExFilePickerProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/FilePicker/ExFilePicker.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Footer/props/ExFooterProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Footer/ExFooter.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Header/props/ExHeaderProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Header/ExHeader.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ImageViewer/props/ExImageViewerProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/ImageViewer/ExImageViewer.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Input/props/ExInputProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Input/types/ExInputType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Input/ExInput.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Link/types/ExLinkType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Link/props/ExLinkProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Link/ExLink.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Modal/types/ExModalType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Modal/props/ExModalProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Modal/ExModal.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/MusicPlayer/props/ExMusicPlayerProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/MusicPlayer/ExMusicPlayer.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Pagination/types/ExPaginationType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Pagination/props/ExPagintationProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Pagination/ExPagination.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/PDFViewer/props/ExPDFViewer.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/PDFViewer/ExPDFViewer.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Progress/types/ExProgressType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Progress/props/ExProgressProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Progress/ExProgress.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Radio/ExRadio.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Select/props/ExSelectProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Select/types/ExSelectType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Select/ExSelect.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Skeleton/props/ExSkeletonProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Skeleton/ExSkeleton.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Switch/types/ExSwitchType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Switch/props/ExSwitchProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Switch/ExSwitch.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toggle/types/ExToggleType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toggle/props/ExToggleProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toggle/ExToggle.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/props/ExTabProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/ExTab.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/props/ExTabListProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/ExTabList.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/props/ExTabContentProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/ExTabContent.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/props/ExTabItemProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tab/ExTabItem.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTableCell.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTableExpand.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTableHeader.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/types/ExTableType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/props/ExTableProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTable.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTableRow.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Table/ExTableFooter.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Textarea/props/ExTextareaProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Textarea/types/ExTextareaType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Textarea/ExTextarea.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/TimeSelector/props/ExTimeSelectorProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/TimeSelector/types/ExTimeSelectorType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/TimeSelector/ExTimeSelector.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toast/types/ExToastType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toast/ExToastProvider.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tooltip/types/ExTooltipType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tooltip/props/ExTooltipProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/Tooltip/ExTooltip.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadProviderProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadProvider.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/UploadProvider/props/ExUploadContextValueProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/UploadProvider/ExUploadContext.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/VideoPlayer/props/ExVideoPlayerProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/VideoPlayer/ExVideoPlayer.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/utils/useExTheme.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputOperator/props/ExInputOperatorProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputOperator/types/ExInputOperatorType.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputOperator/ExInputOperator.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputRange/props/ExInputRangeProps.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/components/InputRange/ExInputRange.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/index.d.ts": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          },
+          "/node_modules/@existera/ui/dist/index.js": {
+            "detectedKind": 99,
+            "detectedReason": "type",
+            "reasonFileName": "/node_modules/@existera/ui/package.json"
+          }
+        }
+      },
+      "bundler": {}
+    },
+    "problems": [
+      {
+        "kind": "CJSResolvesToESM",
+        "entrypoint": ".",
+        "resolutionKind": "node16-cjs"
+      },
+      {
+        "kind": "InternalResolutionError",
+        "resolutionOption": "node16",
+        "fileName": "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+        "moduleSpecifier": "./props/ExToastProps",
+        "pos": 103,
+        "end": 125,
+        "resolutionMode": 99,
+        "trace": [
+          "======== Resolving module './props/ExToastProps' from '/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts'. ========",
+          "Explicitly specified module resolution kind: 'Node16'.",
+          "Resolving in ESM mode with conditions 'import', 'types', 'node'.",
+          "Loading module as file / folder, candidate module location '/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps', target file types: TypeScript, JavaScript, Declaration, JSON.",
+          "Directory '/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps' does not exist, skipping all lookups in it.",
+          "======== Module name './props/ExToastProps' was not resolved. ========"
+        ]
+      }
+    ]
+  },
+  "problems": {
+    "CJSResolvesToESM": [
+      {
+        "kind": "CJSResolvesToESM",
+        "entrypoint": ".",
+        "resolutionKind": "node16-cjs"
+      }
+    ],
+    "InternalResolutionError": [
+      {
+        "kind": "InternalResolutionError",
+        "resolutionOption": "node16",
+        "fileName": "/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts",
+        "moduleSpecifier": "./props/ExToastProps",
+        "pos": 103,
+        "end": 125,
+        "resolutionMode": 99,
+        "trace": [
+          "======== Resolving module './props/ExToastProps' from '/node_modules/@existera/ui/dist/components/Toast/useToast.d.ts'. ========",
+          "Explicitly specified module resolution kind: 'Node16'.",
+          "Resolving in ESM mode with conditions 'import', 'types', 'node'.",
+          "Loading module as file / folder, candidate module location '/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps', target file types: TypeScript, JavaScript, Declaration, JSON.",
+          "Directory '/node_modules/@existera/ui/dist/components/Toast/props/ExToastProps' does not exist, skipping all lookups in it.",
+          "======== Module name './props/ExToastProps' was not resolved. ========"
+        ]
+      }
+    ]
+  }
+}
