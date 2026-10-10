@@ -2,7 +2,6 @@
 
 > Simple React component library built for consistency, accessibility, and scalable applications.
 
-![License](https://img.shields.io/badge/License-Free_to_Use-blue)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss)
@@ -13,7 +12,7 @@
 
 ## Overview
 
-EXISTERA UI is a **free React component library and design system** for building modern web applications.
+EXISTERA UI is an **open-source React component library and design system** for building modern web applications.
 
 It provides a consistent foundation through reusable components, design tokens, themes, utilities, and developer-friendly APIs.
 
@@ -91,3 +90,15 @@ export default function App() {
 ```
 
 ---
+
+## License
+
+EXISTERA UI is open-source software licensed under the [MIT License](./LICENSE.md).
+
+You may use, copy, modify, merge, publish, distribute, sublicense, and sell copies
+of the software, including in personal and commercial projects. Include the
+copyright notice and MIT permission notice in all copies or substantial portions
+of the software. The software is provided without warranty.
+
+Third-party dependencies retain their own licenses and copyright notices.
+See [Third-Party Notices](./NOTICE.md).

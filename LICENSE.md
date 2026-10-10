@@ -1,32 +1,21 @@
-# EXISTERA UI License
+MIT License
 
-Copyright (c) 2026 EXISTERA. All rights reserved.
+Copyright (c) 2026 EXISTERA
 
-## 1. Permission
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-EXISTERA UI is free to use in personal, educational, and commercial applications.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-You may install and use the library as a dependency in your applications without paying licensing fees.
-
-## 2. Restrictions
-
-You may not:
-
-- Redistribute or resell EXISTERA UI as a standalone library.
-- Publish modified or repackaged versions of EXISTERA UI.
-- Claim ownership of EXISTERA UI.
-- Use the EXISTERA name or trademarks without permission.
-
-## 3. Ownership
-
-EXISTERA UI remains the intellectual property of EXISTERA.
-
-This license does not grant ownership or access to the private source code.
-
-## 4. Warranty
-
-The software is provided "AS IS", without warranties of any kind, to the extent permitted by applicable law.
-
-## 5. License
-
-This software is proprietary and free to use under the terms above. It is not open-source software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
