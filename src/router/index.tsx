@@ -45,6 +45,7 @@ import TogglePage from "../pages/TogglePage";
 import ChatBubblePage from "@/pages/ChatBubblePage";
 import InputOperatorPage from "@/pages/InputOpertatorPage";
 import InputRangePage from "@/pages/InputRangePage";
+import TreeViewPage from "@/pages/TreeViewPage";
 
 export const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
               {
                 path: "toggle",
                 element: <TogglePage />,
+              },
+              {
+                path: "tree-view",
+                element: <TreeViewPage />,
               },
               {
                 path: "modal",

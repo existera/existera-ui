@@ -82,3 +82,9 @@ export type { ExFilePickerProps } from "./components/FilePicker/props/ExFilePick
 
 export type { ButtonGroupProps } from "./components/ButtonGroup/props/ExButtonGroupProps";
 export type { ExButtonGroupItemProps } from "./components/ButtonGroup/props/ExButtonGroupItemProps";
+
+export { default as ExTreeView } from "./components/TreeView/ExTreeView";
+export { default as ExTreeViewItem } from "./components/TreeView/ExTreeViewItem";
+export type { ExTreeViewProps } from "./components/TreeView/props/ExTreeViewProps";
+export type { ExTreeViewItemProps, ExTreeViewItemData } from "./components/TreeView/props/ExTreeViewItemProps";
+export type { ExTreeViewSize } from "./components/TreeView/types/ExTreeViewType";

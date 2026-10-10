@@ -1,24 +1,9 @@
-import type {
-  ComboBoxRadius,
-  ComboBoxSize,
-  ComboBoxState,
-} from "../types/ExComboBoxType";
+import type { ComboBoxRadius, ComboBoxSize, ComboBoxState } from "../types/ExComboBoxType";
 
 export const ComboBoxStateClass: Record<ComboBoxState, string> = {
-  default:
-    "focus-within:outline-2 focus-within:outline-primary " +
-    "focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.16),0_0_12px_rgba(59,130,246,0.18)] " +
-    "dark:focus-within:shadow-[0_0_0_2px_rgba(59,130,246,0.32),0_0_16px_rgba(59,130,246,0.28)]",
-
-  error:
-    "outline-2 outline-danger " +
-    "focus-within:shadow-[0_0_0_3px_rgba(239,68,68,0.16),0_0_12px_rgba(239,68,68,0.18)] " +
-    "dark:focus-within:shadow-[0_0_0_2px_rgba(239,68,68,0.32),0_0_16px_rgba(239,68,68,0.28)]",
-
-  success:
-    "outline-2 outline-success " +
-    "focus-within:shadow-[0_0_0_3px_rgba(34,197,94,0.16),0_0_12px_rgba(34,197,94,0.18)] " +
-    "dark:focus-within:shadow-[0_0_0_2px_rgba(34,197,94,0.32),0_0_16px_rgba(34,197,94,0.28)]",
+  default: "focus-within:outline-2 focus-within:outline-primary",
+  error: "outline-2 outline-danger",
+  success: "outline-2 outline-success",
 };
 
 export const ComboBoxSizeClass: Record<

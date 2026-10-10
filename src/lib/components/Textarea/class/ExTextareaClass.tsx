@@ -1,24 +1,9 @@
-import type {
-  TextareaRadius,
-  TextareaSize,
-  TextareaState,
-} from "../types/ExTextareaType";
+import type { TextareaRadius, TextareaSize, TextareaState } from "../types/ExTextareaType";
 
 export const TextareaStateClass: Record<TextareaState, string> = {
-  default:
-    "focus-within:outline-2 focus-within:outline-primary " +
-    "focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.08),0_0_14px_rgba(59,130,246,0.12)] " +
-    "dark:focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.14),0_0_14px_rgba(59,130,246,0.16)]",
-
-  error:
-    "outline-2 outline-danger " +
-    "focus-within:shadow-[0_0_0_3px_rgba(239,68,68,0.08),0_0_14px_rgba(239,68,68,0.12)] " +
-    "dark:focus-within:shadow-[0_0_0_3px_rgba(239,68,68,0.14),0_0_14px_rgba(239,68,68,0.16)]",
-
-  success:
-    "outline-2 outline-success " +
-    "focus-within:shadow-[0_0_0_3px_rgba(34,197,94,0.08),0_0_14px_rgba(34,197,94,0.12)] " +
-    "dark:focus-within:shadow-[0_0_0_3px_rgba(34,197,94,0.14),0_0_14px_rgba(34,197,94,0.16)]",
+  default: "focus-within:outline-2 focus-within:outline-primary",
+  error: "outline-2 outline-danger",
+  success: "outline-2 outline-success",
 };
 
 export const TextareaSizeClass: Record<
