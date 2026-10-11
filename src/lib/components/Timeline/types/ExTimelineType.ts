@@ -9,9 +9,7 @@ export interface ExTimelineItem {
   id: string;
   title: ReactNode;
   description?: ReactNode;
-  /** Display label for the event time. */
   time?: ReactNode;
-  /** Machine-readable ISO date or datetime for the time element. */
   dateTime?: string;
   icon?: ReactNode;
   color?: ExTimelineColor;

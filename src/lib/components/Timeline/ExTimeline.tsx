@@ -73,7 +73,9 @@ export default function ExTimeline({
               )}
               <div className={cn("font-medium leading-snug", sizes.title)}>{item.title}</div>
               {item.description != null && <div className={cn("leading-relaxed text-muted", sizes.body)}>{item.description}</div>}
-              {item.content != null && <div className={cn("mt-2 flex min-w-0 flex-col", sizes.body, left && "md:items-end")}>{item.content}</div>}
+              {item.content != null && (
+                <div className={cn("mt-2 flex min-w-0 flex-col", sizes.body, left && "md:items-end")}>{item.content}</div>
+              )}
             </div>
           </li>
         );
