@@ -6,7 +6,6 @@ export interface ExCalendarEvent {
   id: string;
   title: string;
   start: Date;
-  /** Exclusive end; all-day events end at midnight after their last day. */
   end: Date;
   allDay?: boolean;
   color?: Color;

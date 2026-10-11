@@ -227,7 +227,7 @@ export default function CalendarPage() {
           <div className="h-[650px] min-h-[420px] min-w-0">
             <ExCalendar
               events={events}
-              size="sm"
+              size="lg"
               defaultView="month"
               locale="id-ID"
               weekStartsOn={1}

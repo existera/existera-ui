@@ -58,8 +58,6 @@
 }
 .ex-calendar .ex-cal-event:hover,
 .ex-calendar .ex-cal-event:focus-visible {
-  filter: brightness(1.15);
-  box-shadow: 0 2px 10px #0002;
   z-index: 25 !important;
 }
 @container (max-width: 90px) {

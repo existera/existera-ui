@@ -116,9 +116,11 @@ export default function ExCalendar({
         "ex-cal-event absolute flex min-w-0 flex-col items-stretch overflow-hidden border-l-[3px] px-2 py-1 text-left shadow-sm",
         CalendarColorClass[event.color ?? "primary"],
       )}>
-      <span className="block shrink-0 truncate font-semibold text-md">{event.title}</span>
+      <span className={cn("block shrink-0 truncate font-semibold text-md", `text-${event.color}`)}>{event.title}</span>
       {pixels >= 55 && event.location && (
-        <span className="ex-cal-card-location flex items-center gap-1 mt-2 block shrink-0 truncate text-[11px] font-medium">{event.location}</span>
+        <span className="ex-cal-card-location flex items-center gap-1 mt-1 block shrink-0 truncate text-[11px] font-medium">
+          {event.location}
+        </span>
       )}
       {pixels >= 55 && (
         <span className="ex-cal-card-location flex items-center gap-1 mt-0.5 block shrink-0 truncate text-[10px]">
@@ -146,7 +148,7 @@ export default function ExCalendar({
         title={label + pastLabel(event)}
         style={{ gridColumn: startColumn + 1 + " / span " + (endColumn - startColumn), gridRow: row }}
         className={cn(
-          "ex-cal-month-event cursor-pointer hover:underline relative z-10 mx-0.5 my-0.5 flex min-w-0 items-center gap-1 overflow-hidden border-l-[3px] px-2 text-left text-[11px]",
+          "ex-cal-month-event cursor-pointer relative z-10 mx-0.5 my-0.5 flex min-w-0 items-center gap-1 overflow-hidden border-l-[3px] px-2 text-left text-[11px]",
           CalendarColorClass[event.color ?? "primary"],
           continuesBefore && "rounded-l-none border-l-0",
           continuesAfter && "rounded-r-none",
@@ -156,7 +158,7 @@ export default function ExCalendar({
             <ArrowLeft size={10} />
           </span>
         )}
-        <span className="truncate font-semibold">{event.title}</span>
+        <span className={cn("truncate font-semibold hover:underline", `text-${event.color}`)}>{event.title}</span>
 
         {continuesAfter && (
           <span aria-hidden="true" className="ml-auto">
@@ -178,7 +180,7 @@ export default function ExCalendar({
     <section
       aria-label="Calendar"
       className={cn(
-        "ex-calendar flex min-h-0 min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface text-foreground shadow-sm",
+        "ex-calendar flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface shadow-sm",
         className,
       )}
       data-size={size}
@@ -187,7 +189,7 @@ export default function ExCalendar({
         style={{ padding: sizes.padding }}
         className="ex-cal-toolbar shrink-0 flex flex-wrap items-center justify-between gap-4 border-b border-border p-4">
         <div className="min-w-0">
-          <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">Calendar</p>
+          <p className="mb-0 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">Calendar</p>
           <h2 aria-live="polite" className="ex-cal-heading text-lg font-semibold tracking-tight">
             {heading}
           </h2>
@@ -380,17 +382,6 @@ export default function ExCalendar({
           </div>
         )}
       </div>
-
-      <footer className="flex shrink-0 justify-between gap-2 border-t border-border px-4 py-2 text-[10px] text-muted">
-        <span>
-          {mode === "month"
-            ? "Select a date to explore your day"
-            : mode === "week"
-              ? "Scroll sideways for all days · Click a date for day view"
-              : "Select an event to view details"}
-        </span>
-        <span>Local time</span>
-      </footer>
     </section>
   );
 }

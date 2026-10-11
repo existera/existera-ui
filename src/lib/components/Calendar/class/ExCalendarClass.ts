@@ -1,11 +1,11 @@
 import type { Color } from "../../../types/Types";
 
 export const CalendarColorClass: Record<Color, string> = {
-  primary: "border-primary/60 bg-primary/15 text-foreground",
-  secondary: "border-muted bg-surface-3 text-foreground",
-  success: "border-success/60 bg-success/15 text-foreground",
-  warning: "border-warning/60 bg-warning/15 text-foreground",
-  danger: "border-danger/60 bg-danger/15 text-foreground",
+  primary: "border-primary bg-primary-soft text-foreground/80",
+  secondary: "border-secondary bg-secondary-soft text-foreground/80",
+  success: "border-success bg-success-soft text-foreground/80",
+  warning: "border-warning bg-warning-soft text-foreground/80",
+  danger: "border-danger bg-danger-soft text-foreground/80",
 };
 
 export const CalendarSizeClass = {
