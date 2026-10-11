@@ -92,3 +92,11 @@ export type { ExTreeViewSize } from "./components/TreeView/types/ExTreeViewType"
 export { default as ExStep } from "./components/Step/ExStep";
 export type { ExStepProps } from "./components/Step/props/ExStepProps";
 export type { ExStepItem, ExStepSize, ExStepColor, ExStepOrientation } from "./components/Step/types/ExStepType";
+
+export { default as ExMention } from "./components/Mention/ExMention";
+export type { ExMentionProps } from "./components/Mention/props/ExMentionProps";
+export type { ExMentionUser } from "./components/Mention/types/ExMentionType";
+
+export { default as ExTimeline } from "./components/Timeline/ExTimeline";
+export type { ExTimelineProps } from "./components/Timeline/props/ExTimelineProps";
+export type { ExTimelineItem, ExTimelineSize, ExTimelineColor, ExTimelineAlign } from "./components/Timeline/types/ExTimelineType";

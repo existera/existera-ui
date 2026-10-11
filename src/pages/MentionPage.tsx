@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { AtSign, X } from "lucide-react";
-import ExMention from "@/lib/components/ExMention";
-import type { ExMentionUser } from "@/lib/components/ExMention";
+import ExMention from "@/lib/components/Mention/ExMention";
+import type { ExMentionUser } from "@/lib/components/Mention/types/ExMentionType";
 import PageContent from "@/shared/documentation/PageContent";
 
 const users: ExMentionUser[] = [

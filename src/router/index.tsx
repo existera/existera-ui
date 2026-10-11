@@ -1,3 +1,4 @@
+import TimelinePage from "@/pages/TimelinePage";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../shared/root/RootLayout";
 import DocumentationLayout from "../shared/documentation/DocumentationLayout";
@@ -260,6 +261,10 @@ export const router = createBrowserRouter([
               {
                 path: "step",
                 element: <StepPage />,
+              },
+              {
+                path: "timeline",
+                element: <TimelinePage />,
               },
               {
                 path: "mention",

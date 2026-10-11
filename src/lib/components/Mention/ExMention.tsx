@@ -4,39 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Search, UserRound } from "lucide-react";
-import { cn } from "../utils/Utils";
+import { cn } from "../../utils/Utils";
 
-export interface ExMentionUser {
-  id: string;
-  username: string;
-  name: string;
-  avatar?: string;
-}
-
-export interface ExMentionProps {
-  users?: ExMentionUser[];
-  onSearch?: (query: string) => Promise<ExMentionUser[]> | ExMentionUser[];
-  onSelect?: (user: ExMentionUser, element: HTMLInputElement | HTMLTextAreaElement) => void;
-  minQueryLength?: number;
-  debounce?: number;
-  maxResults?: number;
-  className?: string;
-}
-
-type MentionTarget = HTMLInputElement | HTMLTextAreaElement;
-
-interface MentionState {
-  element: MentionTarget;
-  query: string;
-  start: number;
-  end: number;
-}
-
-interface PopupPosition {
-  top: number;
-  left: number;
-  width: number;
-}
+import type { ExMentionProps } from "./props/ExMentionProps";
+import type { ExMentionUser, MentionTarget, MentionState, PopupPosition } from "./types/ExMentionType";
 
 const POPUP_WIDTH = 280;
 const POPUP_HEIGHT = 300;
@@ -403,7 +374,7 @@ export default function ExMention({
           transition={{ duration: 0.16, ease: "easeOut" }}
           style={{ position: "fixed", top: position.top, left: position.left, width: position.width, zIndex: 9999 }}
           className={cn("overflow-hidden rounded-xl border border-border bg-surface shadow-lg", className)}>
-          <div className="max-h-64 overflow-y-auto p-1">
+          <div className="ex-textarea-scroll max-h-64 overflow-y-auto scroll-smooth p-1 motion-reduce:scroll-auto">
             {loading ? (
               <div className="flex items-center justify-center gap-2 px-3 py-4 text-xs text-muted">
                 <Search className="size-3.5 animate-pulse" />
