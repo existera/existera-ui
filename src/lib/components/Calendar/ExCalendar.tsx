@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Clock, Presentation } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { cn } from "../../utils/Utils";
 import type { ExCalendarProps } from "./props/ExCalendarProps";
 import type { ExCalendarEvent, ExCalendarView } from "./types/ExCalendarType";
@@ -347,6 +347,7 @@ export default function ExCalendar({
                   </div>
                 ))}
               </div>
+
               {days.map((day, dayIndex) => (
                 <div key={+day} style={{ height: sizes.hour * 24 }} className="relative min-w-0 border-l border-border">
                   <div aria-hidden="true">
@@ -358,6 +359,7 @@ export default function ExCalendar({
                       />
                     ))}
                   </div>
+
                   {dayLayouts[dayIndex].map(({ event, start, end, column, columns, span }) => {
                     const pixels = ((end - start) / 60) * sizes.hour - 2;
                     return eventButton(event, pixels, {
@@ -368,6 +370,7 @@ export default function ExCalendar({
                       zIndex: 10,
                     });
                   })}
+
                   {sameDay(day, now) && (
                     <div
                       aria-hidden="true"
