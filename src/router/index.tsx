@@ -46,6 +46,7 @@ import ChatBubblePage from "@/pages/ChatBubblePage";
 import InputOperatorPage from "@/pages/InputOpertatorPage";
 import InputRangePage from "@/pages/InputRangePage";
 import TreeViewPage from "@/pages/TreeViewPage";
+import StepPage from "@/pages/StepPage";
 
 export const router = createBrowserRouter([
   {
@@ -254,6 +255,10 @@ export const router = createBrowserRouter([
               {
                 path: "input-range",
                 element: <InputRangePage />,
+              },
+              {
+                path: "step",
+                element: <StepPage />,
               },
             ],
           },

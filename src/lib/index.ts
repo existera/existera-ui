@@ -88,3 +88,7 @@ export { default as ExTreeViewItem } from "./components/TreeView/ExTreeViewItem"
 export type { ExTreeViewProps } from "./components/TreeView/props/ExTreeViewProps";
 export type { ExTreeViewItemProps, ExTreeViewItemData } from "./components/TreeView/props/ExTreeViewItemProps";
 export type { ExTreeViewSize } from "./components/TreeView/types/ExTreeViewType";
+
+export { default as ExStep } from "./components/Step/ExStep";
+export type { ExStepProps } from "./components/Step/props/ExStepProps";
+export type { ExStepItem, ExStepSize, ExStepColor, ExStepOrientation } from "./components/Step/types/ExStepType";
