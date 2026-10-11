@@ -103,4 +103,13 @@ export type { ExTimelineItem, ExTimelineSize, ExTimelineColor, ExTimelineAlign }
 
 export { default as ExCalendar } from "./components/Calendar/ExCalendar";
 export type { ExCalendarProps } from "./components/Calendar/props/ExCalendarProps";
-export type { ExCalendarEvent, ExCalendarView, ExCalendarSize } from "./components/Calendar/types/ExCalendarType";
+export type { ExCalendarEvent, ExCalendarView, ExCalendarSize, ExCalendarColor } from "./components/Calendar/types/ExCalendarType";
+
+export { default as ExKanban } from "./components/Kanban/ExKanban";
+export type { ExKanbanProps } from "./components/Kanban/props/ExKanbanProps";
+export type { ExKanbanCard as ExKanbanCardData, ExKanbanColumn as ExKanbanColumnData, ExKanbanMove, ExKanbanSize, ExKanbanColor } from "./components/Kanban/types/ExKanbanType";
+
+export { default as ExKanbanCard } from "./components/Kanban/ExKanbanCard";
+export { default as ExKanbanColumn } from "./components/Kanban/ExKanbanColumn";
+export type { ExKanbanCardProps } from "./components/Kanban/props/ExKanbanCardProps";
+export type { ExKanbanColumnProps } from "./components/Kanban/props/ExKanbanColumnProps";

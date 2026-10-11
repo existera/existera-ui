@@ -1,3 +1,4 @@
+import KanbanPage from "@/pages/KanbanPage";
 import CalendarPage from "@/pages/CalendarPage";
 import TimelinePage from "@/pages/TimelinePage";
 import { createBrowserRouter } from "react-router-dom";
@@ -262,6 +263,10 @@ export const router = createBrowserRouter([
               {
                 path: "step",
                 element: <StepPage />,
+              },
+              {
+                path: "kanban",
+                element: <KanbanPage />,
               },
               {
                 path: "calendar",

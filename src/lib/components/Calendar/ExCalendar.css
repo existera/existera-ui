@@ -72,12 +72,24 @@
   }
 }
 
-.ex-calendar button[data-past="true"] {
-  opacity: 0.5;
-  filter: saturate(0);
+
+
+/* Native sticky positioning keeps the left header labels in sync with scrolling. */
+.ex-calendar .ex-cal-fixed-label { background: var(--color-surface); }
+.ex-calendar .ex-cal-title { font-size: var(--ex-cal-font); line-height: var(--ex-cal-line); }
+.ex-calendar .ex-cal-meta { font-size: var(--ex-cal-meta-font); line-height: var(--ex-cal-line); }
+.ex-calendar .ex-cal-neutral { border-color: #525252; background: #f0f0f0; color: #171717; }
+[data-theme="dark"] .ex-calendar .ex-cal-neutral,
+.ex-calendar[data-theme="dark"] .ex-cal-neutral { border-color: #d4d4d4; background: #262626; color: #fafafa; }
+
+/* All ended events share the same solid theme colors, including on hover. */
+.ex-calendar button.ex-cal-event[data-past="true"],
+.ex-calendar button.ex-cal-month-event[data-past="true"] {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+  color: var(--color-muted);
 }
-.ex-calendar button[data-past="true"]:hover,
-.ex-calendar button[data-past="true"]:focus-visible {
-  opacity: 1;
-  filter: none;
+.ex-calendar button[data-past="true"] .ex-cal-title,
+.ex-calendar button[data-past="true"] .ex-cal-meta {
+  color: inherit;
 }

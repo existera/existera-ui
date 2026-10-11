@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Clock } from "lucide-
 import { cn } from "../../utils/Utils";
 import type { ExCalendarProps } from "./props/ExCalendarProps";
 import type { ExCalendarEvent, ExCalendarView } from "./types/ExCalendarType";
-import { CalendarColorClass, CalendarSizeClass } from "./class/ExCalendarClass";
+import { CalendarColorClass, CalendarSizeClass, CalendarTitleColorClass } from "./class/ExCalendarClass";
 import {
   addDays,
   isMultiDay,
@@ -18,6 +18,9 @@ import {
   validEvent,
   weekStart,
 } from "./utils/ExCalendarUtils";
+import ExButton from "../Button/ExButton";
+import ExButtonGroup from "../ButtonGroup/ExButtonGroup";
+import ExButtonGroupItem from "../ButtonGroup/ExButtonGroupItem";
 
 export default function ExCalendar({
   events = [],
@@ -116,15 +119,17 @@ export default function ExCalendar({
         "ex-cal-event absolute flex min-w-0 flex-col items-stretch overflow-hidden border-l-[3px] px-2 py-1 text-left shadow-sm",
         CalendarColorClass[event.color ?? "primary"],
       )}>
-      <span className={cn("block shrink-0 truncate font-semibold text-md", `text-${event.color}`)}>{event.title}</span>
-      {pixels >= 55 && event.location && (
-        <span className="ex-cal-card-location flex items-center gap-1 mt-1 block shrink-0 truncate text-[11px] font-medium">
+      <span className={cn("ex-cal-title block shrink-0 truncate font-semibold", CalendarTitleColorClass[event.color ?? "primary"])}>
+        {event.title}
+      </span>
+      {pixels >= 8 + sizes.line * 3 + 6 && event.location && (
+        <span className="ex-cal-meta ex-cal-card-location flex items-center gap-1 mt-1 shrink-0 truncate font-medium">
           {event.location}
         </span>
       )}
-      {pixels >= 55 && (
-        <span className="ex-cal-card-location flex items-center gap-1 mt-0.5 block shrink-0 truncate text-[10px]">
-          <Clock size={10} strokeWidth={3} /> {time(event.start)} - {time(event.end)}
+      {pixels >= 8 + sizes.line * 2 + 4 && (
+        <span className="ex-cal-meta ex-cal-card-time flex items-center gap-1 mt-0.5 shrink-0 truncate">
+          <Clock size="0.9em" className="shrink-0" strokeWidth={3} /> {time(event.start)} - {time(event.end)}
         </span>
       )}
     </button>
@@ -158,7 +163,9 @@ export default function ExCalendar({
             <ArrowLeft size={10} />
           </span>
         )}
-        <span className={cn("truncate font-semibold hover:underline", `text-${event.color}`)}>{event.title}</span>
+        <span className={cn("ex-cal-title truncate font-semibold hover:underline", CalendarTitleColorClass[event.color ?? "primary"])}>
+          {event.title}
+        </span>
 
         {continuesAfter && (
           <span aria-hidden="true" className="ml-auto">
@@ -172,9 +179,7 @@ export default function ExCalendar({
   const timedEvents = mode === "week" ? safeEvents.filter((event) => !isMultiDay(event)) : safeEvents;
   const dayLayouts = days.map((day) => layoutEvents(timedEvents, day));
   const maxColumns = Math.max(1, ...dayLayouts.flatMap((entries) => entries.map((entry) => entry.columns)));
-  const weekWidth = 56 + 7 * Math.max(160, Math.min(320, maxColumns * 80));
-  const control =
-    "inline-flex h-8 items-center justify-center rounded-lg border border-border bg-surface px-3 text-xs font-medium hover:bg-surface-2";
+  const weekWidth = 56 + 7 * Math.max(160, Math.min((320 * sizes.font) / 11, (maxColumns * 80 * sizes.font) / 11));
 
   return (
     <section
@@ -184,51 +189,74 @@ export default function ExCalendar({
         className,
       )}
       data-size={size}
-      style={{ height, "--ex-cal-font": `${sizes.font}px` } as CSSProperties}>
+      style={
+        {
+          height,
+          "--ex-cal-font": `${sizes.font}px`,
+          "--ex-cal-line": `${sizes.line}px`,
+          "--ex-cal-meta-font": `${sizes.font - 1}px`,
+        } as CSSProperties
+      }>
       <header
         style={{ padding: sizes.padding }}
-        className="ex-cal-toolbar shrink-0 flex flex-wrap items-center justify-between gap-4 border-b border-border p-4">
+        className="ex-cal-toolbar shrink-0 flex flex-wrap items-start justify-between gap-4 border-b border-border p-4">
         <div className="min-w-0">
-          <p className="mb-0 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">Calendar</p>
-          <h2 aria-live="polite" className="ex-cal-heading text-lg font-semibold tracking-tight">
+          <p className="mb-1 text-sm font-semibold uppercase tracking-[0.2em] text-muted">Calendar</p>
+          <h2 aria-live="polite" className="ex-cal-heading text-xl font-semibold text-primary tracking-tight">
             {heading}
           </h2>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            aria-label={`Previous ${mode}`}
-            className={control}
-            onClick={() => changeDate(navigateDate(current, mode, -1))}>
-            <ChevronLeft size={14} />
-          </button>
-          <button type="button" className={control} onClick={() => changeDate(startOfDay(new Date()))}>
-            Today
-          </button>
-          <button type="button" aria-label={`Next ${mode}`} className={control} onClick={() => changeDate(navigateDate(current, mode, 1))}>
-            <ChevronRight size={14} />
-          </button>
-        </div>
-
-        <div aria-label="Calendar view" className="ex-cal-view flex gap-1 rounded-xl bg-surface-2 p-1">
-          {(["day", "week", "month"] as const).map((value) => (
-            <button
-              key={value}
+        <div className="flex flex-col gap-2 items-end">
+          <div className="flex items-center gap-1.5">
+            <ExButton
               type="button"
-              aria-pressed={mode === value}
-              onClick={() => changeView(value)}
-              className={cn(
-                "rounded-lg px-4 py-1.5 text-xs font-medium capitalize transition-colors",
-                mode === value ? "bg-surface text-foreground shadow-sm" : "text-muted hover:text-foreground",
-              )}>
-              {value}
-            </button>
-          ))}
+              aria-label={`Previous ${mode}`}
+              size={size}
+              variant="soft"
+              color="secondary"
+              iconOnly
+              onClick={() => changeDate(navigateDate(current, mode, -1))}>
+              <ChevronLeft size={14} />
+            </ExButton>
+            <ExButton
+              type="button"
+              aria-label={`Previous ${mode}`}
+              size={size}
+              variant="soft"
+              color="secondary"
+              onClick={() => changeDate(startOfDay(new Date()))}>
+              Today
+            </ExButton>
+            <ExButton
+              type="button"
+              aria-label={`Next ${mode}`}
+              size={size}
+              variant="soft"
+              color="secondary"
+              iconOnly
+              onClick={() => changeDate(navigateDate(current, mode, 1))}>
+              <ChevronRight size={14} />
+            </ExButton>
+          </div>
+
+          <ExButtonGroup variant="soft" color="secondary" size={size} defaultValue="month">
+            {(["day", "week", "month"] as const).map((value) => (
+              <ExButtonGroupItem
+                key={value}
+                aria-pressed={mode === value}
+                active={mode === value}
+                value={value}
+                className="capitalize"
+                onClick={() => changeView(value)}>
+                {value}
+              </ExButtonGroupItem>
+            ))}
+          </ExButtonGroup>
         </div>
       </header>
 
-      <div ref={scrollRef} className="ex-textarea-scroll min-h-0 flex-1 overflow-auto overscroll-contain">
+      <div ref={scrollRef} className="ex-textarea-scroll isolate min-h-0 flex-1 overflow-auto overscroll-contain">
         {mode === "month" ? (
           <div className="flex min-h-full flex-col">
             <div className="sticky top-0 z-20 shrink-0 grid grid-cols-7 border-b border-border bg-surface">
@@ -297,10 +325,10 @@ export default function ExCalendar({
           </div>
         ) : (
           <div className={mode === "week" ? "ex-cal-timed" : "ex-cal-day"} style={mode === "week" ? { minWidth: weekWidth } : undefined}>
-            <div className="sticky top-0 z-30 bg-surface shadow-sm">
+            <div className="sticky top-0 z-40 bg-surface shadow-sm">
               <div className="grid border-b border-border" style={{ gridTemplateColumns: `56px repeat(${days.length}, minmax(0, 1fr))` }}>
-                <div className="sticky left-0 z-40 self-stretch content-end border-r border-border bg-surface pb-3 text-center text-[9px] text-muted">
-                  LOCAL
+                <div className="ex-cal-fixed-label sticky left-0 z-40 self-stretch content-start py-3 border-r border-border bg-surface pb-3 text-center text-[9px] text-muted">
+                  DAY
                 </div>
                 {days.map((day) => (
                   <button
@@ -321,7 +349,7 @@ export default function ExCalendar({
                 ))}
               </div>
               <div className="grid border-b border-border" style={{ gridTemplateColumns: `56px repeat(${days.length}, minmax(0, 1fr))` }}>
-                <span className="sticky left-0 z-40 border-r border-border bg-surface py-3 text-center text-[9px] text-muted">
+                <span className="ex-cal-fixed-label sticky left-0 z-40 border-r border-border bg-surface py-3 text-center text-[9px] text-muted">
                   All day /<br />
                   Multi-day
                 </span>

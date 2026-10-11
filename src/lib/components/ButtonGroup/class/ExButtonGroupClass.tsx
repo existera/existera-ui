@@ -50,7 +50,7 @@ export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonG
     outline: "text-primary",
   },
   secondary: {
-    solid: "text-foreground",
+    solid: "text-white",
     soft: "text-foreground",
     outline: "text-foreground",
   },

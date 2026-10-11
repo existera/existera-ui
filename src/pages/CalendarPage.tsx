@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useMemo, useState } from "react";
@@ -11,8 +10,7 @@ function sampleEvents(): ExCalendarEvent[] {
   const year = today.getFullYear();
   const month = today.getMonth();
 
-  const date = (day: number, hour = 0, minute = 0) =>
-    new Date(year, month, day, hour, minute);
+  const date = (day: number, hour = 0, minute = 0) => new Date(year, month, day, hour, minute);
 
   const events: ExCalendarEvent[] = [
     // ========================================
@@ -32,7 +30,7 @@ function sampleEvents(): ExCalendarEvent[] {
       title: "Design review",
       start: date(7, 10, 0),
       end: date(7, 11, 30),
-      color: "secondary",
+      color: "neutral",
       location: "Design Studio",
       description: "Review UI designs and gather feedback.",
     },
@@ -59,7 +57,7 @@ function sampleEvents(): ExCalendarEvent[] {
       title: "Sprint retrospective",
       start: date(23, 15, 0),
       end: date(23, 16, 0),
-      color: "secondary",
+      color: "neutral",
       location: "Meeting Room A",
       description: "Discuss achievements and improvements.",
     },
@@ -89,7 +87,7 @@ function sampleEvents(): ExCalendarEvent[] {
       title: "Focus time",
       start: date(14, 10, 0),
       end: date(14, 12, 0),
-      color: "secondary",
+      color: "neutral",
       location: "Online",
       description: "Uninterrupted time for priority tasks.",
     },
@@ -129,7 +127,7 @@ function sampleEvents(): ExCalendarEvent[] {
       title: "Stakeholder meeting",
       start: date(26, 13, 0),
       end: date(26, 14, 0),
-      color: "secondary",
+      color: "neutral",
       location: "Conference Room",
       description: "Discuss project updates and next steps.",
     },
@@ -203,7 +201,6 @@ export default function CalendarPage() {
   return (
     <PageContent section={sections}>
       <div className="flex min-w-0 flex-col gap-10 text-foreground">
-
         {/* PAGE HEADER */}
         <header className="space-y-3">
           <div className="space-y-2">
@@ -225,31 +222,23 @@ export default function CalendarPage() {
           </div>
 
           <div className="h-[650px] min-h-[420px] min-w-0">
-            <ExCalendar
-              events={events}
-              size="lg"
-              defaultView="month"
-              locale="id-ID"
-              weekStartsOn={1}
-              onEventClick={setSelected}
-            />
+            <ExCalendar events={events} size="md" defaultView="month" locale="id-ID" weekStartsOn={1} onEventClick={setSelected} />
           </div>
 
-          <p className="text-xs text-muted">
-            Showing {events.length} sample events for the current month.
-          </p>
+          <p className="text-xs text-muted">Showing {events.length} sample events for the current month.</p>
         </section>
 
         {/* SELECTED EVENT */}
         <section className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5">
           <div className="space-y-1">
             <h2 className="text-sm font-semibold">Selected event</h2>
-            <p className="text-xs text-muted">
-              Click any event in the calendar to inspect its data.
-            </p>
+            <p className="text-xs text-muted">Click any event in the calendar to inspect its data.</p>
           </div>
 
-          <pre aria-live="polite" aria-atomic="true" className="ex-textarea-scroll max-h-72 overflow-auto rounded-xl bg-surface-2 p-4 text-xs leading-6">
+          <pre
+            aria-live="polite"
+            aria-atomic="true"
+            className="ex-textarea-scroll max-h-72 overflow-auto rounded-xl bg-surface-2 p-4 text-xs leading-6">
             {selected ? JSON.stringify(selected, null, 2) : "No event selected."}
           </pre>
         </section>
@@ -268,7 +257,8 @@ export default function CalendarPage() {
           </pre>
 
           <p className="text-xs leading-6 text-muted">
-            Each event requires an id, title, start, and end. Optional properties include allDay, color, location, and description. Event end dates are exclusive. Dates use the browser's local timezone.
+            Each event requires an id, title, start, and end. Optional properties include allDay, color, location, and description. Event
+            end dates are exclusive. Dates use the browser's local timezone.
           </p>
         </section>
       </div>

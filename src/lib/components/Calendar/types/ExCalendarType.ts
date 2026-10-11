@@ -1,6 +1,7 @@
-import type { Color, Size } from "../../../types/Types";
+import type { Color } from "../../../types/Types";
 
-export type ExCalendarSize = Size;
+export type ExCalendarSize = "sm" | "md" | "lg";
+export type ExCalendarColor = Exclude<Color, "secondary"> | "neutral";
 export type ExCalendarView = "day" | "week" | "month";
 export interface ExCalendarEvent {
   id: string;
@@ -8,7 +9,7 @@ export interface ExCalendarEvent {
   start: Date;
   end: Date;
   allDay?: boolean;
-  color?: Color;
+  color?: ExCalendarColor;
   location?: string;
   description?: string;
 }

@@ -94,7 +94,7 @@ export default function ExButtonGroup(props: ButtonGroupProps) {
           onKeyDown={handleKeyDown}
           className={cn(
             "inline-flex min-w-0 max-w-full items-center",
-            "border border-border bg-surface",
+            "border border-border bg-surface-2",
             "align-middle",
             ButtonGroupSizeClass[size],
             ButtonGroupRadiusClass[radius],
