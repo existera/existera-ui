@@ -47,6 +47,7 @@ import InputOperatorPage from "@/pages/InputOpertatorPage";
 import InputRangePage from "@/pages/InputRangePage";
 import TreeViewPage from "@/pages/TreeViewPage";
 import StepPage from "@/pages/StepPage";
+import MentionPage from "@/pages/MentionPage";
 
 export const router = createBrowserRouter([
   {
@@ -259,6 +260,10 @@ export const router = createBrowserRouter([
               {
                 path: "step",
                 element: <StepPage />,
+              },
+              {
+                path: "mention",
+                element: <MentionPage />,
               },
             ],
           },
