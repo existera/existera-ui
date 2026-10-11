@@ -21,6 +21,7 @@ export default function ExBadge({
   rightIcon,
   dismissible = false,
   dismissPosition = "end",
+  className,
   children,
   onDismiss,
 }: ExBadgeProps) {
@@ -40,37 +41,24 @@ export default function ExBadge({
         "hover:opacity-100",
         "hover:bg-black/10 dark:hover:bg-white/10",
         "shrink-0",
-        variant !== "solid"
-          ? BadgeColorClass[color].softText
-          : BadgeColorClass[color].text,
+        variant !== "solid" ? BadgeColorClass[color].softText : BadgeColorClass[color].text,
+        className,
       )}
-      role="button"
-    >
-      <X
-        className={cn(
-          BadgeDismissSizeClass[size],
-          variant !== "solid"
-            ? BadgeColorClass[color].softText
-            : BadgeColorClass[color].text,
-        )}
-      />
+      role="button">
+      <X className={cn(BadgeDismissSizeClass[size], variant !== "solid" ? BadgeColorClass[color].softText : BadgeColorClass[color].text)} />
     </button>
   );
 
   return (
     <span
-      className={cn(
-        BadgeBaseClass,
-        BadgeSizeClass[size],
-        BadgeRadiusClass[radius][size],
-        BadgeVariantClass[variant](color),
-      )}
+      className={cn(BadgeBaseClass, BadgeSizeClass[size], BadgeRadiusClass[radius][size], BadgeVariantClass[variant](color), className)}
       role="region"
-      aria-label={children ? `Badge: ${children}` : "Badge"}
-    >
+      aria-label={children ? `Badge: ${children}` : "Badge"}>
       {dismissible && dismissPosition === "start" && dismissButton}
       {leftIcon}
-      <span id="badge-description" className="sr-only">{children}</span>
+      <span id="badge-description" className="sr-only">
+        {children}
+      </span>
       {children}
       {rightIcon}
       {dismissible && dismissPosition === "end" && dismissButton}
