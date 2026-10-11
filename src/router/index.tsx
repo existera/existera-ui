@@ -1,3 +1,4 @@
+import CalendarPage from "@/pages/CalendarPage";
 import TimelinePage from "@/pages/TimelinePage";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../shared/root/RootLayout";
@@ -261,6 +262,10 @@ export const router = createBrowserRouter([
               {
                 path: "step",
                 element: <StepPage />,
+              },
+              {
+                path: "calendar",
+                element: <CalendarPage />,
               },
               {
                 path: "timeline",

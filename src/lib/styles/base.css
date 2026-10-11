@@ -1,4 +1,5 @@
 @import "./theme.css";
+@import "../components/Calendar/ExCalendar.css";
 
 /* Variants */
 @custom-variant dark (&:where([data-theme="dark"] *));

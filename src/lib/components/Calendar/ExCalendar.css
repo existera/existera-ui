@@ -1,0 +1,85 @@
+.ex-calendar {
+  container-type: inline-size;
+}
+.ex-calendar button {
+  -webkit-tap-highlight-color: transparent;
+}
+.ex-calendar button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  z-index: 20;
+}
+.ex-calendar .ex-cal-month-cell {
+  min-height: 112px;
+}
+.ex-calendar .ex-cal-timed {
+  min-width: 650px;
+}
+.ex-calendar .ex-cal-day {
+  min-width: 240px;
+}
+@container (max-width: 540px) {
+  .ex-calendar .ex-cal-month-cell {
+    min-height: 90px;
+    padding: 3px;
+  }
+  .ex-calendar .ex-cal-event-time {
+    display: none;
+  }
+  .ex-calendar .ex-cal-month-event {
+    font-size: 9px;
+    padding-inline: 3px;
+  }
+  .ex-calendar .ex-cal-toolbar {
+    gap: 12px;
+  }
+  .ex-calendar .ex-cal-heading {
+    font-size: 16px;
+  }
+  .ex-calendar .ex-cal-view {
+    width: 100%;
+  }
+  .ex-calendar .ex-cal-view button {
+    flex: 1;
+  }
+}
+
+.ex-calendar .ex-cal-event,
+.ex-calendar .ex-cal-month-event {
+  font-size: var(--ex-cal-font, 11px);
+}
+
+.ex-calendar .ex-cal-event {
+  container-type: inline-size;
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+.ex-calendar .ex-cal-event:hover,
+.ex-calendar .ex-cal-event:focus-visible {
+  filter: brightness(1.15);
+  box-shadow: 0 2px 10px #0002;
+  z-index: 25 !important;
+}
+@container (max-width: 90px) {
+  .ex-cal-card-time,
+  .ex-cal-card-location {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-calendar .ex-cal-event {
+    transition: none;
+  }
+}
+
+.ex-calendar button[data-past="true"] {
+  opacity: 0.5;
+  filter: saturate(0);
+}
+.ex-calendar button[data-past="true"]:hover,
+.ex-calendar button[data-past="true"]:focus-visible {
+  opacity: 1;
+  filter: none;
+}

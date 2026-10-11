@@ -100,3 +100,7 @@ export type { ExMentionUser } from "./components/Mention/types/ExMentionType";
 export { default as ExTimeline } from "./components/Timeline/ExTimeline";
 export type { ExTimelineProps } from "./components/Timeline/props/ExTimelineProps";
 export type { ExTimelineItem, ExTimelineSize, ExTimelineColor, ExTimelineAlign } from "./components/Timeline/types/ExTimelineType";
+
+export { default as ExCalendar } from "./components/Calendar/ExCalendar";
+export type { ExCalendarProps } from "./components/Calendar/props/ExCalendarProps";
+export type { ExCalendarEvent, ExCalendarView, ExCalendarSize } from "./components/Calendar/types/ExCalendarType";

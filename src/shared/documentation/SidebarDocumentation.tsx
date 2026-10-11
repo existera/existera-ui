@@ -27,6 +27,9 @@ export default function SidebarDocumentation() {
       <div className="flex flex-col gap-2">
         <h3 className="text-xs font-medium text-muted">Components</h3>
         <div className="flex flex-col gap-2">
+          <ExLink navigate={navigate} to="/docs/components/calendar">
+            Calendar
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/timeline">
             Timeline
           </ExLink>
