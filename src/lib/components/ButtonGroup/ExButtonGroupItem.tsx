@@ -11,6 +11,7 @@ import {
   ButtonGroupInactiveClass,
   ButtonGroupItemRadiusClass,
   ButtonGroupLoadingClass,
+  ButtonGroupSoftInactiveTextClass,
   ButtonGroupSizeItemClass,
 } from "./class/ExButtonGroupClass";
 
@@ -55,7 +56,9 @@ export default function ExButtonGroupItem({
         ? "w-full flex-none sm:w-auto sm:flex-1 sm:basis-0"
         : "min-w-0 flex-1 basis-auto";
 
-  const stateClass = isActive ? ButtonGroupActiveTextClass[itemColor][itemVariant] : ButtonGroupInactiveClass[itemColor];
+  const stateClass = isActive
+    ? ButtonGroupActiveTextClass[itemColor][itemVariant]
+    : cn(ButtonGroupInactiveClass[itemColor], itemVariant === "soft" && ButtonGroupSoftInactiveTextClass[itemColor]);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     if (unavailable) return;

@@ -99,6 +99,14 @@ export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGr
   },
 };
 
+export const ButtonGroupSoftInactiveTextClass: Record<ButtonGroupColor, string> = {
+  primary: "text-primary/65",
+  secondary: "text-foreground/65",
+  danger: "text-danger/65",
+  success: "text-success/65",
+  warning: "text-warning/65",
+};
+
 export const ButtonGroupInactiveClass: Record<ButtonGroupColor, string> = {
   primary: ["bg-transparent text-primary", "hover:bg-primary-soft hover:text-primary"].join(" "),
   secondary: ["bg-transparent text-foreground", "hover:bg-secondary-soft hover:text-foreground"].join(" "),

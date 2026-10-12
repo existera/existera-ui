@@ -202,7 +202,7 @@ export default function ExCalendar({
         className="ex-cal-toolbar shrink-0 flex flex-wrap items-start justify-between gap-4 border-b border-border p-4">
         <div className="min-w-0">
           <p className="mb-1 text-sm font-semibold uppercase tracking-[0.2em] text-muted">Calendar</p>
-          <h2 aria-live="polite" className="ex-cal-heading text-xl font-semibold text-primary tracking-tight">
+          <h2 aria-live="polite" className="ex-cal-heading text-xl font-semibold tracking-tight">
             {heading}
           </h2>
         </div>
