@@ -7,6 +7,7 @@ import ExKanbanCardView from "./ExKanbanCard";
 import ExKanbanColumnView from "./ExKanbanColumn";
 import type { ExKanbanProps } from "./props/ExKanbanProps";
 import type { ExKanbanCard, ExKanbanColumn } from "./types/ExKanbanType";
+import { parseKanbanChildren, orderKanbanColumns } from "./utils/ExKanbanComposition";
 import { moveKanbanCard } from "./utils/ExKanbanUtils";
 
 interface DragState {
@@ -17,7 +18,8 @@ interface DragState {
 }
 
 export default function ExKanban({
-  columns,
+  columns: controlledColumns,
+  children,
   onChange,
   onCardClick,
   renderCard,
@@ -26,6 +28,9 @@ export default function ExKanban({
   className,
   "aria-label": label = "Kanban board",
 }: ExKanbanProps) {
+  const composition = parseKanbanChildren(children);
+  const [order, setOrder] = useState<Array<{ id: string; cards: string[] }> | null>(null);
+  const columns = controlledColumns ?? orderKanbanColumns(composition.columns, order);
   const rootRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<{ id: number; x: number; y: number; cardId: string; columnId: string; index: number } | null>(null);
   const suppressClickRef = useRef(false);
@@ -50,13 +55,18 @@ export default function ExKanban({
 
   const movePreview = (x: number, y: number) => {
     latestPointRef.current = { x, y };
+
     if (previewFrameRef.current !== null) return;
+
     previewFrameRef.current = requestAnimationFrame(() => {
       previewFrameRef.current = null;
+
       const preview = previewRef.current;
-      if (preview)
+
+      if (preview) {
         preview.element.style.transform =
           "translate3d(" + (latestPointRef.current.x - preview.offsetX) + "px," + (latestPointRef.current.y - preview.offsetY) + "px,0)";
+      }
     });
   };
 
@@ -64,7 +74,7 @@ export default function ExKanban({
   const [drag, setDrag] = useState<DragState | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const instructionsId = useId();
-  const readOnly = disabled || !onChange;
+  const readOnly = disabled || (controlledColumns !== undefined && !onChange);
 
   const update = (next: DragState | null) => {
     const previous = dragRef.current;
@@ -99,6 +109,8 @@ export default function ExKanban({
     const result = moveKanbanCard(columns, active.cardId, active.columnId, active.index);
 
     if (result) {
+      if (controlledColumns === undefined)
+        setOrder(result.columns.map((column) => ({ id: column.id, cards: column.cards.map((card) => card.id) })));
       onChange?.(result.columns, result.move);
       setAnnouncement(
         `${result.move.card.title} moved to ${columns.find((column) => column.id === active.columnId)?.title}, position ${result.move.toIndex + 1}.`,
@@ -322,7 +334,13 @@ export default function ExKanban({
         {columns.map((column) => {
           let visibleIndex = 0;
           return (
-            <ExKanbanColumnView key={column.id} column={column} size={size} active={drag?.columnId === column.id} readOnly={readOnly}>
+            <ExKanbanColumnView
+              {...composition.columnProps.get(column.id)}
+              key={column.id}
+              column={column}
+              size={size}
+              active={drag?.columnId === column.id}
+              readOnly={readOnly}>
               {column.cards.map((card, index) => {
                 const moving = drag?.cardId === card.id;
                 const position = visibleIndex;
@@ -332,12 +350,15 @@ export default function ExKanban({
                   <Fragment key={card.id}>
                     {!moving && drag?.columnId === column.id && drag.index === position && marker}
                     <ExKanbanCardView
+                      {...composition.cardProps.get(card.id)}
                       card={card}
                       size={size}
                       moving={moving}
                       locked={Boolean(locked)}
-                      renderCard={renderCard}
-                      onCardClick={onCardClick ? (selected) => onCardClick(selected, column) : undefined}
+                      renderCard={renderCard ?? composition.cardProps.get(card.id)?.renderCard}
+                      onCardClick={
+                        onCardClick ? (selected) => onCardClick(selected, column) : composition.cardProps.get(card.id)?.onCardClick
+                      }
                       tabIndex={locked ? undefined : 0}
                       aria-label={card.title}
                       aria-describedby={locked ? undefined : instructionsId}
