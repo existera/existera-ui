@@ -129,6 +129,9 @@ export default function SidebarDocumentation() {
           <ExLink navigate={navigate} to="/docs/components/card">
             Card
           </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/widget">
+            Widget
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/progress">
             Progress
           </ExLink>
