@@ -8,9 +8,7 @@ const THEME_EVENT = "ex-theme-change";
 function getSystemTheme(): "light" | "dark" {
   if (typeof window === "undefined") return "light";
 
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 function resolveTheme(theme: Theme): string {
@@ -22,21 +20,22 @@ function applyTheme(theme: Theme) {
 
   const html = document.documentElement;
   const resolved = resolveTheme(theme);
+  const colorScheme = resolved === "dark" ? "dark" : "light";
 
   html.dataset.theme = resolved;
+  html.style.colorScheme = colorScheme;
 }
 
 function getSnapshot(): Theme {
-  if (typeof window === "undefined") {
-    return "system";
-  }
+  if (typeof window === "undefined") return "system";
 
-  const theme = localStorage.getItem(STORAGE_KEY);
-  if (!theme) {
+  const storedTheme = localStorage.getItem(STORAGE_KEY);
+
+  if (!storedTheme || storedTheme === "system") {
     return getSystemTheme();
   }
-  
-  return theme;
+
+  return storedTheme;
 }
 
 function getServerSnapshot(): Theme {
@@ -79,12 +78,17 @@ export default function useExTheme() {
       localStorage.setItem(STORAGE_KEY, value);
     }
 
+    applyTheme(value);
     window.dispatchEvent(new Event(THEME_EVENT));
   }, []);
+
+  const resetTheme = useCallback(() => {
+    setTheme("system");
+  }, [setTheme]);
 
   return {
     theme,
     setTheme,
-    resetTheme: () => setTheme("system"),
+    resetTheme,
   };
 }

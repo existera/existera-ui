@@ -37,7 +37,7 @@ export default function ExKanbanCard({
         "group relative focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-[var(--radius-full-sm)] border border-border bg-surface",
         styles.padding,
         !locked && "cursor-grab active:cursor-grabbing select-none",
-        moving && "opacity-20 border-dashed ring-2 ring-primary/30",
+        moving && "opacity-20 border-dashed ring-2 ring-primary",
         locked && "bg-surface-2",
         className,
       )}>

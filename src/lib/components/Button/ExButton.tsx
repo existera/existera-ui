@@ -85,7 +85,7 @@ export default function ExButton({
           aria-hidden="true"
           className={cn(
             "inline-flex shrink-0 items-center justify-center rounded-full bg-surface-4 font-medium leading-none tabular-nums",
-            variant === "solid" ? `bg-foreground text-${color}` : `bg-${color} text-foreground`,
+            variant === "solid" ? `bg-white text-${color}` : `bg-${color} text-white`,
             ButtonCounterSizeClass[size],
           )}>
           <span className="sr-only">Total: </span>

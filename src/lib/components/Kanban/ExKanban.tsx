@@ -296,7 +296,7 @@ export default function ExKanban({
   };
 
   const marker = (
-    <div aria-hidden="true" className="relative my-2 h-1 rounded-full bg-primary shadow-[0_0_0_3px_var(--color-primary-soft)]" />
+    <div aria-hidden="true" className="relative my-2 h-0.5 rounded-full bg-primary" />
   );
 
   return (
