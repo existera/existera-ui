@@ -97,7 +97,7 @@ export default function ExStep({
                       {error ? (
                         <AlertCircle className="size-4.5" strokeWidth={2} />
                       ) : completed ? (
-                        <CheckCircle className="size-4.5 text-white dark:text-black" strokeWidth={2.5} />
+                        <CheckCircle className="size-4.5" strokeWidth={2.5} />
                       ) : (
                         index + 1
                       )}
