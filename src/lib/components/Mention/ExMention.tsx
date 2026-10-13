@@ -12,6 +12,7 @@ import type { ExMentionUser, MentionTarget, MentionState, PopupPosition } from "
 const POPUP_WIDTH = 280;
 const POPUP_HEIGHT = 300;
 const POPUP_GAP = 8;
+const EMPTY_USERS: ExMentionUser[] = [];
 
 function isMentionInput(target: EventTarget | null): target is MentionTarget {
   if (!(target instanceof HTMLElement)) return false;
@@ -54,7 +55,7 @@ function getPosition(element: MentionTarget): PopupPosition {
 }
 
 export default function ExMention({
-  users = [],
+  users = EMPTY_USERS,
   onSearch,
   onSelect,
   minQueryLength = 0,
@@ -63,11 +64,24 @@ export default function ExMention({
   className,
 }: ExMentionProps) {
   const [mention, setMention] = useState<MentionState | null>(null);
-  const [results, setResults] = useState<ExMentionUser[]>([]);
+  const [searchResult, setSearchResult] = useState<{
+    mention: MentionState;
+    users: ExMentionUser[];
+    onSearch: ExMentionProps["onSearch"];
+    minQueryLength: number;
+    debounce: number;
+    maxResults: number;
+    results: ExMentionUser[];
+  } | null>(null);
   const [position, setPosition] = useState<PopupPosition>({ top: 0, left: 0, width: POPUP_WIDTH });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const canSearch = mention !== null && mention.query.length >= minQueryLength;
+  const currentResult =
+    searchResult?.mention === mention && searchResult?.users === users &&
+    searchResult?.onSearch === onSearch && searchResult?.minQueryLength === minQueryLength &&
+    searchResult?.debounce === debounce && searchResult?.maxResults === maxResults ? searchResult : null;
+  const results = canSearch && currentResult ? currentResult.results : EMPTY_USERS;
+  const loading = canSearch && !currentResult;
 
   const reducedMotion = useReducedMotion();
 
@@ -90,6 +104,8 @@ export default function ExMention({
     )
       return;
 
+    requestRef.current++;
+    resultsRef.current = [];
     mentionRef.current = next;
     setMention(next);
     setSelectedIndex(0);
@@ -98,10 +114,7 @@ export default function ExMention({
     if (next) {
       setPosition(getPosition(next.element));
     } else {
-      requestRef.current++;
-      setResults([]);
-      resultsRef.current = [];
-      setLoading(false);
+      setSearchResult(null);
     }
   }, []);
 
@@ -187,12 +200,10 @@ export default function ExMention({
     [onSelect, closeMention],
   );
 
-  selectRef.current = selectUser;
-  resultsRef.current = results;
-
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    selectRef.current = selectUser;
+    resultsRef.current = results;
+  }, [selectUser, results]);
 
   useEffect(() => {
     const handleInput = (event: Event) => {
@@ -311,46 +322,30 @@ export default function ExMention({
   }, [detectMention, closeMention]);
 
   useEffect(() => {
-    if (!mention || mention.query.length < minQueryLength) {
-      setResults([]);
-      resultsRef.current = [];
-      setLoading(false);
-      return;
-    }
+    if (!mention || mention.query.length < minQueryLength) return;
 
     const requestId = ++requestRef.current;
     const query = mention.query.toLowerCase();
     let cancelled = false;
 
-    setLoading(true);
-    setResults([]);
-    resultsRef.current = [];
-
     const timer = window.setTimeout(
       async () => {
+        let nextResults: ExMentionUser[] = [];
         try {
           const matched = onSearch
             ? await onSearch(query)
             : users.filter((user) => user.username.toLowerCase().includes(query) || user.name.toLowerCase().includes(query));
-
-          if (cancelled || requestId !== requestRef.current) return;
-
-          const nextResults = matched.slice(0, maxResults);
-
-          resultsRef.current = nextResults;
-          setResults(nextResults);
-          setSelectedIndex(0);
-          selectedIndexRef.current = 0;
+          nextResults = matched.slice(0, maxResults);
         } catch {
-          if (cancelled || requestId !== requestRef.current) return;
-
-          setResults([]);
-          resultsRef.current = [];
-        } finally {
-          if (!cancelled && requestId === requestRef.current) {
-            setLoading(false);
-          }
+          // A failed search is displayed as an empty result.
         }
+
+        if (cancelled || requestId !== requestRef.current) return;
+
+        resultsRef.current = nextResults;
+        setSearchResult({ mention, users, onSearch, minQueryLength, debounce, maxResults, results: nextResults });
+        setSelectedIndex(0);
+        selectedIndexRef.current = 0;
       },
       onSearch ? debounce : 0,
     );
@@ -359,10 +354,9 @@ export default function ExMention({
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [mention?.query, mention?.element, onSearch, users, minQueryLength, debounce, maxResults]);
+  }, [mention, onSearch, users, minQueryLength, debounce, maxResults]);
 
-  if (!mounted) return null;
-
+  if (typeof document === "undefined") return null;
   return createPortal(
     <AnimatePresence>
       {mention && mention.query.length >= minQueryLength && (
