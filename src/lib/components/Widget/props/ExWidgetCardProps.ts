@@ -1,12 +1,14 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
+import type { ExWidgetConstraints } from "../types/ExWidgetType";
 
-export interface ExWidgetCardProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+export interface ExWidgetCardProps extends HTMLAttributes<HTMLDivElement>, ExWidgetConstraints {
   widgetId: string;
-  title?: ReactNode;
-  actions?: ReactNode;
+  rowSpan?: number;
+  colSpan?: number;
   draggable?: boolean;
   resizable?: boolean;
-  contentClassName?: string;
   moveLabel?: string;
   resizeLabel?: string;
+  dragHandleClassName?: string;
+  resizeHandleClassName?: string;
 }

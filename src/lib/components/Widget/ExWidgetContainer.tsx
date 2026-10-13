@@ -1,371 +1,158 @@
 "use client";
 
-import { Children, isValidElement, useEffect, useId, useRef, useState } from "react";
-import type { KeyboardEvent, PointerEvent, ReactElement } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { Children, isValidElement, useId, useMemo, useState } from "react";
+import type { ReactElement } from "react";
 import { cn } from "../../utils/Utils";
-import { ExWidgetContext } from "./ExWidgetContext";
+import ExWidgetItem from "./ExWidgetItem";
 import type { ExWidgetCardProps } from "./props/ExWidgetCardProps";
 import type { ExWidgetContainerProps } from "./props/ExWidgetContainerProps";
-import type { ExWidgetAction, ExWidgetLayout, ExWidgetLayoutItem } from "./types/ExWidgetType";
-import { arrangeWidgets, gridNumber, updateWidget } from "./widgetLayout";
+import type { ExWidgetAction, ExWidgetLayout } from "./types/ExWidgetType";
+import { useWidgetMetrics } from "./hooks/useWidgetMetrics";
+import { useWidgetInteraction } from "./hooks/useWidgetInteraction";
+import { defaultBreakpoints, gridMetrics, integer, resolveColumns } from "./utils/gridGeometry";
+import { arrangeWidgets, layoutRows } from "./utils/widgetLayout";
 
-interface Gesture {
-  id: string;
-  pointerId: number;
-  action: ExWidgetAction;
-  origin: ExWidgetLayoutItem;
-  layout: ExWidgetLayout;
-  next: ExWidgetLayout;
-  x: number;
-  y: number;
-  left: number;
-  top: number;
-  columnStep: number;
-  rowStep: number;
-  columns: number;
-  target: HTMLButtonElement;
-  started: boolean;
-  bounds: { x: number; y: number; width: number; height: number };
-}
-
-interface WidgetBounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-const settleTransition = { type: "spring" as const, stiffness: 420, damping: 38, mass: 0.8 };
+const emptyLayout: ExWidgetLayout = [];
 
 export default function ExWidgetContainer({
   layout,
-  defaultLayout = [],
+  defaultLayout = emptyLayout,
   onLayoutChange,
-  columns = 4,
-  rowHeight = 160,
-  gap = 12,
-  minColumnWidth = 150,
+  columns = 12,
+  rows = 4,
+  gap = 8,
+  responsive = true,
+  breakpoints = defaultBreakpoints,
   editable = true,
   children,
   className,
   style,
   ...props
 }: ExWidgetContainerProps) {
-  const root = useRef<HTMLDivElement>(null);
-  const gesture = useRef<Gesture | null>(null);
-  const frame = useRef<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const { root, size } = useWidgetMetrics();
   const [internal, setInternal] = useState(defaultLayout);
-  const [preview, setPreview] = useState<ExWidgetLayout | null>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [floating, setFloating] = useState<WidgetBounds | null>(null);
-  const [width, setWidth] = useState<number | null>(null);
-  const [announcement, setAnnouncement] = useState("");
   const instructionsId = useId();
-  const spacing = gridNumber(gap, 12, 0);
-  const height = gridNumber(rowHeight, 160);
-  const columnLimit = gridNumber(columns, 4);
-  const count =
-    width === null
-      ? columnLimit
-      : Math.max(1, Math.min(columnLimit, Math.floor((width + spacing) / (gridNumber(minColumnWidth, 150) + spacing))));
-  const cards = Children.toArray(children).filter(
-    (child): child is ReactElement<ExWidgetCardProps> =>
-      isValidElement<ExWidgetCardProps>(child) && typeof child.props.widgetId === "string",
+  const count = resolveColumns(size, columns, responsive, breakpoints);
+  const cards = useMemo(
+    () =>
+      Children.toArray(children).filter(
+        (child): child is ReactElement<ExWidgetCardProps> =>
+          isValidElement<ExWidgetCardProps>(child) && typeof child.props.widgetId === "string",
+      ),
+    [children],
   );
+
+  const constraints = useMemo(
+    () =>
+      Object.fromEntries(
+        cards.map(({ props: card }) => [
+          card.widgetId,
+          { minRow: card.minRow, maxRow: card.maxRow, minCol: card.minCol, maxCol: card.maxCol },
+        ]),
+      ),
+    [cards],
+  );
+
   const ids = cards.map((card) => card.props.widgetId);
-  if (new Set(ids).size !== ids.length) throw new Error("ExWidgetContainer requires a unique widgetId for each card.");
+  if (new Set(ids).size !== ids.length) throw new Error("ExWidgetContainer requires unique widgetId values.");
+
   const source = layout ?? internal;
 
-  const initialBottom = source.reduce((bottom, item) => Math.max(bottom, item.y + item.h), 0);
-
-  const current = arrangeWidgets(
-    cards.map(
-      (card, index) =>
-        source.find((item) => item.id === card.props.widgetId) ?? {
-          id: card.props.widgetId,
-          x: index % count,
-          y: initialBottom + Math.floor(index / count),
-          w: 1,
-          h: 1,
-        },
-    ),
-    count,
-  );
-
-  const displayed = preview ?? current;
-  const columnStep = ((width ?? 0) + spacing) / count;
-  const rowStep = height + spacing;
-
-  const boundsFor = (item: ExWidgetLayoutItem): WidgetBounds => ({
-    x: item.x * columnStep,
-    y: item.y * rowStep,
-    width: Math.max(0, item.w * columnStep - spacing),
-    height: item.h * rowStep - spacing,
-  });
-
-  const placeholder = activeId ? displayed.find((item) => item.id === activeId) : undefined;
-
-  const layoutHeight = Math.max(
-    0,
-    ...displayed.map((item) => (item.y + item.h) * rowStep - spacing),
-    ...(activeId ? current.map((item) => (item.y + item.h) * rowStep - spacing) : []),
-    floating ? floating.y + floating.height : 0,
-  );
-
-  function clearGesture() {
-    const session = gesture.current;
-    gesture.current = null;
-    if (frame.current !== null) cancelAnimationFrame(frame.current);
-    frame.current = null;
-    if (session?.target.hasPointerCapture(session.pointerId)) session.target.releasePointerCapture(session.pointerId);
-    setPreview(null);
-    setActiveId(null);
-    setFloating(null);
-  }
-
-  useEffect(() => {
-    const element = root.current;
-    if (!element) return;
-
-    let previousWidth = -1;
-
-    const observer = new ResizeObserver(([entry]) => {
-      if (Math.abs(previousWidth - entry.contentRect.width) < 0.5) return;
-      previousWidth = entry.contentRect.width;
-      setWidth(entry.contentRect.width);
-      clearGesture();
-    });
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-      if (frame.current !== null) cancelAnimationFrame(frame.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const cancel = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape" && gesture.current) {
-        clearGesture();
-        setAnnouncement("Widget change cancelled.");
-      }
-    };
-    window.addEventListener("keydown", cancel);
-
-    const blur = () => clearGesture();
-    window.addEventListener("blur", blur);
-    return () => {
-      window.removeEventListener("keydown", cancel);
-      window.removeEventListener("blur", blur);
-    };
-  }, []);
-
-  function commit(next: ExWidgetLayout, id: string) {
-    if (JSON.stringify(next) === JSON.stringify(current)) return;
-    if (layout === undefined) setInternal(next);
-    onLayoutChange?.(next.map((item) => ({ ...item })));
-    const item = next.find((entry) => entry.id === id);
-    if (item) setAnnouncement(`${id}: column ${item.x + 1}, row ${item.y + 1}, size ${item.w} by ${item.h}.`);
-  }
-
-  function start(event: PointerEvent<HTMLButtonElement>, id: string, action: ExWidgetAction) {
-    if (!editable || event.button !== 0 || !event.isPrimary || gesture.current || !root.current) return;
-    const item = current.find((entry) => entry.id === id);
-    if (!item) return;
-
-    event.preventDefault();
-    event.currentTarget.focus({ preventScroll: true });
-    event.currentTarget.setPointerCapture(event.pointerId);
-
-    const rect = root.current.getBoundingClientRect();
-    const cardRect = event.currentTarget.closest("[data-widget-id]")?.getBoundingClientRect();
-    const bounds = cardRect
-      ? { x: cardRect.left - rect.left, y: cardRect.top - rect.top, width: cardRect.width, height: cardRect.height }
-      : boundsFor(item);
-
-    gesture.current = {
-      id,
-      pointerId: event.pointerId,
-      action,
-      origin: item,
-      layout: current,
-      next: current,
-      x: event.clientX,
-      y: event.clientY,
-      left: rect.left,
-      top: rect.top,
-      columnStep: ((width ?? rect.width) + spacing) / count,
-      rowStep: height + spacing,
-      columns: count,
-      target: event.currentTarget,
-      started: false,
-      bounds,
-    };
-  }
-
-  function updatePointer(clientX: number, clientY: number) {
-    const session = gesture.current;
-    if (!session || !root.current) return;
-
-    const rect = root.current.getBoundingClientRect();
-
-    const dx = clientX - session.x - (rect.left - session.left);
-    const dy = clientY - session.y - (rect.top - session.top);
-
-    if (!session.started && Math.hypot(dx, dy) < 4) return;
-    session.started = true;
-
-    const item = session.origin;
-    const minW = Math.min(session.columns - item.x, gridNumber(item.minW ?? 1));
-    const maxW = Math.max(minW, Math.min(session.columns - item.x, gridNumber(item.maxW ?? session.columns)));
-    const minH = gridNumber(item.minH ?? 1);
-    const maxH = Math.max(minH, gridNumber(item.maxH ?? Number.MAX_SAFE_INTEGER));
-
-    const pixels =
-      session.action === "move"
-        ? {
-            ...session.bounds,
-            x: Math.max(0, Math.min((session.columns - item.w) * session.columnStep, session.bounds.x + dx)),
-            y: Math.max(0, session.bounds.y + dy),
-          }
-        : {
-            ...session.bounds,
-            width: Math.max(minW * session.columnStep - spacing, Math.min(maxW * session.columnStep - spacing, session.bounds.width + dx)),
-            height: Math.max(minH * session.rowStep - spacing, Math.min(maxH * session.rowStep - spacing, session.bounds.height + dy)),
-          };
-
-    const patch =
-      session.action === "move"
-        ? { x: Math.round(pixels.x / session.columnStep), y: Math.round(pixels.y / session.rowStep) }
-        : { w: Math.round((pixels.width + spacing) / session.columnStep), h: Math.round((pixels.height + spacing) / session.rowStep) };
-
-    const previous = session.next.find((entry) => entry.id === session.id)!;
-
-    if (Object.entries(patch).some(([key, value]) => previous[key as "x" | "y" | "w" | "h"] !== value)) {
-      session.next = updateWidget(session.layout, session.id, patch, session.columns);
-      setPreview(session.next);
+  const current = useMemo(() => {
+    let nextRow = 0;
+    const items: ExWidgetLayout = [];
+    for (const { props: card } of cards) {
+      const supplied = source.find((entry) => entry.id === card.widgetId);
+      const item = supplied ?? { id: card.widgetId, col: 0, row: nextRow, rowSpan: integer(card.rowSpan), colSpan: integer(card.colSpan) };
+      nextRow = Math.max(nextRow, item.row + item.rowSpan);
+      items.push(item);
     }
+    return arrangeWidgets(items, count, constraints);
+  }, [source, cards, count, constraints]);
 
-    setActiveId(session.id);
-    setFloating(pixels);
-  }
+  const rowCount = layoutRows(current, rows);
+  const mobile = responsive && (size === null || size < 480);
+  const metrics = useMemo(() => gridMetrics(size ?? 0, count, gap, rowCount, mobile), [size, count, gap, rowCount, mobile]);
 
-  function move(event: PointerEvent<HTMLButtonElement>) {
-    if (gesture.current?.pointerId !== event.pointerId) return;
-
-    const { clientX, clientY } = event;
-
-    if (frame.current !== null) cancelAnimationFrame(frame.current);
-
-    frame.current = requestAnimationFrame(() => {
-      frame.current = null;
-      updatePointer(clientX, clientY);
-    });
-  }
-
-  function finish(event: PointerEvent<HTMLButtonElement>, cancel = false) {
-    const session = gesture.current;
-    if (!session || session.pointerId !== event.pointerId) return;
-
-    if (!cancel) updatePointer(event.clientX, event.clientY);
-
-    clearGesture();
-    if (!cancel && session.started && editable && count === session.columns) commit(session.next, session.id);
-  }
-
-  function keyboard(event: KeyboardEvent<HTMLButtonElement>, id: string, action: ExWidgetAction) {
-    if (!editable || gesture.current || event.altKey || event.ctrlKey || event.metaKey) return;
-
-    const delta: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
-    const direction = delta[event.key];
-    const item = current.find((entry) => entry.id === id);
-
-    if (!direction || !item) return;
-    event.preventDefault();
-
-    commit(
-      updateWidget(
-        current,
-        id,
-        action === "move"
-          ? { x: item.x + direction[0], y: item.y + direction[1] }
-          : { w: Math.min(count - item.x, item.w + direction[0]), h: item.h + direction[1] },
-        count,
-      ),
-      id,
+  function commit(next: ExWidgetLayout, widgetId: string, action: ExWidgetAction) {
+    if (layout === undefined) setInternal(next);
+    onLayoutChange?.(
+      next.map((item) => ({ ...item })),
+      { widgetId, action, columns: count, rows: layoutRows(next, rows) },
     );
   }
 
+  const controls = useWidgetInteraction({
+    root,
+    layout: current,
+    metrics,
+    constraints,
+    editable,
+    revision: JSON.stringify([
+      size,
+      count,
+      rows,
+      rowCount,
+      gap,
+      constraints,
+      cards.map((card) => [card.props.widgetId, card.props.draggable, card.props.resizable]),
+    ]),
+    commit,
+  });
+
+  const displayed = controls.preview ?? current;
+  const active = controls.interaction;
+  const divisions = mobile ? count : Math.max(count, rowCount);
+  const gridGap = size === null ? integer(gap, 8, 0) : metrics.gap;
+  const unit = size === null ? `max(0px, calc((100cqw - ${(divisions - 1) * gridGap}px) / ${divisions}))` : `${metrics.unit}px`;
+
   return (
-    <div {...props} className={cn("min-w-0", className)} style={style}>
+    <div {...props} className={cn(className)} style={{ minWidth: 0, containerType: "inline-size", ...style }}>
       <p id={instructionsId} className="sr-only">
-        Drag the move handle to reposition a widget. Drag the corner to resize. Use arrow keys on either handle for one grid step. Press
-        Escape to cancel a pointer gesture.
+        Drag the top handle to move; drag the corner to resize. Use arrow keys on a handle for one grid step. Escape cancels a pointer
+        gesture.
       </p>
       <div
         ref={root}
         data-widget-container=""
         data-columns={count}
-        className="relative min-w-0"
-        style={
-          width === null
-            ? { display: "grid", gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`, gridAutoRows: height, gap: spacing }
-            : { height: layoutHeight }
-        }>
-        {placeholder && width !== null && (
-          <motion.div
-            aria-hidden="true"
-            data-widget-placeholder=""
-            className="pointer-events-none absolute left-0 top-0 rounded-[var(--radius-full-md)] border-2 border-dashed border-border bg-surface-3"
-            initial={false}
-            animate={{ ...boundsFor(placeholder) }}
-            transition={reduceMotion ? { duration: 0 } : settleTransition}
-          />
-        )}
+        data-rows={rowCount}
+        style={{
+          display: "grid",
+          position: "relative",
+          minWidth: 0,
+          aspectRatio: mobile ? undefined : "1 / 1",
+          overflow: "hidden",
+          alignContent: "start",
+          justifyContent: "start",
+          gap: gridGap,
+          gridTemplateColumns: `repeat(${count}, ${unit})`,
+          gridTemplateRows: `repeat(${rowCount}, ${unit})`,
+          gridAutoRows: unit,
+        }}>
         {cards.map((card) => {
           const id = card.props.widgetId;
-          const item = displayed.find((entry) => entry.id === id) ?? current.find((entry) => entry.id === id)!;
-          const bounds = activeId === id && floating ? floating : boundsFor(item);
+          const item = displayed.find((entry) => entry.id === id)!;
           return (
-            <ExWidgetContext.Provider
+            <ExWidgetItem
               key={id}
-              value={{
-                editable,
-                active: activeId === id,
-                instructionsId,
-                start: (event, action) => start(event, id, action),
-                move,
-                finish,
-                keyboard: (event, action) => keyboard(event, id, action),
-              }}>
-              <motion.div
-                data-widget-id={id}
-                className="min-h-0 min-w-0"
-                initial={false}
-                animate={width === null ? undefined : { ...bounds }}
-                transition={activeId === id || reduceMotion ? { duration: 0 } : settleTransition}
-                style={
-                  width === null
-                    ? { gridColumn: `${item.x + 1} / span ${item.w}`, gridRow: `${item.y + 1} / span ${item.h}` }
-                    : {
-                        ...bounds,
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        zIndex: activeId === id ? 20 : 1,
-                        willChange: activeId === id ? "transform, width, height" : undefined,
-                      }
-                }>
-                {card}
-              </motion.div>
-            </ExWidgetContext.Provider>
+              item={item}
+              metrics={metrics}
+              interaction={active?.id === id ? active : null}
+              editable={editable}
+              instructionsId={instructionsId}
+              start={controls.start}
+              move={controls.move}
+              finish={controls.finish}
+              keyboard={controls.keyboard}
+              settled={controls.settled}>
+              {card}
+            </ExWidgetItem>
           );
         })}
       </div>
       <span role="status" aria-live="polite" className="sr-only">
-        {announcement}
+        {controls.message}
       </span>
     </div>
   );

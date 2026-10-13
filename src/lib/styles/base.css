@@ -1,5 +1,6 @@
 @import "./theme.css";
 @import "../components/Calendar/ExCalendar.css";
+@import "../components/Widget/ExWidget.css";
 
 /* Variants */
 @custom-variant dark (&:where([data-theme="dark"] *));

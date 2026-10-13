@@ -4,7 +4,7 @@ export { default as ExWidgetContainer } from "./components/Widget/ExWidgetContai
 export { default as ExWidgetCard } from "./components/Widget/ExWidgetCard";
 export type { ExWidgetContainerProps } from "./components/Widget/props/ExWidgetContainerProps";
 export type { ExWidgetCardProps } from "./components/Widget/props/ExWidgetCardProps";
-export type { ExWidgetLayout, ExWidgetLayoutItem } from "./components/Widget/types/ExWidgetType";
+export type { ExWidgetLayout, ExWidgetLayoutItem, ExWidgetConstraints, ExWidgetBreakpoints, ExWidgetLayoutChange } from "./components/Widget/types/ExWidgetType";
 
 export { default as ExAccordion } from "./components/Accordion/ExAccordion";
 export { default as ExAccordionItem } from "./components/Accordion/ExAccordionItem";
