@@ -50,7 +50,7 @@ export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonG
     outline: "text-primary",
   },
   secondary: {
-    solid: "text-foreground",
+    solid: "text-white",
     soft: "text-foreground",
     outline: "text-foreground",
   },
@@ -97,6 +97,14 @@ export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGr
     soft: "bg-warning-soft",
     outline: "border border-warning",
   },
+};
+
+export const ButtonGroupSoftInactiveTextClass: Record<ButtonGroupColor, string> = {
+  primary: "text-primary/65",
+  secondary: "text-foreground/65",
+  danger: "text-danger/65",
+  success: "text-success/65",
+  warning: "text-warning/65",
 };
 
 export const ButtonGroupInactiveClass: Record<ButtonGroupColor, string> = {

@@ -19,7 +19,7 @@ export default function ExPrefix({
       className={cn(
         textarea ? PrefixTextareaSizeClass[size] : PrefixSizeClass[size],
         PrefixRadiusSizeClass[size][radius],
-        "flex h-full border-r border-border bg-surface-2 whitespace-nowrap",
+        "flex h-full border-r border-border bg-surface-3 whitespace-nowrap",
       )}
       style={{ height: "stretch" }}
     >

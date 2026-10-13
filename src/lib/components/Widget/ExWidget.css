@@ -1,0 +1,61 @@
+.ex-widget-handle {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  touch-action: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.ex-widget-card:hover > .ex-widget-handle,
+.ex-widget-card:focus-within > .ex-widget-handle,
+.ex-widget-card[data-active] > .ex-widget-handle {
+  opacity: 0.65;
+}
+.ex-widget-handle:hover,
+.ex-widget-handle:focus-visible {
+  opacity: 1 !important;
+}
+.ex-widget-handle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+.ex-widget-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-4, #aaa) transparent;
+}
+.ex-widget-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.ex-widget-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 6px;
+}
+.ex-widget-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-surface-4, #aaa);
+  border-radius: 999px;
+}
+.ex-widget-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+@media (hover: none) {
+  .ex-widget-handle {
+    opacity: 0.65;
+    width: 28px;
+    height: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-widget-handle {
+    transition: none;
+  }
+}

@@ -1,0 +1,107 @@
+.ex-calendar {
+  container-type: inline-size;
+}
+.ex-calendar button {
+  -webkit-tap-highlight-color: transparent;
+}
+.ex-calendar button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  z-index: 20;
+}
+.ex-calendar .ex-cal-month-cell {
+  min-height: 112px;
+}
+.ex-calendar .ex-cal-timed {
+  min-width: 650px;
+}
+.ex-calendar .ex-cal-day {
+  min-width: 240px;
+}
+@container (max-width: 540px) {
+  .ex-calendar .ex-cal-month-cell {
+    min-height: 90px;
+    padding: 3px;
+  }
+  .ex-calendar .ex-cal-event-time {
+    display: none;
+  }
+  .ex-calendar .ex-cal-month-event {
+    font-size: 9px;
+    padding-inline: 3px;
+  }
+  .ex-calendar .ex-cal-toolbar {
+    gap: 12px;
+  }
+  .ex-calendar .ex-cal-heading {
+    font-size: 16px;
+  }
+  .ex-calendar .ex-cal-view {
+    width: 100%;
+  }
+  .ex-calendar .ex-cal-view button {
+    flex: 1;
+  }
+}
+
+.ex-calendar .ex-cal-event,
+.ex-calendar .ex-cal-month-event {
+  font-size: var(--ex-cal-font, 11px);
+}
+
+.ex-calendar .ex-cal-event {
+  container-type: inline-size;
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+.ex-calendar .ex-cal-event:hover,
+.ex-calendar .ex-cal-event:focus-visible {
+  z-index: 25 !important;
+}
+@container (max-width: 90px) {
+  .ex-cal-card-time,
+  .ex-cal-card-location {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-calendar .ex-cal-event {
+    transition: none;
+  }
+}
+
+.ex-calendar .ex-cal-fixed-label {
+  background: var(--color-surface);
+}
+.ex-calendar .ex-cal-title {
+  font-size: var(--ex-cal-font);
+  line-height: var(--ex-cal-line);
+}
+.ex-calendar .ex-cal-meta {
+  font-size: var(--ex-cal-meta-font);
+  line-height: var(--ex-cal-line);
+}
+.ex-calendar .ex-cal-neutral {
+  border-color: #525252;
+  background: #f0f0f0;
+  color: #171717;
+}
+[data-theme="dark"] .ex-calendar .ex-cal-neutral,
+.ex-calendar[data-theme="dark"] .ex-cal-neutral {
+  border-color: #d4d4d4;
+  background: #262626;
+  color: #fafafa;
+}
+
+.ex-calendar button.ex-cal-event[data-past="true"],
+.ex-calendar button.ex-cal-month-event[data-past="true"] {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+  color: var(--color-muted);
+}
+.ex-calendar button[data-past="true"] .ex-cal-title,
+.ex-calendar button[data-past="true"] .ex-cal-meta {
+  color: inherit;
+}

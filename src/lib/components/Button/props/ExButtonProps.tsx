@@ -13,6 +13,8 @@ export interface ExButtonStyleProps {
   variant?: ButtonVariant;
   color?: ButtonColor;
   size?: ButtonSize;
+  /** Optional count badge. Zero is displayed; omitted values hide the badge. */
+  counter?: number;
   loading?: boolean;
   fit?: boolean;
   leftIcon?: ReactNode;

@@ -15,6 +15,7 @@ export interface ExBadgeProps {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   dismissible?: boolean;
+  className?: string;
   dismissPosition?: BadgeIconPosition;
   children?: ReactNode;
   onDismiss?: () => void;

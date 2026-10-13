@@ -1,3 +1,7 @@
+import KanbanPage from "@/pages/KanbanPage";
+import WidgetPage from "@/pages/WidgetPage";
+import CalendarPage from "@/pages/CalendarPage";
+import TimelinePage from "@/pages/TimelinePage";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../shared/root/RootLayout";
 import DocumentationLayout from "../shared/documentation/DocumentationLayout";
@@ -45,6 +49,9 @@ import TogglePage from "../pages/TogglePage";
 import ChatBubblePage from "@/pages/ChatBubblePage";
 import InputOperatorPage from "@/pages/InputOpertatorPage";
 import InputRangePage from "@/pages/InputRangePage";
+import TreeViewPage from "@/pages/TreeViewPage";
+import StepPage from "@/pages/StepPage";
+import MentionPage from "@/pages/MentionPage";
 
 export const router = createBrowserRouter([
   {
@@ -147,6 +154,10 @@ export const router = createBrowserRouter([
                 element: <TogglePage />,
               },
               {
+                path: "tree-view",
+                element: <TreeViewPage />,
+              },
+              {
                 path: "modal",
                 element: <ModalPage />,
               },
@@ -193,6 +204,10 @@ export const router = createBrowserRouter([
               {
                 path: "card",
                 element: <CardPage />,
+              },
+              {
+                path: "widget",
+                element: <WidgetPage />,
               },
               {
                 path: "progress",
@@ -249,6 +264,26 @@ export const router = createBrowserRouter([
               {
                 path: "input-range",
                 element: <InputRangePage />,
+              },
+              {
+                path: "step",
+                element: <StepPage />,
+              },
+              {
+                path: "kanban",
+                element: <KanbanPage />,
+              },
+              {
+                path: "calendar",
+                element: <CalendarPage />,
+              },
+              {
+                path: "timeline",
+                element: <TimelinePage />,
+              },
+              {
+                path: "mention",
+                element: <MentionPage />,
               },
             ],
           },

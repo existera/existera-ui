@@ -18,6 +18,13 @@ export const ButtonPaddingClass: Record<ButtonSize, string> = {
   lg: "px-[var(--padding-x-lg)]",
 };
 
+export const ButtonCounterSizeClass: Record<ButtonSize, string> = {
+  xs: "h-4 min-w-4 px-0.5 text-[10px]",
+  sm: "h-4.5 min-w-4.5 px-0.5 text-[11px]",
+  md: "h-5 min-w-5 px-1 text-xs",
+  lg: "h-6 min-w-6 px-1 text-sm",
+};
+
 export const ButtonPaddingRadiusFullClass: Record<ButtonSize, string> = {
   xs: "px-2.5",
   sm: "px-3",
@@ -59,7 +66,7 @@ export const ButtonColorTokens: Record<
   primary: {
     solidBg: "bg-primary",
     solidText: "text-white",
-    softBg: "bg-primary/25 dark:bg-primary/30",
+    softBg: "bg-primary-soft",
     softText: "text-primary",
     border: "border-primary",
     hoverSoft: "hover:bg-primary/25 active:bg-primary/30 dark:hover:bg-primary/25 dark:active:bg-primary/30",
@@ -68,8 +75,8 @@ export const ButtonColorTokens: Record<
 
   secondary: {
     solidBg: "bg-secondary",
-    solidText: "",
-    softBg: "bg-secondary/25 dark:bg-secondary/30",
+    solidText: "text-white",
+    softBg: "bg-secondary-soft",
     softText: "",
     border: "border-secondary/70",
     hoverSoft: "hover:bg-secondary/25 active:bg-secondary/30 dark:hover:bg-secondary/25 dark:active:bg-secondary/30",
@@ -79,7 +86,7 @@ export const ButtonColorTokens: Record<
   success: {
     solidBg: "bg-success",
     solidText: "text-white",
-    softBg: "bg-success/25 dark:bg-success/30",
+    softBg: "bg-success-soft",
     softText: "text-success",
     border: "border-success",
     hoverSoft: "hover:bg-success/25 active:bg-success/30 dark:hover:bg-success/25 dark:active:bg-success/30",
@@ -89,7 +96,7 @@ export const ButtonColorTokens: Record<
   warning: {
     solidBg: "bg-warning",
     solidText: "text-white",
-    softBg: "bg-warning/25 dark:bg-warning/30",
+    softBg: "bg-warning-soft",
     softText: "text-warning",
     border: "border-warning",
     hoverSoft: "hover:bg-warning/25 active:bg-warning/30 dark:hover:bg-warning/25 dark:active:bg-warning/30",
@@ -99,7 +106,7 @@ export const ButtonColorTokens: Record<
   danger: {
     solidBg: "bg-danger",
     solidText: "text-white",
-    softBg: "bg-danger/25 dark:bg-danger/30",
+    softBg: "bg-danger-soft",
     softText: "text-danger",
     border: "border-danger",
     hoverSoft: "hover:bg-danger/25 active:bg-danger/30 dark:hover:bg-danger/25 dark:active:bg-danger/30",

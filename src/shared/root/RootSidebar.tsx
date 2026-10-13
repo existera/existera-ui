@@ -325,6 +325,13 @@ export default function RootSidebar({ isOpen, onClosed }: RootSidebarProps) {
                 <ExLink
                   size="lg"
                   weight="medium"
+                  onClick={() => handleNavigate("/docs/components/widget")}
+                >
+                  Widget
+                </ExLink>
+                <ExLink
+                  size="lg"
+                  weight="medium"
                   onClick={() => handleNavigate("/docs/components/progress")}
                 >
                   Progress

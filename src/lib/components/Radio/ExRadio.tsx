@@ -1,6 +1,6 @@
 "use client";
-import type { ExFormFieldProps } from "../../types/Form";
 
+import type { ExFormFieldProps } from "../../types/Form";
 import { useNativeField } from "../../hooks/useNativeField";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -50,19 +50,33 @@ const sizeMap = {
 };
 
 const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
-  ({ label, description, error, checked, defaultChecked = false, disabled = false, size = "md", onChecked, onChange, readOnly = false, ...nativeProps }, ref) => {
-
-
+  (
+    {
+      label,
+      description,
+      error,
+      checked,
+      defaultChecked = false,
+      disabled = false,
+      size = "md",
+      onChecked,
+      onChange,
+      readOnly = false,
+      ...nativeProps
+    },
+    ref,
+  ) => {
     const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
     const isControlled = checked !== undefined;
     const isChecked = isControlled ? checked : internalChecked;
 
-    const inputRef = useNativeField<HTMLInputElement>(ref, element => {
+    const inputRef = useNativeField<HTMLInputElement>(ref, (element) => {
       const next = isControlled ? checked : defaultChecked;
       if (!isControlled) setInternalChecked(next);
       element.checked = next;
     });
+
     const fieldId = useId();
     const descriptionId = description ? fieldId + "-description" : undefined;
     const errorId = error ? fieldId + "-error" : undefined;
@@ -71,15 +85,25 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
     useEffect(() => {
       const element = inputRef.current;
       if (!element || isControlled || !element.name) return;
+
       const syncGroup = (event: Event) => {
         const target = event.target;
-        if (target instanceof HTMLInputElement && !target.readOnly && target.type === "radio" &&
-          target.name === element.name && target.form === element.form && target.getRootNode() === element.getRootNode()) {
+
+        if (
+          target instanceof HTMLInputElement &&
+          !target.readOnly &&
+          target.type === "radio" &&
+          target.name === element.name &&
+          target.form === element.form &&
+          target.getRootNode() === element.getRootNode()
+        ) {
           setInternalChecked(target === element);
         }
       };
+
       element.ownerDocument.addEventListener("change", syncGroup, true);
       element.ownerDocument.addEventListener("click", syncGroup, true);
+
       return () => {
         element.ownerDocument.removeEventListener("change", syncGroup, true);
         element.ownerDocument.removeEventListener("click", syncGroup, true);
@@ -106,7 +130,9 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
           <input
             {...nativeProps}
             readOnly={readOnly}
-            onClick={event => { if (readOnly) event.preventDefault(); }}
+            onClick={(event) => {
+              if (readOnly) event.preventDefault();
+            }}
             aria-describedby={describedBy}
             aria-invalid={nativeProps["aria-invalid"] ?? Boolean(error)}
             ref={inputRef}
@@ -121,59 +147,26 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
             className={clsx(
               styles.box,
               "flex items-center justify-center rounded-full border bg-surface",
-              "transition-[border-color,background-color,box-shadow,transform]",
+              "transition-[border-color,background-color,transform]",
               "duration-150 ease-out",
               error ? "border-danger" : "border-secondary",
               !disabled && "group-hover:border-primary/70",
               "peer-focus-visible:ring-2",
-              "peer-focus-visible:ring-primary/25",
+              error ? "peer-focus-visible:ring-danger/25" : "peer-focus-visible:ring-primary/25",
               "peer-focus-visible:ring-offset-1",
               "peer-focus-visible:ring-offset-background",
-              isChecked && [
-                "border-primary",
-                "bg-primary/10",
-                "shadow-[0_0_0_2px_rgba(59,130,246,0.12)]",
-                "dark:bg-primary/15",
-                "dark:shadow-[0_0_0_2px_rgba(59,130,246,0.22),0_0_8px_rgba(59,130,246,0.14)]",
-              ],
-              isChecked &&
-                error && [
-                  "border-danger",
-                  "bg-danger/10",
-                  "shadow-[0_0_0_2px_rgba(239,68,68,0.12)]",
-                  "dark:bg-danger/15",
-                  "dark:shadow-[0_0_0_2px_rgba(239,68,68,0.22),0_0_8px_rgba(239,68,68,0.14)]",
-                ],
-
-              // Pressed
+              isChecked && !error && ["border-primary", "bg-primary/10", "dark:bg-primary/15"],
+              isChecked && error && ["border-danger", "bg-danger/10", "dark:bg-danger/15"],
               !disabled && "active:scale-95",
             )}>
             <AnimatePresence initial={false}>
               {isChecked && (
                 <motion.span
-                  initial={{
-                    scale: 0,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    scale: 1,
-                    opacity: 1,
-                  }}
-                  exit={{
-                    scale: 0,
-                    opacity: 0,
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 25,
-                  }}
-                  className={clsx(
-                    styles.dot,
-                    "rounded-full bg-primary",
-                    "shadow-[0_0_4px_rgba(59,130,246,0.35)]",
-                    "dark:shadow-[0_0_6px_rgba(59,130,246,0.45)]",
-                  )}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  className={clsx(styles.dot, "rounded-full", error ? "bg-danger" : "bg-primary")}
                 />
               )}
             </AnimatePresence>
@@ -188,8 +181,16 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
                 {label}
               </span>
             )}
-            {description && <span id={descriptionId} className="mt-1 block text-xs leading-relaxed text-muted">{description}</span>}
-            {error && <span id={errorId} className="mt-1 block text-xs leading-relaxed text-danger">{error}</span>}
+            {description && (
+              <span id={descriptionId} className="mt-1 block text-xs leading-relaxed text-muted">
+                {description}
+              </span>
+            )}
+            {error && (
+              <span id={errorId} className="mt-1 block text-xs leading-relaxed text-danger">
+                {error}
+              </span>
+            )}
           </span>
         )}
       </label>

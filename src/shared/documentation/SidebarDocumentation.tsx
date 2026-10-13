@@ -27,6 +27,15 @@ export default function SidebarDocumentation() {
       <div className="flex flex-col gap-2">
         <h3 className="text-xs font-medium text-muted">Components</h3>
         <div className="flex flex-col gap-2">
+          <ExLink navigate={navigate} to="/docs/components/kanban">
+            Kanban
+          </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/calendar">
+            Calendar
+          </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/timeline">
+            Timeline
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/avatar">
             Avatar
           </ExLink>
@@ -119,6 +128,9 @@ export default function SidebarDocumentation() {
           </ExLink>
           <ExLink navigate={navigate} to="/docs/components/card">
             Card
+          </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/widget">
+            Widget
           </ExLink>
           <ExLink navigate={navigate} to="/docs/components/progress">
             Progress

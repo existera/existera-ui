@@ -78,7 +78,7 @@ const ExInputOperator: CompoundInputOperator = ({ children, id, size = "md", rad
         className={cn(
           InputOperatorSizeClass[size].radius[radius].default,
           "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-          disabled ? "cursor-not-allowed bg-secondary" : "bg-surface-2",
+          disabled ? "cursor-not-allowed bg-surface-4 select-none" : "bg-surface-2",
         )}>
         {prefix && (
           <ExPrefix radius={radius} size={size}>

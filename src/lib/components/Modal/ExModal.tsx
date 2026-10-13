@@ -91,7 +91,7 @@ export default function ExModal({
               className={cn(
                 "fixed z-99 flex flex-col overflow-hidden",
                 "rounded-xl border border-black/30",
-                "bg-surface shadow-2xl",
+                "bg-background shadow-2xl",
                 modalPosition,
 
                 isFullscreen ? "h-full rounded-md" : [ModalSizeMap[size], "max-h-[90dvh]", "overflow-y-auto", "p-safe"],

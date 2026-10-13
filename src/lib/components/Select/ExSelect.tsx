@@ -57,8 +57,6 @@ const ExSelect: CompoundSelect = (props) => {
   const initial = "defaultValue" in props ? defaultValue : defaultSelected;
   const [internalValue, setInternalValue] = useState<string | null>(initial?.value ?? null);
   const selectedValue = controlled ? selected?.value : internalValue;
-  // Resolve against current options so async option updates cannot leave a stale
-  // label or make the browser silently display an unrelated first option.
   const selectedOption = option.find((item) => item.value === selectedValue) ?? null;
 
   const inputRef = useNativeField<HTMLSelectElement>(ref, element => {
@@ -109,7 +107,7 @@ const ExSelect: CompoundSelect = (props) => {
         operator
           ? "min-w-0 flex-1"
           : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-        disabled ? "cursor-not-allowed bg-secondary" : !operator ? "bg-surface-2" : "transparent",
+        disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
       )}>
       {!operator && prefix && (
         <ExPrefix radius={radius} size={size}>

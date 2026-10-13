@@ -19,7 +19,7 @@ export default function ExSuffix({
       className={cn(
         textarea ? SuffixTextareaSizeClass[size] : SuffixSizeClass[size],
         SuffixRadiusSizeClass[size][radius],
-        "flex h-full border-l border-border bg-surface-2 whitespace-nowrap",
+        "flex h-full border-l border-border bg-surface-3 whitespace-nowrap",
       )}
       style={{ height: "stretch" }}
     >
