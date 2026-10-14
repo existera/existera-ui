@@ -1,6 +1,6 @@
 {
   "name": "@existera/ui",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "Open-source React component library for modern web applications",
   "license": "MIT",
   "type": "module",

@@ -334,14 +334,13 @@ export default function ExCalendar({
                   <button
                     key={+day}
                     type="button"
-                    onClick={() => showDay(day)}
                     aria-current={sameDay(day, now) ? "date" : undefined}
                     className="flex flex-col items-center gap-1 border-l border-border py-3">
                     <span className="text-[10px] uppercase tracking-wide text-muted">{format(day, { weekday: "short" })}</span>
                     <span
                       className={cn(
-                        "flex size-8 items-center justify-center rounded-full text-lg font-semibold",
-                        sameDay(day, now) && "bg-primary text-background",
+                        "flex size-5 items-center justify-center rounded-full text-lg font-semibold p-4 mt-2",
+                        sameDay(day, now) && "bg-primary text-white",
                       )}>
                       {day.getDate()}
                     </span>

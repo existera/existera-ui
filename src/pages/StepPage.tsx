@@ -29,7 +29,7 @@ export default function StepPage() {
           <h2 id="setup-heading" className="text-xl font-semibold">
             Workspace setup
           </h2>
-          <ExStep steps={steps} activeStep={activeStep} onStepChange={setActiveStep} aria-labelledby="setup-heading" />
+          <ExStep color="secondary" steps={steps} activeStep={activeStep} onStepChange={setActiveStep} aria-labelledby="setup-heading" />
           <div className="space-y-4 rounded-xl border border-border bg-surface p-5">
             <p role="status" aria-atomic="true" className="font-semibold">
               {activeStep === steps.length ? "Setup complete" : `Step ${activeStep + 1} of ${steps.length}: ${steps[activeStep].title}`}
