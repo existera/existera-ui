@@ -297,10 +297,9 @@ export default function ExCalendar({
                             type="button"
                             aria-label={`View ${format(day, { dateStyle: "full" })}`}
                             aria-current={sameDay(day, now) ? "date" : undefined}
-                            onClick={() => showDay(day)}
                             className={cn(
                               "flex size-6 items-center justify-center rounded-full text-xs",
-                              sameDay(day, now) ? "bg-primary font-semibold text-background" : "hover:bg-surface-3",
+                              sameDay(day, now) ? "bg-primary font-semibold text-white" : "hover:bg-surface-3",
                               day.getMonth() !== current.getMonth() && "text-muted",
                             )}>
                             {day.getDate()}
