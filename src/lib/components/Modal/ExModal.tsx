@@ -60,7 +60,7 @@ export default function ExModal({
             {/* Backdrop */}
             {!isFullscreen && (
               <motion.div
-                className="fixed inset-0 z-98 bg-surface backdrop-blur-[2px]"
+                className="fixed inset-0 z-98 bg-black/30 backdrop-blur-[2px]"
                 initial={{
                   opacity: 0,
                 }}
@@ -91,7 +91,7 @@ export default function ExModal({
               className={cn(
                 "fixed z-99 flex flex-col overflow-hidden",
                 "rounded-xl border border-black/30",
-                "bg-background shadow-2xl",
+                "bg-surface shadow-2xl",
                 modalPosition,
 
                 isFullscreen ? "h-full rounded-md" : [ModalSizeMap[size], "max-h-[90dvh]", "overflow-y-auto", "p-safe"],
