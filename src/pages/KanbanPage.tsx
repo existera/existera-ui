@@ -33,7 +33,8 @@ export default function KanbanPage() {
         </header>
         <section id="board" className="section-anchor min-w-0 space-y-4">
           <p className="text-xs text-muted">
-            Drag a card directly. Keyboard: focus the card, Space to pick up, arrows to move, Enter to drop, Escape to cancel.
+            Hold and drag empty board space or a column header to scroll horizontally. Drag a card to move it.
+            Keyboard: focus the card, Space to pick up, arrows to move, Enter to drop, Escape to cancel.
           </p>
 
           <ExKanban onChange={(_, move) => setOutput(move)} onCardClick={setOutput}>

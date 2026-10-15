@@ -32,6 +32,8 @@ export default function ExKanban({
   const [order, setOrder] = useState<Array<{ id: string; cards: string[] }> | null>(null);
   const columns = controlledColumns ?? orderKanbanColumns(composition.columns, order);
   const rootRef = useRef<HTMLDivElement>(null);
+  const panRef = useRef<{ id: number; x: number; scrollLeft: number; active: boolean } | null>(null);
+  const [panning, setPanning] = useState(false);
   const pointerRef = useRef<{ id: number; x: number; y: number; cardId: string; columnId: string; index: number } | null>(null);
   const suppressClickRef = useRef(false);
   const previewRef = useRef<{ element: HTMLElement; offsetX: number; offsetY: number } | null>(null);
@@ -75,6 +77,45 @@ export default function ExKanban({
   const [announcement, setAnnouncement] = useState("");
   const instructionsId = useId();
   const readOnly = disabled || (controlledColumns !== undefined && !onChange);
+
+  const endPan = () => {
+    const pending = panRef.current;
+    panRef.current = null;
+    setPanning(false);
+    if (pending && rootRef.current?.hasPointerCapture(pending.id)) {
+      rootRef.current.releasePointerCapture(pending.id);
+    }
+  };
+
+  const panStart = (event: PointerEvent<HTMLDivElement>) => {
+    // Touch keeps native scrolling; card gestures are handled by the cards.
+    if (event.pointerType === "touch" || event.button !== 0 || !event.isPrimary || dragRef.current || pointerRef.current || panRef.current) return;
+    const target = event.target as Element;
+    if (target.closest('[data-kanban-card], button, a, input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="button"], [data-kanban-no-drag]')) return;
+    const board = event.currentTarget;
+    if (board.scrollWidth <= board.clientWidth) return;
+    event.preventDefault();
+    board.setPointerCapture(event.pointerId);
+    panRef.current = { id: event.pointerId, x: event.clientX, scrollLeft: board.scrollLeft, active: false };
+  };
+
+  const panMove = (event: PointerEvent<HTMLDivElement>) => {
+    const pending = panRef.current;
+    if (!pending || pending.id !== event.pointerId) return;
+    const distance = event.clientX - pending.x;
+    if (!pending.active && Math.abs(distance) < 5) return;
+    event.preventDefault();
+    if (!pending.active) {
+      pending.active = true;
+      setPanning(true);
+    }
+    suppressClickRef.current = true;
+    event.currentTarget.scrollLeft = pending.scrollLeft - distance;
+  };
+
+  const panEnd = (event: PointerEvent<HTMLDivElement>) => {
+    if (panRef.current?.id === event.pointerId) endPan();
+  };
 
   const update = (next: DragState | null) => {
     const previous = dragRef.current;
@@ -135,6 +176,9 @@ export default function ExKanban({
     if (interactive && !interactive.hasAttribute("data-kanban-title")) return;
     suppressClickRef.current = false;
 
+    // Capture on the card before touch's implicit capture lands on a child.
+    // Moving capture from a text child later can emit a bubbling lost event.
+    event.currentTarget.setPointerCapture(event.pointerId);
     pointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, cardId: card.id, columnId: column.id, index };
   };
   const pointerMove = (event: PointerEvent<HTMLElement>) => {
@@ -312,6 +356,10 @@ export default function ExKanban({
         }
       }}
       onKeyDownCapture={(event) => {
+        if (event.key === "Escape" && panRef.current) {
+          event.preventDefault();
+          endPan();
+        }
         if (event.key === "Escape" && dragRef.current && !dragRef.current.keyboard) {
           event.preventDefault();
           event.stopPropagation();
@@ -319,14 +367,27 @@ export default function ExKanban({
         }
       }}>
       <p id={instructionsId} className="sr-only">
-        Drag anywhere on a card. With the keyboard press Space to pick up, arrows to move, Enter to drop, Escape to cancel.
+        Drag empty board space or a column header to scroll horizontally. Drag anywhere on a card to move it.
+        With the keyboard press Space to pick up, arrows to move, Enter to drop, Escape to cancel.
       </p>
 
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </p>
 
-      <div ref={rootRef} role="region" aria-label={label} className="ex-textarea-scroll flex items-stretch gap-4 overflow-x-auto pb-4">
+      <div
+        ref={rootRef}
+        role="region"
+        aria-label={label}
+        className={cn(
+          "ex-textarea-scroll flex items-stretch gap-4 overflow-x-auto pb-4 cursor-grab",
+          panning && "cursor-grabbing select-none",
+        )}
+        onPointerDown={panStart}
+        onPointerMove={panMove}
+        onPointerUp={panEnd}
+        onPointerCancel={panEnd}
+        onLostPointerCapture={panEnd}>
         {columns.length === 0 && (
           <p className="w-full rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted">No columns to display.</p>
         )}
@@ -373,9 +434,11 @@ export default function ExKanban({
                             event.currentTarget.releasePointerCapture(event.pointerId);
                         }
                       }}
-                      onPointerCancel={cancel}
-                      onLostPointerCapture={() => {
-                        if (pointerRef.current) cancel();
+                      onPointerCancel={(event) => {
+                        if (pointerRef.current?.id === event.pointerId) cancel();
+                      }}
+                      onLostPointerCapture={(event) => {
+                        if (event.target === event.currentTarget && pointerRef.current?.id === event.pointerId) cancel();
                       }}
                     />
                   </Fragment>
