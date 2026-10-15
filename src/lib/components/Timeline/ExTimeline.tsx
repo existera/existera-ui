@@ -46,7 +46,7 @@ export default function ExTimeline({
               <span
                 aria-hidden="true"
                 className={cn(
-                  "pointer-events-none absolute bottom-0 left-[calc(var(--ex-timeline-marker)/2)] top-[var(--ex-timeline-marker)] w-[2px] -translate-x-1/2 bg-border",
+                  "pointer-events-none absolute bottom-0 left-[calc(var(--ex-timeline-marker)/2)] top-[var(--ex-timeline-marker)] w-[1px] -translate-x-1/2 bg-border",
                   alternate && "md:left-1/2",
                 )}
               />
