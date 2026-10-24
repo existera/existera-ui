@@ -15,6 +15,8 @@ export { default as ExChatBubble } from "./components/ChatBubble/ExChatBubble";
 export { default as ExBreadcrumbs } from "./components/Breadcrumbs/ExBreadcrumbs";
 export { default as ExBreadcrumbsItem } from "./components/Breadcrumbs/ExBreadcrumbsItem";
 export { default as ExButton } from "./components/Button/ExButton";
+export { default as ExButtonCTA } from "./components/ButtonCTA/ExButtonCTA";
+export type { ExButtonCTAProps } from "./components/ButtonCTA/ExButtonCTA";
 export type { ExButtonProps, ExButtonNativeProps, ExButtonLinkProps, ExButtonRouterProps } from "./components/Button/props/ExButtonProps";
 export { default as ExButtonGroup } from "./components/ButtonGroup/ExButtonGroup";
 export { default as ExButtonGroupItem } from "./components/ButtonGroup/ExButtonGroupItem";

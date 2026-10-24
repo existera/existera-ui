@@ -57,6 +57,9 @@ export default function SidebarDocumentation() {
           <ExLink navigate={navigate} to="/docs/components/button">
             Button
           </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/button-cta">
+            Button CTA
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/button-group">
             Button Group
           </ExLink>
