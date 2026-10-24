@@ -7,104 +7,114 @@
 
 /* Base */
 @layer base {
-    html {
-        scroll-behavior: smooth;
-        font-family: var(--font-sans);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-rendering: optimizeLegibility;
-        background: var(--color-background);
-        color: var(--color-foreground);
-    }
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
 
-    body {
-        min-height: 100vh;
-        background: var(--color-background);
-        color: var(--color-foreground);
-    }
+  body {
+    min-height: 100vh;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
 
-    *,
-    *::before,
-    *::after {
-        border-color: var(--color-border);
-    }
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border);
+  }
 
-    input,
-    textarea,
-    button,
-    select {
-        color: var(--color-foreground);
-    }
+  input,
+  textarea,
+  button,
+  select {
+    color: var(--color-foreground);
+  }
 
-    textarea {
-        min-height: 26px;
-        line-height: 26px;
-    }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    -webkit-text-fill-color: inherit !important;
+    background-color: transparent !important;
+    transition: background-color 9999s ease-out 0s;
+  }
 
-    ::selection {
-        background: var(--color-primary);
-        color: #fff;
-    }
+  textarea {
+    min-height: 26px;
+    line-height: 26px;
+  }
 
-    :focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px var(--color-ring);
-    }
+  ::selection {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-ring);
+  }
 }
 
 /* Textarea scrollbar */
 .ex-textarea-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-surface-4) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-4) transparent;
 }
 
 .ex-textarea-scroll::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .ex-textarea-scroll::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .ex-textarea-scroll::-webkit-scrollbar-thumb {
-    background: var(--color-surface-4);
-    border-radius: 9999px;
-    transition: background-color 0.2s ease;
+  background: var(--color-surface-4);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
 }
 
 .ex-textarea-scroll::-webkit-scrollbar-thumb:hover {
-    background: var(--color-muted);
+  background: var(--color-muted);
 }
 
 .ex-textarea-scroll::-webkit-scrollbar-corner {
-    background: transparent;
+  background: transparent;
 }
 
 /* Number input */
 .ex-input-number {
-    -moz-appearance: textfield;
-    appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .ex-input-number::-webkit-outer-spin-button,
 .ex-input-number::-webkit-inner-spin-button {
-    margin: 0;
-    -webkit-appearance: none;
+  margin: 0;
+  -webkit-appearance: none;
 }
 
 /* Animations */
 @keyframes spin-slow {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-spin-slow {
-    animation: spin-slow 1.5s linear infinite;
+  animation: spin-slow 1.5s linear infinite;
 }
 
 @keyframes toast-progress {

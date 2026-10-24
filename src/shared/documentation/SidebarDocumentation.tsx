@@ -66,6 +66,9 @@ export default function SidebarDocumentation() {
           <ExLink navigate={navigate} to="/docs/components/input">
             Input
           </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/numpad">
+            Numpad
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/select">
             Select
           </ExLink>

@@ -40,7 +40,7 @@ export default function InputPage() {
           </div>
           <ExCanvas>
             <div className="flex">
-              <ExInput clearable placeholder="Type something here..." />
+              <ExInput id="identifier" clearable placeholder="Email or username"/>
             </div>
           </ExCanvas>
           <ExCodeBlock language="tsx">{`<ExInput placeholder="Type something here..." />`}</ExCodeBlock>

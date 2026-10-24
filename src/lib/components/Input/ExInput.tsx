@@ -54,7 +54,9 @@ const ExInput: CompoundInput = (props) => {
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
   const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
-  const inputRef = useNativeField<HTMLInputElement>(ref, element => { element.value = field.reset(); });
+  const inputRef = useNativeField<HTMLInputElement>(ref, (element) => {
+    element.value = field.reset();
+  });
   const inputValue = field.value;
   const inputModeMap = {
     text: "text",
@@ -99,6 +101,7 @@ const ExInput: CompoundInput = (props) => {
           ? "min-w-0 flex-1"
           : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
         disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+        className,
       )}>
       {!operator && prefix && (
         <ExPrefix radius={radius} size={size}>
@@ -130,8 +133,14 @@ const ExInput: CompoundInput = (props) => {
           value={inputValue}
           placeholder={placeholder}
           onChange={handleChange}
-          onFocus={(e) => { setFocused(true); nativeProps.onFocus?.(e); }}
-          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
+          onFocus={(e) => {
+            setFocused(true);
+            nativeProps.onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setFocused(false);
+            nativeProps.onBlur?.(e);
+          }}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedby}
           aria-required={ariaRequired}
@@ -140,7 +149,6 @@ const ExInput: CompoundInput = (props) => {
             "w-full bg-transparent px-1 shadow-none outline-none",
             type === "number" && "ex-input-number",
             disabled && "cursor-not-allowed text-muted",
-            className,
           )}
           style={{ textAlign }}
           maxLength={maxLength}
