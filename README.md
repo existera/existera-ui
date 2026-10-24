@@ -1,12 +1,18 @@
-# EXISTERA UI
+<p align="center">
+  <img src="./public/existera-ui-dark.svg" alt="Existera UI logo" width="320" />
+</p>
 
-> Simple React component library built for consistency, accessibility, and scalable applications.
+<p align="center">
+  A React component library and design system for consistent, accessible interfaces.
+</p>
 
-![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Active-success)
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-blue?logo=react" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript-6.x-blue?logo=typescript" alt="TypeScript 6.x" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss" alt="Tailwind CSS v4" />
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
+  <img src="https://img.shields.io/badge/Status-Active-success" alt="Active development" />
+</p>
 
 ---
 
