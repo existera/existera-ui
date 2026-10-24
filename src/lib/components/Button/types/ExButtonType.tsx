@@ -1,10 +1,4 @@
-import type {
-  Color,
-  NodePosition,
-  Radius,
-  Size,
-  Variant,
-} from "../../../types/Types";
+import type { Color, NodePosition, Radius, Size, Variant } from "../../../types/Types";
 
 export type ButtonVariant = Variant;
 export type ButtonColor = Color;

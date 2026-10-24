@@ -57,6 +57,9 @@ export default function SidebarDocumentation() {
           <ExLink navigate={navigate} to="/docs/components/button">
             Button
           </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/button-cta">
+            Button CTA
+          </ExLink>
           <ExLink navigate={navigate} to="/docs/components/button-group">
             Button Group
           </ExLink>
@@ -65,6 +68,9 @@ export default function SidebarDocumentation() {
           </ExLink>
           <ExLink navigate={navigate} to="/docs/components/input">
             Input
+          </ExLink>
+          <ExLink navigate={navigate} to="/docs/components/numpad">
+            Numpad
           </ExLink>
           <ExLink navigate={navigate} to="/docs/components/select">
             Select

@@ -52,6 +52,9 @@ import InputRangePage from "@/pages/InputRangePage";
 import TreeViewPage from "@/pages/TreeViewPage";
 import StepPage from "@/pages/StepPage";
 import MentionPage from "@/pages/MentionPage";
+import ExOtpPage from "@/pages/OtpPage";
+import NumpadPage from "@/pages/NumpadPage";
+import ButtonCTAPage from "@/pages/ButtonCTAPage";
 
 export const router = createBrowserRouter([
   {
@@ -284,6 +287,18 @@ export const router = createBrowserRouter([
               {
                 path: "mention",
                 element: <MentionPage />,
+              },
+              {
+                path: "otp",
+                element: <ExOtpPage />,
+              },
+              {
+                path: "numpad",
+                element: <NumpadPage />,
+              },
+              {
+                path: "button-cta",
+                element: <ButtonCTAPage />,
               },
             ],
           },

@@ -1,19 +1,12 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
-import type {
-  ButtonColor,
-  ButtonRadius,
-  ButtonSize,
-  ButtonTextAlign,
-  ButtonVariant,
-} from "../types/ExButtonType";
+import type { ButtonColor, ButtonRadius, ButtonSize, ButtonTextAlign, ButtonVariant } from "../types/ExButtonType";
 
 export interface ExButtonStyleProps {
   textAlign?: ButtonTextAlign;
   variant?: ButtonVariant;
   color?: ButtonColor;
   size?: ButtonSize;
-  /** Optional count badge. Zero is displayed; omitted values hide the badge. */
   counter?: number;
   loading?: boolean;
   fit?: boolean;
@@ -42,7 +35,4 @@ export type ExButtonRouterProps<C extends ElementType> = ExButtonStyleProps & {
   type?: never;
 } & Omit<ComponentPropsWithoutRef<NoInfer<C>>, keyof ExButtonStyleProps | "as" | "type">;
 
-export type ExButtonProps<C extends ElementType = "button"> =
-  | ExButtonNativeProps
-  | ExButtonLinkProps
-  | ExButtonRouterProps<C>;
+export type ExButtonProps<C extends ElementType = "button"> = ExButtonNativeProps | ExButtonLinkProps | ExButtonRouterProps<C>;
