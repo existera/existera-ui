@@ -4,6 +4,9 @@
   --height-md: 30px;
   --height-lg: 34px;
 
+  --text-md: 1rem;
+  --text-md--line-height: 1.5;
+
   --radius-xs: 5px;
   --radius-sm: 6px;
   --radius-md: 8px;
@@ -63,6 +66,10 @@
   --color-danger-soft: #ffe9ee;
 
   --color-ring: rgba(52, 120, 246, 0.35);
+}
+
+@theme inline {
+  --color-muted-foreground: var(--color-muted);
 }
 
 [data-theme="dark"] {

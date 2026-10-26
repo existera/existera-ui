@@ -11,3 +11,10 @@ for (const size of ["xs", "sm", "md", "lg"]) {
 }
 
 console.log("Standalone CSS checks passed: compiled utilities and shared control height tokens.");
+
+const integration = await readFile(new URL("../dist/tailwind.css", import.meta.url), "utf8");
+assert.match(integration, /@theme\s*\{/, "The Tailwind integration must register design tokens.");
+assert.match(integration, /@source\s+"\.\/\*\*\/\*\.js"/, "The integration must scan the distributed component modules.");
+assert.match(integration, /@custom-variant dark/, "Dark utilities must follow data-theme.");
+assert.doesNotMatch(integration, /@import/, "The integration must be self-contained and must not import a second Tailwind reset.");
+console.log("Tailwind integration checks passed: shared compiler tokens, component sources, and data-theme dark mode.");

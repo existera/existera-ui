@@ -1,0 +1,3 @@
+/* Import after Tailwind v4 instead of the standalone style.css entry. */
+@import "./styles/base.css";
+@source "./**/*.{ts,tsx}";
