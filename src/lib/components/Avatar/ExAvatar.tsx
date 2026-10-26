@@ -78,7 +78,7 @@ export default function ExAvatar({
       {status !== "none" && (
         <span
           className={cn(
-            "absolute -bottom-1 -right-1 rounded-full border-2 border-background",
+            "absolute -bottom-0.5 -right-0.5 rounded-full border-2 border-background",
             AvatarSizeClass[size].status,
             AvatarStatusClass[status],
           )}

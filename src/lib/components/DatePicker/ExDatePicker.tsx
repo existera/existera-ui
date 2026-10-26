@@ -103,6 +103,7 @@ const ExDatePicker: CompoundDatePicker = (props) => {
         ref={triggerRef}
         className={cn(
           DatePickerSizeClass[inputSize].height,
+          operator && "h-full min-h-0",
           DatePickerSizeClass[inputSize].radius[radius].default,
           operator
             ? "min-w-0 flex-1"

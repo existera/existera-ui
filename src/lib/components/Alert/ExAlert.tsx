@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { cn } from "../../utils/Utils";
 import type { ExAlertProps } from "./props/ExAlertProps";
 
-import { AlertBaseClass, AlertCloseButtonClass, AlertColorClass, AlertSizeClass, AlertVariantClass } from "./class/ExAlertClass";
+import { AlertBaseClass, AlertCloseButtonClass, AlertColorClass, AlertPaddingClass, AlertSizeClass, AlertVariantClass } from "./class/ExAlertClass";
 
 import { useEffect, useRef } from "react";
 
@@ -14,6 +14,7 @@ export default function ExAlert({
   variant = "solid",
   color = "primary",
   size = "md",
+  padding = "m",
   icon,
   dismissible = false,
   onDismiss,
@@ -39,6 +40,7 @@ export default function ExAlert({
       className={cn(
         AlertBaseClass,
         AlertSizeClass[size].wrap,
+        AlertPaddingClass[padding],
         dismissible && AlertSizeClass[size].pr,
         AlertVariantClass[variant](AlertColorClass[color]),
       )}
@@ -66,7 +68,7 @@ export default function ExAlert({
             AlertCloseButtonClass,
             AlertSizeClass[size].close,
             AlertColorClass[color].ring,
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-md",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
           )}>
           <X
             className={cn(

@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
+import { ExTableContext } from "./ExTableContext";
 import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
 import { cn } from "../../utils/Utils";
 
@@ -17,6 +18,7 @@ export default function ExTableHeader({
   textAlign?: "left" | "right";
   children?: ReactNode;
 }) {
+  const { variant } = useContext(ExTableContext);
   const Icon =
     sortDirection === "asc"
       ? ChevronUp
@@ -29,7 +31,8 @@ export default function ExTableHeader({
       scope="col"
       className={cn(
         textAlign === "left" ? "text-left" : "text-right",
-        "bg-surface-2 px-3 py-2 font-medium border-b border-border",
+        "px-3 py-2 font-medium border-b border-border",
+        variant === "transparent" ? "bg-transparent" : "bg-surface-2",
       )}
       role="columnheader"
       aria-sort={

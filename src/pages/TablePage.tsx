@@ -13,6 +13,7 @@ export default function TablePage() {
   const section: OnThisPage[] = [
     { name: "Introduction", link: "#intro" },
     { name: "Basic Usage", link: "#basic-usage" },
+    { name: "Variant", link: "#variant" },
     { name: "Size", link: "#size" },
     { name: "Footer", link: "#footer" },
     { name: "Sort", link: "#sort" },
@@ -616,6 +617,23 @@ export default function TablePage() {
 </ExTable>`}</ExCodeBlock>
         </section>
       </div>
+        <section id="variant" className="section-anchor mt-8">
+          <h2 className="mb-4 text-xl font-semibold">Variant</h2>
+          <p className="mb-4 text-sm text-muted">The default variant keeps its surface background. Transparent tables show the parent background, including headers, expanded rows, and the footer.</p>
+          <div className="grid gap-6">
+            {(["default", "transparent"] as const).map((variant) => (
+              <div key={variant} className="rounded-md bg-primary-soft p-4">
+                <p className="mb-3 text-sm font-medium">{variant}</p>
+                <ExTable variant={variant}>
+                  <ExTableRow><ExTableHeader>Name</ExTableHeader><ExTableHeader>Role</ExTableHeader></ExTableRow>
+                  <ExTableRow><ExTableCell>Olivia Martin</ExTableCell><ExTableCell>Developer</ExTableCell></ExTableRow>
+                  <ExTableFooter>1 employee</ExTableFooter>
+                </ExTable>
+              </div>
+            ))}
+          </div>
+          <ExCodeBlock language="tsx">{'<ExTable variant="transparent">\n  {/* Header, rows, and footer */}\n</ExTable>'}</ExCodeBlock>
+        </section>
     </PageContent>
   );
 }

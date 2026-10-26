@@ -103,6 +103,7 @@ const ExSelect: CompoundSelect = (props) => {
     <div
       className={cn(
         SelectSizeClass[inputSize].height,
+        operator && "h-full min-h-0",
         SelectSizeClass[inputSize].radius[radius].default,
         operator
           ? "min-w-0 flex-1"

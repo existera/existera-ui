@@ -9,6 +9,7 @@ import { ExTableContext } from "./ExTableContext";
 
 export default function ExTable({
   size = "md",
+  variant = "default",
   expandMode = "single",
   children,
 }: ExTableProps) {
@@ -21,6 +22,7 @@ export default function ExTable({
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const context = useMemo(
     () => ({
+      variant,
       expandMode,
       expandedRows,
 
@@ -46,7 +48,7 @@ export default function ExTable({
         });
       },
     }),
-    [expandMode, expandedRows],
+    [expandMode, expandedRows, variant],
   );
 
   return (
@@ -80,7 +82,8 @@ export default function ExTable({
           <div
             className={cn(
               TableSizeClass[size],
-              "border-border bg-surface-2 border-t px-3 py-2",
+              "border-border border-t px-3 py-2",
+              variant === "transparent" ? "bg-transparent" : "bg-surface-2",
             )}
           >
             {footerRow}

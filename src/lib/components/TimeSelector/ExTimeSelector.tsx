@@ -187,6 +187,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
         ref={triggerRef}
         className={cn(
           TimeSelectorSizeClass[inputSize].height,
+          operator && "h-full min-h-0",
           TimeSelectorSizeClass[inputSize].radius[radius].default,
           operator
             ? "min-w-0 flex-1"

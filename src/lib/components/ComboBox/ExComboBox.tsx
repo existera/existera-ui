@@ -326,6 +326,8 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
         ref={triggerRef}
         className={cn(
           ComboBoxSizeClass[inputSize].height,
+          operator && "h-full min-h-0",
+          multiple && "h-auto",
           ComboBoxSizeClass[inputSize].radius[radius].default,
           operator
             ? "min-w-0 flex-1"
@@ -347,7 +349,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
         <div
           className={cn(
             "relative flex h-full min-w-0 flex-1 items-center",
-            selected.length === 0 ? ComboBoxPadding[inputSize].wrapper : "p-1",
+            multiple && selected.length > 0 ? "px-1 py-0.5" : ComboBoxPadding[inputSize].wrapper,
             !operator && ComboBoxStateClass[state],
             !operator && !suffix && prefix && ComboBoxSizeClass[inputSize].radius[radius].prefix,
             !operator && !prefix && suffix && ComboBoxSizeClass[inputSize].radius[radius].suffix,
@@ -362,7 +364,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
             {multiple &&
               selected.map((option, index) => (
                 <ExBadge
-                  size={size}
+                  size={inputSize}
                   radius={radius}
                   key={index}
                   variant={badgeVariant}
@@ -389,8 +391,8 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
               disabled={disabled}
               role="searchbox"
               className={cn(
-                selected.length > 0 && "min-w-8 flex-1",
-                "border-none bg-transparent px-1 shadow-none outline-none",
+                "min-h-0 border-none bg-transparent px-1 py-0 leading-none shadow-none outline-none",
+                multiple ? "min-w-8 flex-1 basis-8" : "min-w-0 w-full",
                 disabled && "cursor-not-allowed text-muted",
               )}
               value={!multiple && selected.length > 0 ? selected[0].label : internalValue}

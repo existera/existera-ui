@@ -5,6 +5,7 @@ import type ExTableExpand from "../ExTableExpand";
 import type ExTableHeader from "../ExTableHeader";
 
 export type TableSize = Size;
+export type TableVariant = "default" | "transparent";
 export type TableElement =
   | ReactElement<React.ComponentProps<typeof ExTableCell>>
   | ReactElement<React.ComponentProps<typeof ExTableHeader>>;

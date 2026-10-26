@@ -1,5 +1,7 @@
 "use client";
 
+import { TextareaLineClass } from "../../styles/ControlSize";
+
 import { useTextField } from "../../hooks/useTextField";
 import { useNativeField } from "../../hooks/useNativeField";
 import React, { Children, isValidElement, useLayoutEffect, useState, useCallback } from "react";
@@ -102,6 +104,7 @@ const ExTextarea: CompoundTextarea = (props) => {
     <div
       className={cn(
         TextareaSizeClass[inputSize].height,
+        operator && "min-h-0",
         TextareaSizeClass[inputSize].radius[radius].default,
         operator
           ? "min-w-0 flex-1"
@@ -152,9 +155,9 @@ const ExTextarea: CompoundTextarea = (props) => {
           aria-required={ariaRequired}
           aria-invalid={ariaInvalid}
           className={cn(
-            TextareaSizeClass[inputSize].height,
+            TextareaLineClass[inputSize],
             autoResize && "resize-none",
-            "ex-textarea-scroll h-fit min-w-0 flex-1 bg-transparent px-1 shadow-none placeholder:text-muted/70",
+            "ex-textarea-scroll block h-auto min-h-0 min-w-0 flex-1 border-0 bg-transparent px-1 py-0 shadow-none outline-none placeholder:text-muted/70",
             disabled && "cursor-not-allowed text-muted",
             className,
           )}

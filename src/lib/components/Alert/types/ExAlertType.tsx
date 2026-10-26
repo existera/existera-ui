@@ -8,4 +8,5 @@ export type AlertColorConfig = {
 };
 export type AlertVariant = Exclude<Variant, "outline" | "text">;
 export type AlertSize = Size;
+export type AlertPadding = "s" | "m" | "l";
 export type AlertColor = Color;

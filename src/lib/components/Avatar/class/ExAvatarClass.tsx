@@ -11,20 +11,20 @@ export const AvatarSizeClass: Record<
   { container: string; status: string }
 > = {
   xs: {
-    container: "size-8 text-xs",
-    status: "size-3.5",
+    container: "size-6 text-[10px] [&_svg]:size-3",
+    status: "size-2",
   },
   sm: {
-    container: "size-10 text-sm",
-    status: "size-4",
+    container: "size-7 text-xs [&_svg]:size-3.5",
+    status: "size-2.5",
   },
   md: {
-    container: "size-11 text-md",
-    status: "size-4.5",
+    container: "size-8 text-sm [&_svg]:size-4",
+    status: "size-3",
   },
   lg: {
-    container: "size-12 text-lg",
-    status: "size-5",
+    container: "size-10 text-base [&_svg]:size-5",
+    status: "size-3.5",
   },
 };
 

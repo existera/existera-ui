@@ -10,6 +10,7 @@ import type { OnThisPage } from "../shared/documentation/OnThisPageDocumentation
 
 export default function AlertPage() {
   const section: OnThisPage[] = [
+    { name: "Padding", link: "#padding" },
     {
       name: "Introduction",
       link: "#intro",
@@ -341,6 +342,18 @@ export default function AlertPage() {
           </ExCodeBlock>
         </section>
       </div>
+        <section id="padding" className="section-anchor mt-8">
+          <h2 className="mb-4 text-xl font-semibold">Padding</h2>
+          <p className="mb-4 text-sm text-muted">Alerts have square corners. Use padding independently from the text size; the default padding is m.</p>
+          <div className="grid gap-4">
+            {(["s", "m", "l"] as const).map((padding) => (
+              <ExAlert key={padding} padding={padding} variant="soft" title={`Padding ${padding}`}>
+                Square alert with {padding} padding.
+              </ExAlert>
+            ))}
+          </div>
+          <ExCodeBlock language="tsx">{'<ExAlert padding="s" />\n<ExAlert padding="m" />\n<ExAlert padding="l" />'}</ExCodeBlock>
+        </section>
     </PageContent>
   );
 }

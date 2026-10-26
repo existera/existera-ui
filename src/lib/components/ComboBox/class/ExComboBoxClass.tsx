@@ -1,3 +1,4 @@
+import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { ComboBoxRadius, ComboBoxSize, ComboBoxState } from "../types/ExComboBoxType";
 
 export const ComboBoxStateClass: Record<ComboBoxState, string> = {
@@ -21,7 +22,7 @@ export const ComboBoxSizeClass: Record<
   }
 > = {
   xs: {
-    height: "min-h-xs h-fit text-xs",
+    height: ControlSizeClass.xs,
     radius: {
       default: {
         prefix: "rounded-r-xs",
@@ -36,7 +37,7 @@ export const ComboBoxSizeClass: Record<
     },
   },
   sm: {
-    height: "min-h-sm h-fit text-sm",
+    height: ControlSizeClass.sm,
     radius: {
       default: {
         prefix: "rounded-r-sm",
@@ -51,7 +52,7 @@ export const ComboBoxSizeClass: Record<
     },
   },
   md: {
-    height: "min-h-md h-fit text-md",
+    height: ControlSizeClass.md,
     radius: {
       default: {
         prefix: "rounded-r-md",
@@ -66,7 +67,7 @@ export const ComboBoxSizeClass: Record<
     },
   },
   lg: {
-    height: "min-h-lg h-fit text-lg",
+    height: ControlSizeClass.lg,
     radius: {
       default: {
         prefix: "rounded-r-lg",
@@ -118,22 +119,22 @@ export const ComboBoxPadding: Record<
   }
 > = {
   xs: {
-    wrapper: "px-1.5 py-1",
+    wrapper: "px-1.5 py-0",
     left: "pr-0.5",
     right: "pl-0.5",
   },
   sm: {
-    wrapper: "px-2 py-1",
+    wrapper: "px-2 py-0",
     left: "pr-1",
     right: "pl-1",
   },
   md: {
-    wrapper: "px-2 py-1",
+    wrapper: "px-2 py-0",
     left: "pr-1.5",
     right: "pl-1.5",
   },
   lg: {
-    wrapper: "px-2.5 py-1",
+    wrapper: "px-2.5 py-0",
     left: "pr-2",
     right: "pl-2",
   },
