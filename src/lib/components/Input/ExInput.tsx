@@ -96,6 +96,7 @@ const ExInput: CompoundInput = (props) => {
     <div
       className={cn(
         InputSizeClass[inputSize].height,
+        operator && "h-full min-h-0",
         InputSizeClass[inputSize].radius[radius].default,
         operator
           ? "min-w-0 flex-1"
@@ -146,8 +147,9 @@ const ExInput: CompoundInput = (props) => {
           aria-required={ariaRequired}
           aria-invalid={ariaInvalid}
           className={cn(
-            "w-full bg-transparent px-1 shadow-none outline-none",
+            "h-full min-h-0 min-w-0 w-full bg-transparent px-1 py-0 shadow-none outline-none",
             type === "number" && "ex-input-number",
+            type === "search" && clearable && "ex-input-search-clearable",
             disabled && "cursor-not-allowed text-muted",
           )}
           style={{ textAlign }}

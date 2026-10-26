@@ -1,3 +1,4 @@
+import { ControlSizeClass } from "../../../styles/ControlSize";
 import { cn } from "../../../utils/Utils";
 import type { ButtonColor, ButtonRadius, ButtonSize } from "../types/ExButtonType";
 
@@ -5,10 +6,10 @@ export const ButtonBaseClass =
   "relative inline-flex items-center justify-center select-none overflow-hidden text-nowrap transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background leading-none";
 
 export const ButtonSizeClass: Record<ButtonSize, string> = {
-  xs: "h-xs text-xs leading-none gap-[var(--gap-x-xs)] rounded-[var(--radius-xs)]",
-  sm: "h-sm text-sm leading-none gap-[var(--gap-x-sm)] rounded-[var(--radius-sm)]",
-  md: "h-md text-md leading-none gap-[var(--gap-x-md)] rounded-[var(--radius-md)]",
-  lg: "h-lg text-lg leading-none gap-[var(--gap-x-lg)] rounded-[var(--radius-lg)]",
+  xs: cn(ControlSizeClass.xs, "gap-[var(--gap-x-xs)] rounded-[var(--radius-xs)]"),
+  sm: cn(ControlSizeClass.sm, "gap-[var(--gap-x-sm)] rounded-[var(--radius-sm)]"),
+  md: cn(ControlSizeClass.md, "gap-[var(--gap-x-md)] rounded-[var(--radius-md)]"),
+  lg: cn(ControlSizeClass.lg, "gap-[var(--gap-x-lg)] rounded-[var(--radius-lg)]"),
 };
 
 export const ButtonPaddingClass: Record<ButtonSize, string> = {
@@ -33,10 +34,10 @@ export const ButtonPaddingRadiusFullClass: Record<ButtonSize, string> = {
 };
 
 export const ButtonIconOnlyClass: Record<ButtonSize, string> = {
-  xs: "h-xs w-[var(--height-xs)]",
-  sm: "h-sm w-[var(--height-sm)]",
-  md: "h-md w-[var(--height-md)]",
-  lg: "h-lg w-[var(--height-lg)]",
+  xs: "w-[var(--height-xs)]",
+  sm: "w-[var(--height-sm)]",
+  md: "w-[var(--height-md)]",
+  lg: "w-[var(--height-lg)]",
 };
 
 export const ButtonLoadingClass: Record<ButtonSize, string> = {

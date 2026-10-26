@@ -21,7 +21,7 @@ export const TextareaSizeClass: Record<
   }
 > = {
   xs: {
-    height: "min-h-[16px] text-xs",
+    height: "min-h-[var(--height-xs)]",
     radius: {
       default: {
         prefix: "rounded-r-xs",
@@ -36,7 +36,7 @@ export const TextareaSizeClass: Record<
     },
   },
   sm: {
-    height: "min-h-[20px] text-sm",
+    height: "min-h-[var(--height-sm)]",
     radius: {
       default: {
         prefix: "rounded-r-sm",
@@ -51,7 +51,7 @@ export const TextareaSizeClass: Record<
     },
   },
   md: {
-    height: "min-h-[24px] text-md",
+    height: "min-h-[var(--height-md)]",
     radius: {
       default: {
         prefix: "rounded-r-md",
@@ -66,7 +66,7 @@ export const TextareaSizeClass: Record<
     },
   },
   lg: {
-    height: "min-h-[28px] text-lg",
+    height: "min-h-[var(--height-lg)]",
     radius: {
       default: {
         prefix: "rounded-r-lg",
@@ -109,10 +109,10 @@ export const TextareaStateIconSize: Record<TextareaSize, string> = {
   lg: "size-4.5",
 };
 export const TextareaStateIconPaddingSize: Record<TextareaSize, string> = {
-  xs: "pt-[2px]",
-  sm: "pt-[3.5px]",
-  md: "pt-[4.5px]",
-  lg: "pt-[5px]",
+  xs: "flex h-[calc(var(--height-xs)-2px)] items-center",
+  sm: "flex h-[calc(var(--height-sm)-2px)] items-center",
+  md: "flex h-[calc(var(--height-md)-2px)] items-center",
+  lg: "flex h-[calc(var(--height-lg)-2px)] items-center",
 };
 
 export const TextareaPadding: Record<
@@ -124,23 +124,23 @@ export const TextareaPadding: Record<
   }
 > = {
   xs: {
-    wrapper: "px-1.5 py-1",
-    left: "pr-0.5 pt-[4px]",
-    right: "pl-0.5 pt-[4px]",
+    wrapper: "px-1.5 py-0",
+    left: "pr-0.5 flex h-[calc(var(--height-xs)-2px)] items-center",
+    right: "pl-0.5 flex h-[calc(var(--height-xs)-2px)] items-center",
   },
   sm: {
-    wrapper: "px-2 py-1",
-    left: "pr-1 pt-[5.5px]",
-    right: "pl-1 pt-[5.5px]",
+    wrapper: "px-2 py-0",
+    left: "pr-1 flex h-[calc(var(--height-sm)-2px)] items-center",
+    right: "pl-1 flex h-[calc(var(--height-sm)-2px)] items-center",
   },
   md: {
-    wrapper: "px-2 py-[3px]",
-    left: "pr-1.5 pt-[6.5px]",
-    right: "pl-1.5 pt-[6.5px]",
+    wrapper: "px-2 py-0",
+    left: "pr-1.5 flex h-[calc(var(--height-md)-2px)] items-center",
+    right: "pl-1.5 flex h-[calc(var(--height-md)-2px)] items-center",
   },
   lg: {
-    wrapper: "px-2.5 py-1",
-    left: "pr-2 pt-[7px]",
-    right: "pl-2 pt-[7px]",
+    wrapper: "px-2.5 py-0",
+    left: "pr-2 flex h-[calc(var(--height-lg)-2px)] items-center",
+    right: "pl-2 flex h-[calc(var(--height-lg)-2px)] items-center",
   },
 };

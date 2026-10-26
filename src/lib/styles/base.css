@@ -46,11 +46,6 @@
     transition: background-color 9999s ease-out 0s;
   }
 
-  textarea {
-    min-height: 26px;
-    line-height: 26px;
-  }
-
   ::selection {
     background: var(--color-primary);
     color: #fff;
@@ -125,4 +120,11 @@
   to {
     transform: scaleX(0);
   }
+}
+
+/* Keep the custom clear button as the only search clear control. */
+.ex-input-search-clearable::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }

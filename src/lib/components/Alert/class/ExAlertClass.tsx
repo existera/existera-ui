@@ -2,12 +2,19 @@ import { cn } from "../../../utils/Utils";
 import type {
   AlertColor,
   AlertColorConfig,
+  AlertPadding,
   AlertSize,
   AlertVariant,
 } from "../types/ExAlertType";
 
 export const AlertBaseClass =
-  "relative flex w-full transition-colors";
+  "relative flex w-full rounded-none transition-colors";
+
+export const AlertPaddingClass: Record<AlertPadding, string> = {
+  s: "p-2",
+  m: "p-3",
+  l: "p-4",
+};
 
 export const AlertSizeClass: Record<
   AlertSize,
@@ -20,28 +27,28 @@ export const AlertSizeClass: Record<
   }
 > = {
   xs: {
-    wrap: "gap-1.5 p-2 text-xs rounded-sm",
+    wrap: "gap-1.5 text-xs",
     icon: "size-3",
     title: "text-sm gap-1",
     close: "top-1 right-1 size-5",
     pr: "pr-7",
   },
   sm: {
-    wrap: "gap-2 p-2.5 text-sm rounded-md",
+    wrap: "gap-2 text-sm",
     icon: "size-4",
     title: "text-md gap-1",
     close: "top-1.5 right-1.5 size-6",
     pr: "pr-8",
   },
   md: {
-    wrap: "gap-2 p-3 text-md rounded-lg",
+    wrap: "gap-2 text-md",
     icon: "size-5",
     title: "text-lg gap-1",
     close: "top-2 right-2 size-7",
     pr: "pr-10",
   },
   lg: {
-    wrap: "gap-3 p-4 text-lg rounded-xl",
+    wrap: "gap-3 text-lg",
     icon: "size-6",
     title: "text-xl gap-1.5",
     close: "top-2.5 right-2.5 size-8",
@@ -94,4 +101,4 @@ export const AlertVariantClass = {
 } satisfies Record<AlertVariant, (config: AlertColorConfig) => string>;
 
 export const AlertCloseButtonClass =
-  "absolute inline-flex items-center justify-center rounded-md hover:cursor-pointer transition hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
+  "absolute inline-flex items-center justify-center rounded-none hover:cursor-pointer transition hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";

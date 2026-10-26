@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import type { AlertColor, AlertSize, AlertVariant } from "../types/ExAlertType";
+import type { AlertColor, AlertPadding, AlertSize, AlertVariant } from "../types/ExAlertType";
 
 export interface ExAlertProps extends HTMLAttributes<HTMLDivElement> {
   id?: string;
@@ -8,6 +8,7 @@ export interface ExAlertProps extends HTMLAttributes<HTMLDivElement> {
   variant?: AlertVariant;
   color?: AlertColor;
   size?: AlertSize;
+  padding?: AlertPadding;
   icon?: ReactNode;
   dismissible?: boolean;
   onDismiss?: () => void;

@@ -9,6 +9,8 @@ export type { ExWidgetLayout, ExWidgetLayoutItem, ExWidgetConstraints, ExWidgetB
 export { default as ExAccordion } from "./components/Accordion/ExAccordion";
 export { default as ExAccordionItem } from "./components/Accordion/ExAccordionItem";
 export { default as ExAlert } from "./components/Alert/ExAlert";
+export type { ExAlertProps } from "./components/Alert/props/ExAlertProps";
+export type { AlertPadding } from "./components/Alert/types/ExAlertType";
 export { default as ExAvatar } from "./components/Avatar/ExAvatar";
 export { default as ExBadge } from "./components/Badge/ExBadge";
 export { default as ExChatBubble } from "./components/ChatBubble/ExChatBubble";
@@ -62,6 +64,8 @@ export { default as ExTabList } from "./components/Tab/ExTabList";
 export { default as ExTabContent } from "./components/Tab/ExTabContent";
 export { default as ExTabItem } from "./components/Tab/ExTabItem";
 export { default as ExTable } from "./components/Table/ExTable";
+export type { ExTableProps } from "./components/Table/props/ExTableProps";
+export type { TableVariant } from "./components/Table/types/ExTableType";
 export { default as ExTableRow } from "./components/Table/ExTableRow";
 export { default as ExTableHeader } from "./components/Table/ExTableHeader";
 export { default as ExTableFooter } from "./components/Table/ExTableFooter";

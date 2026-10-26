@@ -52,10 +52,11 @@ export default function ExTableRow({
         role="row"
         aria-expanded={expandable ? open : undefined}
         className={cn(
-          !isHeaderRow && expandable
-            ? "cursor-pointer border-b border-border bg-surface-2 transition-colors"
-            : "border-b border-border bg-surface-2",
-          open ? "bg-surface-3" : "hover:bg-surface-3",
+          "border-b border-border",
+          !isHeaderRow && expandable && "cursor-pointer transition-colors",
+          table.variant === "transparent"
+            ? "bg-transparent"
+            : cn("bg-surface-2", open ? "bg-surface-3" : "hover:bg-surface-3"),
         )}
         onClick={() => {
           if (!isHeaderRow && expandable && id) {
@@ -118,7 +119,7 @@ export default function ExTableRow({
                   duration: 0.2,
                   ease: "easeInOut",
                 }}
-                className="overflow-hidden p-4 bg-surface-2"
+                className={cn("overflow-hidden p-4", table.variant === "transparent" ? "bg-transparent" : "bg-surface-2")}
               >
                 {expand.props.children}
               </motion.div>

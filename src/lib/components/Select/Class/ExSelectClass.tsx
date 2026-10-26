@@ -1,3 +1,4 @@
+import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { SelectRadius, SelectSize, SelectState } from "../types/ExSelectType";
 
 export const SelectStateClass: Record<SelectState, string> = {
@@ -7,10 +8,10 @@ export const SelectStateClass: Record<SelectState, string> = {
 };
 
 export const SelectHeight: Record<SelectSize, string> = {
-  xs: "h-[16px]",
-  sm: "h-[20px]",
-  md: "h-[24px]",
-  lg: "h-[28px]",
+  xs: "h-full min-h-0",
+  sm: "h-full min-h-0",
+  md: "h-full min-h-0",
+  lg: "h-full min-h-0",
 };
 
 export const SelectSizeClass: Record<
@@ -28,7 +29,7 @@ export const SelectSizeClass: Record<
   }
 > = {
   xs: {
-    height: "min-h-xs h-fit text-xs",
+    height: ControlSizeClass.xs,
     radius: {
       default: {
         prefix: "rounded-r-xs",
@@ -43,7 +44,7 @@ export const SelectSizeClass: Record<
     },
   },
   sm: {
-    height: "min-h-sm h-fit text-sm",
+    height: ControlSizeClass.sm,
     radius: {
       default: {
         prefix: "rounded-r-sm",
@@ -58,7 +59,7 @@ export const SelectSizeClass: Record<
     },
   },
   md: {
-    height: "min-h-md h-fit text-md",
+    height: ControlSizeClass.md,
     radius: {
       default: {
         prefix: "rounded-r-md",
@@ -73,7 +74,7 @@ export const SelectSizeClass: Record<
     },
   },
   lg: {
-    height: "min-h-lg h-fit text-lg",
+    height: ControlSizeClass.lg,
     radius: {
       default: {
         prefix: "rounded-r-lg",
@@ -125,22 +126,22 @@ export const SelectPadding: Record<
   }
 > = {
   xs: {
-    wrapper: "px-1.5 py-1",
+    wrapper: "px-1.5 py-0",
     left: "pr-0.5",
     right: "pl-0.5",
   },
   sm: {
-    wrapper: "px-2 py-1",
+    wrapper: "px-2 py-0",
     left: "pr-1",
     right: "pl-1",
   },
   md: {
-    wrapper: "px-2 py-1",
+    wrapper: "px-2 py-0",
     left: "pr-1.5",
     right: "pl-1.5",
   },
   lg: {
-    wrapper: "px-2.5 py-1",
+    wrapper: "px-2.5 py-0",
     left: "pr-2",
     right: "pl-2",
   },
