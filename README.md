@@ -60,10 +60,23 @@ The stylesheet includes the component utilities, light/dark theme tokens, and
 the Tailwind base reset used by the documentation. You do not need to install
 or configure Tailwind to use the components. JavaScript imports do not inject CSS.
 
-If your application already uses Tailwind, import this stylesheet once alongside
-your application CSS; do not scan this package to regenerate its component styles.
-Load application overrides after the package stylesheet. The existing base styles
-apply to the document, including the page background and form controls.
+If your application uses Tailwind CSS v4, use the dedicated integration instead:
+
+```css
+@import "tailwindcss";
+@import "@existera/ui/tailwind.css";
+
+/* Application theme overrides and styles go here. */
+```
+
+Use **one** library entry: `style.css` for applications without Tailwind, or
+`tailwind.css` for Tailwind v4 applications. Do not import both. The integration
+registers the library's design tokens, scans its distributed components, and
+uses the application's Tailwind compiler to generate one set of utilities.
+It also makes `dark:` variants follow `data-theme="dark"`.
+
+The existing base styles apply to the document, including the page background
+and form controls. Load application overrides after the selected entry.
 
 Typography uses the application's `--font-sans` token, with a system-font default.
 The documentation loads Geist separately; the package does not download fonts.
