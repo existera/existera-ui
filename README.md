@@ -64,13 +64,17 @@ If your application uses Tailwind CSS v4, use the dedicated integration instead:
 
 ```css
 @import "tailwindcss";
-@import "@existera/ui/tailwind.css";
+@import "@existera/ui";
 
 /* Application theme overrides and styles go here. */
 ```
 
+The CSS import resolves to the Tailwind integration, while JavaScript imports
+such as `import { ExButton } from "@existera/ui"` still resolve to React components.
+The explicit `@existera/ui/tailwind.css` path also remains supported.
+
 Use **one** library entry: `style.css` for applications without Tailwind, or
-`tailwind.css` for Tailwind v4 applications. Do not import both. The integration
+the root CSS import for Tailwind v4 applications. Do not import both. The integration
 registers the library's design tokens, scans its distributed components, and
 uses the application's Tailwind compiler to generate one set of utilities.
 It also makes `dark:` variants follow `data-theme="dark"`.
