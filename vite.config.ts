@@ -28,7 +28,7 @@ export default defineConfig({
     target: "es2022",
     emptyOutDir: true,
     copyPublicDir: false,
-    sourcemap: true,
+    sourcemap: false,
     cssCodeSplit: true,
     cssMinify: "esbuild",
 
