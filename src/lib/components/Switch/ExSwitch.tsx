@@ -77,9 +77,7 @@ export default function ExSwitch({
           "relative inline-flex shrink-0 cursor-pointer items-center",
           "transition-[background-color,box-shadow,transform] duration-200",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
-          "shadow-[inset_0_1px_2px_rgba(0,0,0,0.12)]",
-          "dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.32),inset_0_-1px_1px_rgba(255,255,255,0.04)]",
-          currentChecked ? "bg-primary" : "bg-muted/50",
+          currentChecked ? "bg-primary-solid" : "bg-muted/50",
           disabled && "cursor-not-allowed opacity-50",
           {
             "h-4 w-7 rounded-full": size === "xs",

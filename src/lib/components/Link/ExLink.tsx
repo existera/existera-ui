@@ -22,7 +22,7 @@ const ExLink = forwardRef<HTMLAnchorElement, ExLinkProps>(
       color = "default",
       size = "md",
       weight = "light",
-      underline = "hover",
+      underline,
       disabled = false,
       leftIcon,
       rightIcon,
@@ -81,7 +81,8 @@ const ExLink = forwardRef<HTMLAnchorElement, ExLinkProps>(
           LinkColorClass[color],
           LinkSizeClass[size],
           LinkWeightClass[weight],
-          LinkUnderlineClass[underline],
+          LinkUnderlineClass[underline ?? "hover"],
+          underline === undefined && "ex-link-auto-underline",
           disabled && "pointer-events-none opacity-50 cursor-not-allowed",
           className,
         )}

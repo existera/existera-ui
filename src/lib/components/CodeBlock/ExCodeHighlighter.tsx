@@ -9,6 +9,7 @@ import markup from "react-syntax-highlighter/dist/esm/languages/prism/markup";
 
 import { oneDark, oneLight, vscDarkPlus, atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+import { ensureCodeContrast } from "./codeContrast";
 import type { CodeBlockTheme } from "./types/ExCodeBlockTypes";
 
 SyntaxHighlighter.registerLanguage("typescript", ts);
@@ -36,21 +37,30 @@ interface ExCodeHighlighterProps {
 }
 
 export default function ExCodeHighlighter({ language, theme, showLineNumbers, padding, fontSize, children }: ExCodeHighlighterProps) {
+  const sourceTheme = themes[theme as keyof typeof themes] ?? oneDark;
+  const isLight = theme === "oneLight";
+  const commentColor = isLight ? "#5a6170" : "#a4adbd";
+  const background = sourceTheme['pre[class*="language-"]']?.background as string ?? (isLight ? "#fafafa" : "#282c34");
+  const accessibleTheme = Object.fromEntries(Object.entries(sourceTheme).map(([selector, style]) => [
+    selector,
+    { ...style, ...(typeof style.color === "string" ? { color: ensureCodeContrast(style.color, background) } : {}) },
+  ]));
   return (
     <SyntaxHighlighter
       language={language}
-      style={themes[theme as keyof typeof themes] ?? oneDark}
+      style={accessibleTheme}
       showLineNumbers={showLineNumbers}
       wrapLines
       wrapLongLines={false}
       customStyle={{
         margin: 0,
         padding,
-        background: "transparent",
+        background,
         fontSize,
         width: "100%",
         whiteSpace: "pre",
       }}
+      lineNumberStyle={{ color: commentColor, minWidth: "2.25em" }}
       codeTagProps={{
         style: {
           background: "transparent",

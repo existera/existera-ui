@@ -31,7 +31,15 @@ interface Session {
   started: boolean;
 }
 
-export function useWidgetInteraction({ root, layout, metrics, constraints, editable, revision, commit }: {
+export function useWidgetInteraction({
+  root,
+  layout,
+  metrics,
+  constraints,
+  editable,
+  revision,
+  commit,
+}: {
   root: RefObject<HTMLDivElement | null>;
   layout: ExWidgetLayout;
   metrics: GridMetrics;
@@ -62,9 +70,14 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
 
   useEffect(() => {
     const escape = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape" && session.current) { cancel(); setMessage("Widget change cancelled."); }
+      if (event.key === "Escape" && session.current) {
+        cancel();
+        setMessage("Widget change cancelled.");
+      }
     };
-    const hide = () => { if (document.hidden) cancel(); };
+    const hide = () => {
+      if (document.hidden) cancel();
+    };
     window.addEventListener("keydown", escape);
     window.addEventListener("blur", cancel);
     document.addEventListener("visibilitychange", hide);
@@ -79,11 +92,14 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
   // A changed grid, constraint, child, or edit mode invalidates pointer coordinates.
   useEffect(() => () => cancel(), [revision, editable, cancel]);
   const layoutRevision = JSON.stringify(layout);
-  useEffect(() => () => {
-    // External controlled updates must not be overwritten by a stale drag snapshot.
-    // A normal drop already released the session, so its settling animation survives.
-    if (session.current) cancel();
-  }, [layoutRevision, cancel]);
+  useEffect(
+    () => () => {
+      // External controlled updates must not be overwritten by a stale drag snapshot.
+      // A normal drop already released the session, so its settling animation survives.
+      if (session.current) cancel();
+    },
+    [layoutRevision, cancel],
+  );
 
   function start(event: PointerEvent<HTMLButtonElement>, id: string, action: ExWidgetAction) {
     if (!editable || event.button !== 0 || !event.isPrimary || session.current || interaction || !root.current || metrics.step <= 0) return;
@@ -93,9 +109,21 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
     event.currentTarget.focus({ preventScroll: true });
     event.currentTarget.setPointerCapture(event.pointerId);
     const rect = root.current.getBoundingClientRect();
-    session.current = { id, action, origin, target: event.currentTarget, pointerId: event.pointerId,
-      x: event.clientX, y: event.clientY, left: rect.left, top: rect.top,
-      bounds: widgetBounds(origin, metrics), layout, next: layout, started: false };
+    session.current = {
+      id,
+      action,
+      origin,
+      target: event.currentTarget,
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      left: rect.left,
+      top: rect.top,
+      bounds: widgetBounds(origin, metrics),
+      layout,
+      next: layout,
+      started: false,
+    };
   }
 
   function update(clientX: number, clientY: number) {
@@ -123,13 +151,19 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
     if (session.current?.pointerId !== event.pointerId) return;
     const { clientX, clientY } = event;
     if (frame.current !== null) cancelAnimationFrame(frame.current);
-    frame.current = requestAnimationFrame(() => { frame.current = null; update(clientX, clientY); });
+    frame.current = requestAnimationFrame(() => {
+      frame.current = null;
+      update(clientX, clientY);
+    });
   }
 
   function finish(event: PointerEvent<HTMLButtonElement>, aborted = false) {
     const active = session.current;
     if (!active || active.pointerId !== event.pointerId) return;
-    if (aborted) { cancel(); return; }
+    if (aborted) {
+      cancel();
+      return;
+    }
     update(event.clientX, event.clientY);
     release();
     if (!active.started) return;
@@ -140,18 +174,21 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
     // Keep the original grid slot until the visual has settled, then rebase without a jump.
     setInteraction({ id: active.id, origin: active.origin, pixels: widgetBounds(finalItem, metrics), phase: "settle" });
     if (changed) commit(next, active.id, active.action);
-    setMessage(`${active.id}: column ${finalItem.col + 1}, row ${finalItem.row + 1}, ${finalItem.colSpan} columns by ${finalItem.rowSpan} rows.`);
+    setMessage(
+      `${active.id}: column ${finalItem.col + 1}, row ${finalItem.row + 1}, ${finalItem.colSpan} columns by ${finalItem.rowSpan} rows.`,
+    );
   }
 
-  function keyboard(event: KeyboardEvent<HTMLButtonElement>, id: string, action: ExWidgetAction) {
-    if (!editable || session.current || interaction || event.altKey || event.ctrlKey || event.metaKey) return;
+  function adjust(id: string, action: ExWidgetAction, key: string) {
+    if (!editable || session.current || interaction) return;
     const delta: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
-    const direction = delta[event.key];
+    const direction = delta[key];
     const item = layout.find((entry) => entry.id === id);
     if (!direction || !item) return;
-    event.preventDefault();
-    const patch = action === "move" ? { col: item.col + direction[0], row: Math.min(metrics.rows - item.rowSpan, item.row + direction[1]) }
-      : { colSpan: item.colSpan + direction[0], rowSpan: Math.min(metrics.rows - item.row, item.rowSpan + direction[1]) };
+    const patch =
+      action === "move"
+        ? { col: item.col + direction[0], row: Math.min(metrics.rows - item.rowSpan, item.row + direction[1]) }
+        : { colSpan: item.colSpan + direction[0], rowSpan: Math.min(metrics.rows - item.row, item.rowSpan + direction[1]) };
     const next = updateWidget(layout, id, patch, metrics.columns, constraints);
     if (sameLayout(layout, next) || layoutRows(next, metrics.rows) > metrics.rows) return;
     commit(next, id, action);
@@ -159,17 +196,32 @@ export function useWidgetInteraction({ root, layout, metrics, constraints, edita
     setMessage(`${id}: column ${result.col + 1}, row ${result.row + 1}, ${result.colSpan} columns by ${result.rowSpan} rows.`);
   }
 
+  function keyboard(event: KeyboardEvent<HTMLButtonElement>, id: string, action: ExWidgetAction) {
+    if (event.altKey || event.ctrlKey || event.metaKey || !event.key.startsWith("Arrow")) return;
+    event.preventDefault();
+    adjust(id, action, event.key);
+  }
+  const stableAdjust = useWidgetCallback(adjust);
   const stableStart = useWidgetCallback(start);
   const stableMove = useWidgetCallback(move);
   const stableFinish = useWidgetCallback(finish);
   const stableKeyboard = useWidgetCallback(keyboard);
-  const settled = useCallback(() => setInteraction((current) => current?.phase === "settle" ? null : current), []);
+  const settled = useCallback(() => setInteraction((current) => (current?.phase === "settle" ? null : current)), []);
   useEffect(() => {
     if (interaction?.phase !== "settle") return;
     // Also releases the gesture when reduced motion or an unchanged target skips animation.
     const timer = window.setTimeout(settled, 700);
     return () => window.clearTimeout(timer);
   }, [interaction?.phase, settled]);
-  return { interaction, preview, message, start: stableStart, move: stableMove,
-    finish: stableFinish, keyboard: stableKeyboard, settled };
+  return {
+    interaction,
+    preview,
+    message,
+    start: stableStart,
+    move: stableMove,
+    finish: stableFinish,
+    keyboard: stableKeyboard,
+    adjust: stableAdjust,
+    settled,
+  };
 }

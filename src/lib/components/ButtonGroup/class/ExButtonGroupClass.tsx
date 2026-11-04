@@ -73,27 +73,27 @@ export const ButtonGroupActiveTextClass: Record<ButtonGroupColor, Record<ButtonG
 
 export const ButtonGroupIndicatorClass: Record<ButtonGroupColor, Record<ButtonGroupVariant, string>> = {
   primary: {
-    solid: "bg-primary",
+    solid: "bg-primary-solid",
     soft: "bg-primary-soft",
     outline: "border border-primary",
   },
   secondary: {
-    solid: "bg-secondary",
+    solid: "bg-secondary-solid",
     soft: "bg-secondary-soft",
     outline: "border border-secondary",
   },
   danger: {
-    solid: "bg-danger",
+    solid: "bg-danger-solid",
     soft: "bg-danger-soft",
     outline: "border border-danger",
   },
   success: {
-    solid: "bg-success",
+    solid: "bg-success-solid",
     soft: "bg-success-soft",
     outline: "border border-success",
   },
   warning: {
-    solid: "bg-warning",
+    solid: "bg-warning-solid",
     soft: "bg-warning-soft",
     outline: "border border-warning",
   },

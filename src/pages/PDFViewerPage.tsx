@@ -54,15 +54,12 @@ export default function PDFViewerPage() {
           <h2 className="text-3xl font-semibold">PDF Viewer</h2>
 
           <p>
-            PDF Viewer is a fullscreen document preview component for displaying
-            PDF files inside a modal. It uses the browser's native PDF viewer
-            when available, providing familiar controls such as scrolling,
-            zooming, searching, printing, and downloading.
+            PDF Viewer renders PDF pages directly with PDF.js in a responsive fullscreen reader for mobile and desktop. Navigate pages, jump
+            to a page number, zoom, fit to width, rotate, and download the document.
           </p>
 
           <p>
-            The component supports both remote PDF documents through a URL and
-            local PDF files using a <code>File</code> object.
+            The component supports both remote PDF documents through a URL and local PDF files using a <code>File</code> object.
           </p>
         </section>
 
@@ -71,8 +68,8 @@ export default function PDFViewerPage() {
             <h2 className="text-2xl font-semibold">Basic Usage</h2>
 
             <p className="mt-2 text-muted">
-              Pass a PDF URL to display the document inside the viewer. This is
-              useful for previewing documents hosted on your server or a CDN.
+              Pass a PDF URL to display the document inside the viewer. This is useful for previewing documents hosted on your server or a
+              CDN. Remote servers must allow cross-origin requests (CORS).
             </p>
           </div>
 
@@ -114,8 +111,7 @@ setViewer({
             <h2 className="text-2xl font-semibold">Upload File</h2>
 
             <p className="mt-2 text-muted">
-              PDF Viewer can preview local PDF files directly from a{" "}
-              <code>File</code> object without uploading them to a server.
+              PDF Viewer can preview local PDF files directly from a <code>File</code> object without uploading them to a server.
             </p>
           </div>
 
@@ -135,17 +131,11 @@ setViewer({
                         file: item.file,
                       })
                     }
-                    onDelete={() =>
-                      setFiles((prev) =>
-                        prev.filter((file) => file !== item.file),
-                      )
-                    }
+                    onDelete={() => setFiles((prev) => prev.filter((file) => file !== item.file))}
                   />
                 ))
               ) : (
-                <p className="text-muted/70">
-                  Upload a PDF file to preview it with PDF Viewer.
-                </p>
+                <p className="text-muted/70">Upload a PDF file to preview it with PDF Viewer.</p>
               )}
             </div>
           </ExCanvas>
@@ -165,14 +155,7 @@ setViewer({
         </section>
       </div>
 
-      {viewer && (
-        <ExPDFViewer
-          name={viewer.name}
-          url={viewer.url}
-          file={viewer.file}
-          onClose={() => setViewer(null)}
-        />
-      )}
+      {viewer && <ExPDFViewer name={viewer.name} url={viewer.url} file={viewer.file} onClose={() => setViewer(null)} />}
     </PageContent>
   );
 }

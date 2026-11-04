@@ -12,6 +12,7 @@ import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundInput } from "./types/ExInputType";
 
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 
 import { InputPadding, InputSizeClass, InputStateClass, InputStateIconSize } from "./class/ExInputClass";
@@ -23,7 +24,7 @@ const ExInput: CompoundInput = (props) => {
     children,
     id,
     type = "text",
-    disabled = false,
+    disabled: disabledProp = false,
     placeholder = "Please type here...",
     value,
     defaultValue = "",
@@ -33,7 +34,7 @@ const ExInput: CompoundInput = (props) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
+    state: stateProp,
     loading = false,
     clearable = false,
     debounce = 0,
@@ -42,7 +43,7 @@ const ExInput: CompoundInput = (props) => {
     "aria-labelledby": ariaLabelledBy,
     "aria-describedby": ariaDescribedby,
     "aria-required": ariaRequired,
-    "aria-invalid": ariaInvalid = state === "error",
+    "aria-invalid": ariaInvalid,
     maxLength,
     inputMode,
     autoComplete,
@@ -50,7 +51,9 @@ const ExInput: CompoundInput = (props) => {
     textAlign = "left",
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
   const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
@@ -100,8 +103,9 @@ const ExInput: CompoundInput = (props) => {
         InputSizeClass[inputSize].radius[radius].default,
         operator
           ? "min-w-0 flex-1"
-          : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-        disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+          : FormControlBaseClass,
+        !operator && (disabled ? FormControlDisabledClass : InputStateClass[state]),
+        operator && disabled && "cursor-not-allowed text-muted",
         className,
       )}>
       {!operator && prefix && (
@@ -114,7 +118,6 @@ const ExInput: CompoundInput = (props) => {
         className={cn(
           "relative flex h-full w-full items-center",
           InputPadding[inputSize].wrapper,
-          !operator && InputStateClass[state],
           !operator && !suffix && prefix && InputSizeClass[inputSize].radius[radius].prefix,
           !operator && !prefix && suffix && InputSizeClass[inputSize].radius[radius].suffix,
           !operator && !prefix && !suffix && InputSizeClass[inputSize].radius[radius].default,
@@ -145,7 +148,7 @@ const ExInput: CompoundInput = (props) => {
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedby}
           aria-required={ariaRequired}
-          aria-invalid={ariaInvalid}
+          aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           className={cn(
             "h-full min-h-0 min-w-0 w-full bg-transparent px-1 py-0 shadow-none outline-none",
             type === "number" && "ex-input-number",

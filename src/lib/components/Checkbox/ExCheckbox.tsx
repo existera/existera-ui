@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Minus } from "lucide-react";
 import { forwardRef, useEffect, useId, useState } from "react";
 
+import { RadiusSizeClass } from "../../styles/Radius";
 import { cn } from "../../utils/Utils";
 import type { ExCheckboxProps } from "./props/ExCheckboxProps";
 import { sizeMap } from "./class/ExCheckboxClass";
@@ -41,6 +42,7 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
     });
 
     const fieldId = useId();
+    const labelId = `${fieldId}-label`;
     const descriptionId = description ? fieldId + "-description" : undefined;
     const errorId = error ? fieldId + "-error" : undefined;
     const describedBy = [nativeProps["aria-describedby"], descriptionId, errorId].filter(Boolean).join(" ") || undefined;
@@ -66,11 +68,13 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
     const styles = sizeMap[size];
 
     return (
-      <label className={cn("group flex items-start select-none gap-2", disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer")}>
+      <label
+        className={cn("group flex min-h-6 items-start select-none gap-2", disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer")}>
         <span className={cn("relative flex shrink-0 items-center justify-center", styles.box)}>
           <input
             {...nativeProps}
             readOnly={readOnly}
+            aria-labelledby={nativeProps["aria-labelledby"] ?? (nativeProps["aria-label"] ? undefined : label ? labelId : undefined)}
             aria-describedby={describedBy}
             aria-invalid={nativeProps["aria-invalid"] ?? Boolean(error)}
             ref={inputRef}
@@ -88,16 +92,16 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
               "bg-surface",
               "transition-[border-color,background-color,transform]",
               "duration-150 ease-out",
-              radius === "default" ? "rounded-xs" : "rounded-full",
+              radius === "default" ? RadiusSizeClass[size] : "rounded-full",
               "border-secondary",
               error && "border-danger",
-              !disabled && !error && "group-hover:border-primary/70",
+              !disabled && !error && !isActive && "group-hover:border-primary/70",
               "peer-focus-visible:ring-2",
               error ? "peer-focus-visible:ring-danger/25" : "peer-focus-visible:ring-primary/25",
               "peer-focus-visible:ring-offset-1",
               "peer-focus-visible:ring-offset-background",
-              isActive && !error && ["border-primary", "bg-primary/10", "dark:bg-primary/15"],
-              error && ["border-danger", isActive && ["bg-danger/10", "dark:bg-danger/15"]],
+              isActive && !error && ["border-primary", "bg-primary-solid"],
+              error && ["border-danger", isActive && "bg-danger-solid"],
               !disabled && "active:scale-95",
             )}>
             <AnimatePresence initial={false}>
@@ -109,9 +113,9 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
                   transition={{ type: "spring", stiffness: 500, damping: 25 }}
                   className="flex items-center justify-center">
                   {indeterminate ? (
-                    <Minus size={styles.icon} strokeWidth={2.5} className={error ? "text-danger" : "text-primary"} />
+                    <Minus size={styles.icon} strokeWidth={2.5} className="text-white" />
                   ) : (
-                    <Check size={styles.icon} strokeWidth={2.5} className={error ? "text-danger" : "text-primary"} />
+                    <Check size={styles.icon} strokeWidth={2.5} className="text-white" />
                   )}
                 </motion.span>
               )}
@@ -122,7 +126,9 @@ const ExCheckbox = forwardRef<HTMLInputElement, ExCheckboxProps>(
         {(label || description || error) && (
           <span className="min-w-0 flex-1">
             {label && (
-              <span className={cn("block leading-tight", styles.text, "font-medium", error ? "text-danger" : "text-foreground")}>
+              <span
+                id={labelId}
+                className={cn("block leading-tight", styles.text, "font-medium", error ? "text-danger" : "text-foreground")}>
                 {label}
               </span>
             )}

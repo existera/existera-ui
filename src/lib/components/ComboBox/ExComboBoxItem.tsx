@@ -8,14 +8,16 @@ import { cn } from "../../utils/Utils";
 import { ComboBoxItemSizeClass } from "./class/ExComboBoxItemClass";
 
 const ExComboBoxItem = forwardRef<HTMLButtonElement, ExComboBoxItemProps<unknown>>(
-  ({ value, label, size = "md", children, selected = false, active = false, disabled = false, onSelect }, ref) => {
+  ({ id, value, label, size = "md", children, selected = false, active = false, disabled = false, onSelect }, ref) => {
     return (
       <button
+        id={id}
         role="option"
         ref={ref}
         type="button"
         disabled={disabled}
         tabIndex={-1}
+        aria-label={label}
         aria-selected={selected}
         aria-disabled={disabled}
         onMouseDown={(e) => {

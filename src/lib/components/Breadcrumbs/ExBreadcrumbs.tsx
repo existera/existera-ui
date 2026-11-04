@@ -22,11 +22,8 @@ export default function ExBreadcrumbs({
   return (
     <nav
       aria-label="breadcrumb"
-      className={cn(
-        "flex items-center flex-wrap gap-2 select-none",
-        BreadcrumbsSizeMap[size],
-      )}
     >
+      <ol className={cn("flex items-center flex-wrap gap-2 select-none", BreadcrumbsSizeMap[size])}>
       {items.map((child, index) => {
         if (!React.isValidElement(child)) return child;
         const isLast = index === items.length - 1;
@@ -38,12 +35,13 @@ export default function ExBreadcrumbs({
           },
         );
         return (
-          <React.Fragment key={index}>
+          <li key={index} className="inline-flex items-center gap-2">
             {clonedChild}
-            {!isLast && <span className="text-gray-400">{separator}</span>}
-          </React.Fragment>
+            {!isLast && <span aria-hidden="true" className="text-muted">{separator}</span>}
+          </li>
         );
       })}
+      </ol>
     </nav>
   );
 }

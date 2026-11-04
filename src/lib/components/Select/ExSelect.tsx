@@ -11,6 +11,7 @@ import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundSelect } from "./types/ExSelectType";
 
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 
 import { SelectHeight, SelectPadding, SelectSizeClass, SelectStateClass, SelectStateIconSize } from "./Class/ExSelectClass";
@@ -41,15 +42,17 @@ const ExSelect: CompoundSelect = (props) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
-    disabled = false,
+    state: stateProp,
+    disabled: disabledProp = false,
     clearable = false,
     loading = false,
     className,
     textAlign = "left",
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
   const controlled = "value" in props || "selected" in props;
@@ -59,10 +62,10 @@ const ExSelect: CompoundSelect = (props) => {
   const selectedValue = controlled ? selected?.value : internalValue;
   const selectedOption = option.find((item) => item.value === selectedValue) ?? null;
 
-  const inputRef = useNativeField<HTMLSelectElement>(ref, element => {
+  const inputRef = useNativeField<HTMLSelectElement>(ref, (element) => {
     const next = controlled ? selected?.value : initial?.value;
     if (!controlled) setInternalValue(next ?? null);
-    element.value = option.some(item => item.value === next) ? next! : "";
+    element.value = option.some((item) => item.value === next) ? next! : "";
   });
 
   let prefix: React.ReactNode = null;
@@ -105,10 +108,9 @@ const ExSelect: CompoundSelect = (props) => {
         SelectSizeClass[inputSize].height,
         operator && "h-full min-h-0",
         SelectSizeClass[inputSize].radius[radius].default,
-        operator
-          ? "min-w-0 flex-1"
-          : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-        disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+        operator ? "min-w-0 flex-1" : FormControlBaseClass,
+        !operator && (disabled ? FormControlDisabledClass : SelectStateClass[state]),
+        operator && disabled && "cursor-not-allowed text-muted",
       )}>
       {!operator && prefix && (
         <ExPrefix radius={radius} size={size}>
@@ -120,7 +122,6 @@ const ExSelect: CompoundSelect = (props) => {
         className={cn(
           "relative flex h-full w-full items-center",
           SelectPadding[inputSize].wrapper,
-          !operator && SelectStateClass[state],
           !operator && !suffix && prefix && SelectSizeClass[inputSize].radius[radius].prefix,
           !operator && !prefix && suffix && SelectSizeClass[inputSize].radius[radius].suffix,
           !operator && !prefix && !suffix && SelectSizeClass[inputSize].radius[radius].default,
@@ -144,23 +145,29 @@ const ExSelect: CompoundSelect = (props) => {
           aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           value={selectedOption?.value ?? ""}
           onChange={handleChange}
-          onFocus={(e) => { setFocused(true); nativeProps.onFocus?.(e); }}
-          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
+          onFocus={(e) => {
+            setFocused(true);
+            nativeProps.onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setFocused(false);
+            nativeProps.onBlur?.(e);
+          }}
           className={cn(
             SelectHeight[inputSize],
             selectedOption ? "text-foreground" : "text-muted",
-            "min-w-8 w-full bg-transparent shadow-none",
+            "min-w-8 w-full bg-transparent shadow-none outline-none",
             disabled && "cursor-not-allowed text-muted",
             className,
           )}
           style={{ textAlign }}
           autoComplete={autoComplete}>
-          <option value="" disabled className="text-muted">
+          <option value="" disabled className="bg-field text-muted">
             {placeholder}
           </option>
 
           {option.map((item) => (
-            <option key={item.value} value={item.value} className="text-black">
+            <option key={item.value} value={item.value} className="bg-field text-foreground">
               {item.label}
             </option>
           ))}

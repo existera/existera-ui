@@ -9,5 +9,6 @@ export const ExWidgetContext = createContext<{
   start: (event: PointerEvent<HTMLButtonElement>, action: ExWidgetAction) => void;
   move: (event: PointerEvent<HTMLButtonElement>) => void;
   finish: (event: PointerEvent<HTMLButtonElement>, cancel?: boolean) => void;
+  adjust: (action: ExWidgetAction, key: string) => void;
   keyboard: (event: KeyboardEvent<HTMLButtonElement>, action: ExWidgetAction) => void;
 } | null>(null);

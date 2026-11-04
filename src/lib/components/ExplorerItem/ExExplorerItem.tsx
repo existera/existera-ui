@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useId } from "react";
 import type { ExExplorerItemProps } from "./props/ExExplorerItemProps";
 import type { MenuState } from "./types/ExExplorerItemType";
 import { cn } from "../../utils/Utils";
@@ -10,7 +10,7 @@ import ExButton from "../Button/ExButton";
 import ExFolderIcon from "./ExFolderIcon";
 
 const MENU_WIDTH = 180;
-const MENU_HEIGHT = 130;
+const MENU_HEIGHT = 210;
 
 export default function ExExplorerItem({
   id,
@@ -33,6 +33,8 @@ export default function ExExplorerItem({
     y: 0,
   });
 
+  const menuId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const openMenu = (x: number, y: number) => {
@@ -83,6 +85,7 @@ export default function ExExplorerItem({
   useEffect(() => {
     if (!menu.open) return;
 
+    menuRef.current?.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
     const handleDocumentClick = (e: MouseEvent) => {
       const target = e.target as Node;
       if (menuRef.current?.contains(target)) return;
@@ -96,7 +99,9 @@ export default function ExExplorerItem({
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        e.preventDefault();
         closeMenu();
+        triggerRef.current?.focus();
       }
     };
     document.addEventListener("mousedown", handleDocumentClick);
@@ -113,6 +118,17 @@ export default function ExExplorerItem({
     <>
       <button
         type="button"
+        ref={triggerRef}
+        aria-haspopup="menu"
+        aria-expanded={menu.open}
+        aria-controls={menu.open ? menuId : undefined}
+        onKeyDown={(event) => {
+          if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+            event.preventDefault();
+            const rect = event.currentTarget.getBoundingClientRect();
+            openMenu(rect.left, rect.bottom);
+          }
+        }}
         onClick={() => (url ? onClick?.(id) : onClick?.(file!))}
         onContextMenu={handleContextMenu}
         className={cn(
@@ -140,6 +156,23 @@ export default function ExExplorerItem({
       {menu.open && (
         <div
           ref={menuRef}
+          id={menuId}
+          role="menu"
+          aria-label={`Actions for ${name}`}
+          onKeyDown={(event) => {
+            const items = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));
+            const index = items.indexOf(document.activeElement as HTMLButtonElement);
+            if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+              event.preventDefault();
+              const next =
+                event.key === "Home"
+                  ? 0
+                  : event.key === "End"
+                    ? items.length - 1
+                    : (index + (event.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+              items[next]?.focus();
+            } else if (event.key === "Tab") closeMenu();
+          }}
           className={cn(
             "fixed z-99999",
             "w-30 grid gap-1",
@@ -154,6 +187,8 @@ export default function ExExplorerItem({
             top: menu.y,
           }}>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"
@@ -168,6 +203,8 @@ export default function ExExplorerItem({
             Open
           </ExButton>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"
@@ -182,6 +219,8 @@ export default function ExExplorerItem({
             Rename
           </ExButton>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"
@@ -196,6 +235,8 @@ export default function ExExplorerItem({
             Move
           </ExButton>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"
@@ -210,6 +251,8 @@ export default function ExExplorerItem({
             Share
           </ExButton>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"
@@ -224,6 +267,8 @@ export default function ExExplorerItem({
             Download
           </ExButton>
           <ExButton
+            role="menuitem"
+            tabIndex={-1}
             type="button"
             variant="text"
             size="xs"

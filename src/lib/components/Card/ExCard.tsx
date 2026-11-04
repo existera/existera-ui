@@ -7,7 +7,7 @@ export default function ExCard({ children, className }: ExCardProps) {
   return (
     <section
       className={clsx(
-        "w-full rounded-2xl border border-border bg-surface p-5",
+        "w-full rounded-lg border border-border bg-surface p-5",
         className,
       )}
     >

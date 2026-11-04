@@ -4,7 +4,13 @@ export { default as ExWidgetContainer } from "./components/Widget/ExWidgetContai
 export { default as ExWidgetCard } from "./components/Widget/ExWidgetCard";
 export type { ExWidgetContainerProps } from "./components/Widget/props/ExWidgetContainerProps";
 export type { ExWidgetCardProps } from "./components/Widget/props/ExWidgetCardProps";
-export type { ExWidgetLayout, ExWidgetLayoutItem, ExWidgetConstraints, ExWidgetBreakpoints, ExWidgetLayoutChange } from "./components/Widget/types/ExWidgetType";
+export type {
+  ExWidgetLayout,
+  ExWidgetLayoutItem,
+  ExWidgetConstraints,
+  ExWidgetBreakpoints,
+  ExWidgetLayoutChange,
+} from "./components/Widget/types/ExWidgetType";
 
 export { default as ExAccordion } from "./components/Accordion/ExAccordion";
 export { default as ExAccordionItem } from "./components/Accordion/ExAccordionItem";
@@ -79,6 +85,7 @@ export { default as ExTooltip } from "./components/Tooltip/ExTooltip";
 export { default as ExUploadProvider } from "./components/UploadProvider/ExUploadProvider";
 export { default as useExUpload } from "./components/UploadProvider/ExUploadContext";
 export { default as ExVideoPlayer } from "./components/VideoPlayer/ExVideoPlayer";
+export type { ExVideoPlayerProps, ExVideoTrack } from "./components/VideoPlayer/props/ExVideoPlayerProps";
 export { default as useExTheme } from "./utils/useExTheme";
 export { default as ExInputOperator } from "./components/InputOperator/ExInputOperator";
 export { default as ExInputRange } from "./components/InputRange/ExInputRange";
@@ -123,7 +130,13 @@ export type { ExCalendarEvent, ExCalendarView, ExCalendarSize, ExCalendarColor }
 
 export { default as ExKanban } from "./components/Kanban/ExKanban";
 export type { ExKanbanProps } from "./components/Kanban/props/ExKanbanProps";
-export type { ExKanbanCard as ExKanbanCardData, ExKanbanColumn as ExKanbanColumnData, ExKanbanMove, ExKanbanSize, ExKanbanColor } from "./components/Kanban/types/ExKanbanType";
+export type {
+  ExKanbanCard as ExKanbanCardData,
+  ExKanbanColumn as ExKanbanColumnData,
+  ExKanbanMove,
+  ExKanbanSize,
+  ExKanbanColor,
+} from "./components/Kanban/types/ExKanbanType";
 
 export { default as ExKanbanCard } from "./components/Kanban/ExKanbanCard";
 export { default as ExKanbanColumn } from "./components/Kanban/ExKanbanColumn";

@@ -3,12 +3,7 @@
 import { useState } from "react";
 import type { ExAvatarProps } from "./props/ExAvatarProps";
 import { cn } from "../../utils/Utils";
-import {
-  AvatarColorClass,
-  AvatarEffectClass,
-  AvatarSizeClass,
-  AvatarStatusClass,
-} from "./class/ExAvatarClass";
+import { AvatarColorClass, AvatarEffectClass, AvatarSizeClass, AvatarStatusClass } from "./class/ExAvatarClass";
 
 export default function ExAvatar({
   variant = "solid",
@@ -39,9 +34,8 @@ export default function ExAvatar({
           AvatarSizeClass[size].container,
           border ? "border-2 border-background" : "",
         )}
-        role={imgURL ? "img" : "presentation"}
-        aria-label={imgURL ? name : undefined}
-      >
+        role="img"
+        aria-label={`${name || "User avatar"}${status !== "none" ? `, ${status}` : ""}`}>
         {imgURL ? (
           <>
             {!loaded && (

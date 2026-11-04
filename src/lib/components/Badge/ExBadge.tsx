@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { X } from "lucide-react";
 import type { ExBadgeProps } from "./props/ExBadgeProps";
 import { cn } from "../../utils/Utils";
@@ -25,19 +26,20 @@ export default function ExBadge({
   children,
   onDismiss,
 }: ExBadgeProps) {
+  const descriptionId = useId();
   const dismissButton = (
     <button
       type="button"
       tabIndex={0}
       aria-label="Dismiss badge"
-      aria-describedby="badge-description"
+      aria-describedby={descriptionId}
       onClick={(e) => {
         e.stopPropagation();
         onDismiss?.();
       }}
       className={cn(
-        "inline-flex items-center justify-center rounded-full hover:cursor-pointer",
-        "opacity-70 transition-opacity duration-150",
+        "inline-flex min-h-6 min-w-6 items-center justify-center rounded-full hover:cursor-pointer",
+        "transition-opacity duration-150",
         "hover:opacity-100",
         "hover:bg-black/10 dark:hover:bg-white/10",
         "shrink-0",
@@ -51,15 +53,17 @@ export default function ExBadge({
 
   return (
     <span
-      className={cn(BadgeBaseClass, BadgeSizeClass[size], BadgeRadiusClass[radius][size], BadgeVariantClass[variant](color), className)}
-      role="region"
-      aria-label={children ? `Badge: ${children}` : "Badge"}>
+      className={cn(
+        BadgeBaseClass,
+        BadgeSizeClass[size],
+        BadgeRadiusClass[radius][size],
+        BadgeVariantClass[variant](color),
+        dismissible && "min-h-6",
+        className,
+      )}>
       {dismissible && dismissPosition === "start" && dismissButton}
       {leftIcon}
-      <span id="badge-description" className="sr-only">
-        {children}
-      </span>
-      {children}
+      <span id={descriptionId}>{children}</span>
       {rightIcon}
       {dismissible && dismissPosition === "end" && dismissButton}
     </span>

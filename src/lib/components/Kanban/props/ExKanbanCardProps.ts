@@ -4,6 +4,7 @@ import type { ExKanbanCard, ExKanbanSize } from "../types/ExKanbanType";
 export interface ExKanbanCardProps extends Omit<ComponentPropsWithoutRef<"article">, "children"> {
   card?: ExKanbanCard;
   children?: ReactNode;
+  actions?: ReactNode;
   disabled?: boolean;
   size?: ExKanbanSize;
   moving?: boolean;

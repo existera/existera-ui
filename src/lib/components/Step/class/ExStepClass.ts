@@ -9,9 +9,9 @@ export const StepSizeClass: Record<ExStepSize, { diameter: string; indicator: st
 
 export const StepColorClass: Record<ExStepColor, { completed: string; active: string; connector: string }> = {
   primary: {
-    completed: "border-primary bg-primary text-white",
+    completed: "border-primary bg-primary-solid text-white",
     active: "border-primary bg-surface text-primary ring-primary/15",
-    connector: "bg-primary",
+    connector: "bg-primary-solid",
   },
   secondary: {
     completed: "border-foreground bg-foreground text-white dark:text-black",
@@ -19,18 +19,18 @@ export const StepColorClass: Record<ExStepColor, { completed: string; active: st
     connector: "bg-foreground",
   },
   success: {
-    completed: "border-success bg-success text-white",
+    completed: "border-success bg-success-solid text-white",
     active: "border-success bg-surface text-success ring-success/15",
-    connector: "bg-success",
+    connector: "bg-success-solid",
   },
   warning: {
-    completed: "border-warning bg-warning text-white",
+    completed: "border-warning bg-warning-solid text-white",
     active: "border-warning bg-surface text-warning ring-warning/15",
-    connector: "bg-warning",
+    connector: "bg-warning-solid",
   },
   danger: {
-    completed: "border-danger bg-danger text-white",
+    completed: "border-danger bg-danger-solid text-white",
     active: "border-danger bg-surface text-danger ring-danger/15",
-    connector: "bg-danger",
+    connector: "bg-danger-solid",
   },
 };

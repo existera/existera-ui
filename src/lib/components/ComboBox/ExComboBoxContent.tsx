@@ -78,7 +78,9 @@ export default function ExComboBoxContent({
 
   return createPortal(
     <div
-      role="listbox"
+      role="region"
+      aria-label="Options"
+      tabIndex={0}
       ref={(element) => { contentRef.current = element; registerPortalRef(element); }}
       style={{
         position: "absolute",
@@ -89,7 +91,6 @@ export default function ExComboBoxContent({
         zIndex: 9999,
       }}
       className="max-h-72 overflow-y-auto rounded-lg border border-border bg-surface shadow-sm"
-      aria-label="Combobox options"
     >
       {children}
     </div>,

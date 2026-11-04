@@ -4,6 +4,7 @@ import { useId } from "react";
 import type { CSSProperties } from "react";
 import { AnimatePresence, motion, MotionConfig, useReducedMotion } from "framer-motion";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { RadiusSizeClass } from "../../styles/Radius";
 import { cn } from "../../utils/Utils";
 import { StepColorClass, StepSizeClass } from "./class/ExStepClass";
 import type { ExStepProps } from "./props/ExStepProps";
@@ -58,7 +59,8 @@ export default function ExStep({
             const statusId = `${instanceId}-${index}-status`;
 
             const surfaceClass = cn(
-              "relative flex w-full min-w-0 items-start rounded-md text-left",
+              "relative flex w-full min-w-0 items-start text-left",
+              RadiusSizeClass[size],
               horizontal ? "flex-col gap-4 pr-6" : "gap-4",
             );
 

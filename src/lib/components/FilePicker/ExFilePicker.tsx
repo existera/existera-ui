@@ -16,6 +16,7 @@ export default function ExFilePicker({
   maxSize,
   onFileSelect,
   onRemove,
+  "aria-label": ariaLabel,
 }: ExFilePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(ref, () => inputRef.current!);
@@ -64,17 +65,23 @@ export default function ExFilePicker({
       />
 
       <div
-        onClick={handleClick}
         className={`
-          select-none
-          w-full overflow-hidden rounded-md border border-dashed border-border
+          relative select-none
+          w-full overflow-hidden rounded-md border border-dashed border-field-border
           bg-surface-2 p-4 transition-colors
           hover:border-primary hover:bg-primary/5
           ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
         `}
       >
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={handleClick}
+          aria-label={ariaLabel ?? (fileName ? `Replace file: ${fileName}` : "Choose file")}
+          className="absolute inset-0 rounded-[inherit] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed"
+        />
         {hasFile ? (
-          <div className="flex items-center gap-4">
+          <div className="pointer-events-none flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
               <FileText className="h-7 w-7 text-primary" />
             </div>
@@ -91,13 +98,14 @@ export default function ExFilePicker({
 
             <button
               type="button"
+              aria-label={`Remove file: ${fileName ?? "attachment"}`}
               onClick={(event) => {
                 event.stopPropagation();
                 if (onChange) onChange([]); else onRemove?.();
               }}
               disabled={disabled}
               className="
-                inline-flex h-9 w-9 shrink-0 items-center justify-center
+                pointer-events-auto relative inline-flex h-9 w-9 shrink-0 items-center justify-center
                 rounded-md border border-border
                 text-danger transition-colors
                 hover:bg-danger/10
@@ -109,14 +117,14 @@ export default function ExFilePicker({
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-4">
+          <div className="pointer-events-none flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
               <Upload className="h-6 w-6 text-primary" />
             </div>
 
             <div className="min-w-0 flex-1">
               <p className="text-left text-sm font-semibold text-foreground">
-                Click or drag to upload files
+                {ariaLabel ?? "Choose file"}
               </p>
 
               {accept && (

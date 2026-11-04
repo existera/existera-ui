@@ -1,6 +1,6 @@
 {
   "name": "@existera/ui",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Open-source React component library for modern web applications",
   "license": "MIT",
   "type": "module",
@@ -20,7 +20,8 @@
     "dist",
     "README.md",
     "LICENSE.md",
-    "NOTICE.md"
+    "NOTICE.md",
+    "ACCESSIBILITY.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -30,7 +31,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/fix-dts.mjs && node scripts/build-tailwind-entry.mjs",
+    "build": "vite build && node scripts/fix-dts.mjs && node scripts/build-tailwind-entry.mjs && node scripts/build-pdf-notices.mjs && node scripts/build-third-party-notices.mjs",
     "lint": "eslint .",
     "check:types": "tsc --noEmit",
     "check:styles": "node scripts/check-style.mjs && node scripts/check-css-import.mjs",
@@ -38,7 +39,15 @@
     "check:exports": "attw --pack --profile esm-only --exclude-entrypoints ./style.css ./tailwind.css",
     "check:security": "npm audit --omit=dev --audit-level=high",
     "check:production": "npm run lint && npm run check:types && npm run build && npm run check:styles && npm run check:package && npm run check:exports",
-    "prepublishOnly": "npm run check:production"
+    "prepublishOnly": "npm run check:production",
+    "test:pdf": "node scripts/check-pdf-viewer.mjs",
+    "test:video": "node scripts/check-video-player.mjs",
+    "test:forms": "node scripts/check-form-controls.mjs",
+    "test:a11y": "playwright test",
+    "test:a11y:install": "playwright install chromium"
+  },
+  "overrides": {
+    "minimatch@^10.2.6": "^11.0.1"
   },
   "peerDependencies": {
     "react": "^19",
@@ -49,22 +58,26 @@
     "esbuild": "^0.28.2",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.3.0",
+    "pdfjs-dist": "^6.5.438",
     "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^6.0.3",
+    "axe-core": "^4.14.0",
     "eslint": "^10.7.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "jsdom": "^30.1.3",
     "publint": "^0.3.25",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

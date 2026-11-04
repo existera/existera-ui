@@ -110,7 +110,7 @@ export default function ExWidgetContainer({
     <div {...props} className={cn(className)} style={{ minWidth: 0, containerType: "inline-size", ...style }}>
       <p id={instructionsId} className="sr-only">
         Drag the top handle to move; drag the corner to resize. Use arrow keys on a handle for one grid step. Escape cancels a pointer
-        gesture.
+        gesture. The Adjust layout menu provides click alternatives for moving and resizing.
       </p>
       <div
         ref={root}
@@ -145,6 +145,7 @@ export default function ExWidgetContainer({
               move={controls.move}
               finish={controls.finish}
               keyboard={controls.keyboard}
+              adjust={controls.adjust}
               settled={controls.settled}>
               {card}
             </ExWidgetItem>

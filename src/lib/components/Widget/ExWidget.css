@@ -59,3 +59,7 @@
     transition: none;
   }
 }
+
+.ex-widget-actions { opacity: 0; transition: opacity 120ms; }
+.ex-widget-card:hover > .ex-widget-actions,
+.ex-widget-card:focus-within > .ex-widget-actions { opacity: 1; }

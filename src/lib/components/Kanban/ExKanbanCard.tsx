@@ -10,6 +10,7 @@ export default function ExKanbanCard({
   id,
   title,
   children,
+  actions,
   disabled,
   size = "md",
   moving = false,
@@ -41,7 +42,8 @@ export default function ExKanbanCard({
         locked && "bg-surface-2",
         className,
       )}>
-      {children !== undefined ? children : renderCard?.(card)}
+      {children !== undefined ? children : renderCard ? renderCard(card) : <h3 className="text-sm font-medium">{card.title}</h3>}
+      {actions && <div className="mt-2 flex justify-end opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100" data-kanban-no-drag>{actions}</div>}
     </article>
   );
 }

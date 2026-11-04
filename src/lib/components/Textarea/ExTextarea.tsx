@@ -14,6 +14,7 @@ import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundTextarea } from "./types/ExTextareaType";
 
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 
 import {
@@ -41,8 +42,8 @@ const ExTextarea: CompoundTextarea = (props) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
-    disabled = false,
+    state: stateProp,
+    disabled: disabledProp = false,
     rows = 3,
     autoResize = false,
     loading = false,
@@ -52,18 +53,31 @@ const ExTextarea: CompoundTextarea = (props) => {
     "aria-labelledby": ariaLabelledBy,
     "aria-describedby": ariaDescribedby,
     "aria-required": ariaRequired,
-    "aria-invalid": ariaInvalid = state === "error",
+    "aria-invalid": ariaInvalid,
     maxLength,
     inputMode,
     autoComplete,
     className,
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
-  const field = useTextField({ controlled: "value" in props, value: controlledValue, defaultValue, onChange, onType, debounce, disabled, readOnly });
-  const textareaRef = useNativeField<HTMLTextAreaElement>(ref, element => { element.value = field.reset(); });
+  const field = useTextField({
+    controlled: "value" in props,
+    value: controlledValue,
+    defaultValue,
+    onChange,
+    onType,
+    debounce,
+    disabled,
+    readOnly,
+  });
+  const textareaRef = useNativeField<HTMLTextAreaElement>(ref, (element) => {
+    element.value = field.reset();
+  });
   const value = field.value;
 
   let prefix: React.ReactNode = null;
@@ -106,10 +120,9 @@ const ExTextarea: CompoundTextarea = (props) => {
         TextareaSizeClass[inputSize].height,
         operator && "min-h-0",
         TextareaSizeClass[inputSize].radius[radius].default,
-        operator
-          ? "min-w-0 flex-1"
-          : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-        disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+        operator ? "min-w-0 flex-1" : FormControlBaseClass,
+        !operator && (disabled ? FormControlDisabledClass : TextareaStateClass[state]),
+        operator && disabled && "cursor-not-allowed text-muted",
       )}>
       {!operator && prefix && (
         <ExPrefix textarea radius={radius} size={size}>
@@ -121,7 +134,6 @@ const ExTextarea: CompoundTextarea = (props) => {
         className={cn(
           "relative z-2 flex h-full w-full items-start px-2.5",
           TextareaPadding[inputSize].wrapper,
-          !operator && TextareaStateClass[state],
           !operator && !suffix && prefix && TextareaRadiusClass[radius].prefix,
           !operator && !prefix && suffix && TextareaRadiusClass[radius].suffix,
           !operator && !prefix && !suffix && TextareaSizeClass[inputSize].radius[radius].default,
@@ -149,15 +161,18 @@ const ExTextarea: CompoundTextarea = (props) => {
 
             setFocused(true);
           }}
-          onBlur={(e) => { setFocused(false); nativeProps.onBlur?.(e); }}
+          onBlur={(e) => {
+            setFocused(false);
+            nativeProps.onBlur?.(e);
+          }}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedby}
           aria-required={ariaRequired}
-          aria-invalid={ariaInvalid}
+          aria-invalid={ariaInvalid ?? (state === "error" || undefined)}
           className={cn(
             TextareaLineClass[inputSize],
             autoResize && "resize-none",
-            "ex-textarea-scroll block h-auto min-h-0 min-w-0 flex-1 border-0 bg-transparent px-1 py-0 shadow-none outline-none placeholder:text-muted/70",
+            "ex-textarea-scroll block h-auto min-h-0 min-w-0 flex-1 border-0 bg-transparent px-1 py-0 shadow-none outline-none placeholder:text-muted",
             disabled && "cursor-not-allowed text-muted",
             className,
           )}

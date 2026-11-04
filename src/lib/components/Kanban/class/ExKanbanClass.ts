@@ -7,10 +7,10 @@ export const KanbanSizeClass: Record<ExKanbanSize, { width: string; padding: str
 };
 export const KanbanColorClass: Record<ExKanbanColor, string> = {
   neutral: "bg-foreground",
-  primary: "bg-primary",
-  success: "bg-success",
-  warning: "bg-warning",
-  danger: "bg-danger",
+  primary: "bg-primary-solid",
+  success: "bg-success-solid",
+  warning: "bg-warning-solid",
+  danger: "bg-danger-solid",
 };
 export const KanbanPriorityClass = {
   low: "bg-surface-3 text-muted",

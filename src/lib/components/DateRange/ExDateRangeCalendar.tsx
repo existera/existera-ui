@@ -567,7 +567,7 @@ export default function ExDateRangeCalendar({
                         : "cursor-pointer",
                     isToday && "border border-primary text-primary",
                     (isSelectedStart || isSelectedEnd) && !disabled
-                      ? "bg-primary text-white"
+                      ? "bg-primary-solid text-white"
                       : isInRange && !disabled
                         ? "bg-primary-soft text-primary"
                         : "",
@@ -604,7 +604,7 @@ export default function ExDateRangeCalendar({
                 if (onSelectRange) onSelectRange({ startDate: formatDate(today), endDate: formatDate(today) });
                       else { onSelectStart?.(formatDate(today)); onSelectEnd?.(formatDate(today)); }
               }}
-              className="flex py-1 items-center select-none rounded-sm bg-primary px-2 text-xs font-medium text-white transition hover:opacity-90 cursor-pointer"
+              className="flex py-1 items-center select-none rounded-sm bg-primary-solid px-2 text-xs font-medium text-white transition hover:opacity-90 cursor-pointer"
             >
               Today
             </button>

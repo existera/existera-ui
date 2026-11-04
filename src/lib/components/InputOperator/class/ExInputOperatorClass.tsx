@@ -1,11 +1,8 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { InputOperatorRadius, InputOperatorSize, InputOperatorState } from "../types/ExInputOperatorType";
 
-export const InputOperatorStateClass: Record<InputOperatorState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const InputOperatorStateClass: Record<InputOperatorState, string> = { ...FormControlStateClass };
 
 export const InputOperatorSizeClass: Record<
   InputOperatorSize,
@@ -60,7 +57,7 @@ export const InputOperatorSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-full",
         suffix: "rounded-l-full",
       },
@@ -97,7 +94,7 @@ export const InputOperatorRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

@@ -101,6 +101,15 @@ export function activateFocusTrap(
   };
   document.addEventListener("keydown", onKeyDown);
   document.addEventListener("focusin", onFocus);
+  const observer = new document.defaultView!.MutationObserver(() => {
+    if (isTop() && !containsFocus(document.activeElement)) focus();
+  });
+  observer.observe(container, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["disabled", "hidden", "inert", "aria-hidden"],
+  });
   if (
     options.initialFocus &&
     containsFocus(options.initialFocus) &&
@@ -118,6 +127,7 @@ export function activateFocusTrap(
     state.traps.splice(state.traps.indexOf(trap), 1);
     document.removeEventListener("keydown", onKeyDown);
     document.removeEventListener("focusin", onFocus);
+    observer.disconnect();
     container.inert = true;
     container.setAttribute("aria-hidden", "true");
     const remaining = state.traps.at(-1);
