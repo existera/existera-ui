@@ -1,11 +1,8 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { SelectRadius, SelectSize, SelectState } from "../types/ExSelectType";
 
-export const SelectStateClass: Record<SelectState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const SelectStateClass: Record<SelectState, string> = { ...FormControlStateClass };
 
 export const SelectHeight: Record<SelectSize, string> = {
   xs: "h-full min-h-0",
@@ -67,7 +64,7 @@ export const SelectSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-full",
         suffix: "rounded-l-full",
       },
@@ -104,7 +101,7 @@ export const SelectRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

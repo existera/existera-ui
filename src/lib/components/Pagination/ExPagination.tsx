@@ -52,6 +52,7 @@ export default function ExPagination({
         variant="text"
         radius={radius}
         size={size}
+        aria-label="Previous page"
         disabled={page === 1}
         onClick={() => onPageChange?.(page - 1)}>
         <ChevronLeft size={16} />
@@ -66,6 +67,8 @@ export default function ExPagination({
           ) : (
             <ExButton
               key={item}
+              aria-label={`Page ${item}`}
+              aria-current={item === page ? "page" : undefined}
               color={color}
               size={size}
               radius={radius}
@@ -84,6 +87,7 @@ export default function ExPagination({
         size={size}
         radius={radius}
         variant="text"
+        aria-label="Next page"
         disabled={page === total}
         onClick={() => onPageChange?.(page + 1)}>
         <ChevronRight size={16} />

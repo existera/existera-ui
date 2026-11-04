@@ -1,10 +1,7 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import type { TextareaRadius, TextareaSize, TextareaState } from "../types/ExTextareaType";
 
-export const TextareaStateClass: Record<TextareaState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const TextareaStateClass: Record<TextareaState, string> = { ...FormControlStateClass };
 
 export const TextareaSizeClass: Record<
   TextareaSize,
@@ -59,7 +56,7 @@ export const TextareaSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-[var(--radius-full-md)]",
         suffix: "rounded-l-full",
       },
@@ -96,7 +93,7 @@ export const TextareaRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

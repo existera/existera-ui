@@ -18,6 +18,7 @@ function ExWidgetItem({
   move,
   finish,
   keyboard,
+  adjust,
   settled,
   children,
 }: {
@@ -27,7 +28,7 @@ function ExWidgetItem({
   editable: boolean;
   instructionsId: string;
   children: ReactNode;
-} & Pick<Controls, "start" | "move" | "finish" | "keyboard" | "settled">) {
+} & Pick<Controls, "start" | "move" | "finish" | "keyboard" | "adjust" | "settled">) {
   const id = item.id;
   const active = Boolean(interaction);
 
@@ -39,11 +40,12 @@ function ExWidgetItem({
       start: (event: Parameters<Controls["start"]>[0], action: Parameters<Controls["start"]>[2]) => start(event, id, action),
       move,
       finish,
+      adjust: (action: Parameters<Controls["adjust"]>[1], key: string) => adjust(id, action, key),
       keyboard: (event: Parameters<Controls["keyboard"]>[0], action: Parameters<Controls["keyboard"]>[2]) => keyboard(event, id, action),
     }),
-    [editable, active, instructionsId, id, start, move, finish, keyboard],
+    [editable, active, instructionsId, id, start, move, finish, keyboard, adjust],
   );
-  
+
   return (
     <ExWidgetContext.Provider value={context}>
       <ExWidgetFrame item={item} metrics={metrics} interaction={interaction} onSettled={settled}>

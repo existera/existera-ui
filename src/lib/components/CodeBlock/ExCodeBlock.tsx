@@ -41,7 +41,7 @@ export default function ExCodeBlock({
   return (
     <div
       className={cn(
-        "relative w-full max-w-full overflow-hidden border text-foreground rounded-xl",
+        "relative w-full max-w-full overflow-hidden border text-foreground rounded-lg",
         ColorCodeBlockStyles[color],
       )}
       role="region"
@@ -60,6 +60,7 @@ export default function ExCodeBlock({
         <div className="text-xs truncate max-w-full">{title || language}</div>
 
         <button
+          type="button"
           onClick={handleCopy}
           className="flex items-center gap-1 text-xs hover:text-foreground transition self-start sm:self-auto hover:cursor-pointer"
           aria-label={copied ? "Copied to clipboard" : "Copy code to clipboard"}

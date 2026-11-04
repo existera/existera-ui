@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Info, TriangleAlert } from "lucide-react";
+import { CheckCircle, Info, Package, TriangleAlert } from "lucide-react";
 
 import ExAlert from "../lib/components/Alert/ExAlert";
 import ExButton from "../lib/components/Button/ExButton";
@@ -67,21 +67,18 @@ export default function AlertPage() {
 
           <ExCanvas>
             <div className="max-w-2xl">
-              <ExAlert>
-                <div className="font-medium">Purchase Order Submitted</div>
-                <div>Purchase Order PO-2026-00124 has been submitted and is awaiting approval.</div>
+              <ExAlert title="" icon={<Package />}>
+                The package includes component exports and a separate stylesheet to import into your application.
               </ExAlert>
             </div>
           </ExCanvas>
 
           <ExCodeBlock language="html">
-            {`<ExAlert>
-  <div className="font-medium">
-    Purchase Order Submitted
-  </div>
-  <div>
-    Purchase Order PO-2026-00124 has been submitted and is awaiting approval.
-  </div>
+            {`import { Package } from "lucide-react";
+import { ExAlert } from "@existera/ui";
+
+<ExAlert title="" icon={<Package />}>
+  The package includes component exports and a separate stylesheet to import into your application.
 </ExAlert>`}
           </ExCodeBlock>
         </section>
@@ -342,18 +339,20 @@ export default function AlertPage() {
           </ExCodeBlock>
         </section>
       </div>
-        <section id="padding" className="section-anchor mt-8">
-          <h2 className="mb-4 text-xl font-semibold">Padding</h2>
-          <p className="mb-4 text-sm text-muted">Alerts have square corners. Use padding independently from the text size; the default padding is m.</p>
-          <div className="grid gap-4">
-            {(["s", "m", "l"] as const).map((padding) => (
-              <ExAlert key={padding} padding={padding} variant="soft" title={`Padding ${padding}`}>
-                Square alert with {padding} padding.
-              </ExAlert>
-            ))}
-          </div>
-          <ExCodeBlock language="tsx">{'<ExAlert padding="s" />\n<ExAlert padding="m" />\n<ExAlert padding="l" />'}</ExCodeBlock>
-        </section>
+      <section id="padding" className="section-anchor mt-8">
+        <h2 className="mb-4 text-xl font-semibold">Padding</h2>
+        <p className="mb-4 text-sm text-muted">
+          Alerts have square corners. Use padding independently from the text size; the default padding is m.
+        </p>
+        <div className="grid gap-4">
+          {(["s", "m", "l"] as const).map((padding) => (
+            <ExAlert key={padding} padding={padding} variant="soft" title={`Padding ${padding}`}>
+              Square alert with {padding} padding.
+            </ExAlert>
+          ))}
+        </div>
+        <ExCodeBlock language="tsx">{'<ExAlert padding="s" />\n<ExAlert padding="m" />\n<ExAlert padding="l" />'}</ExCodeBlock>
+      </section>
     </PageContent>
   );
 }

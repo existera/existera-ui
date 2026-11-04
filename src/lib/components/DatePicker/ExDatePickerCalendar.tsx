@@ -418,7 +418,7 @@ export default function ExDatePickerCalendar({
           ${
             !disabled &&
             (isSelected
-              ? "bg-primary text-white"
+              ? "bg-primary-solid text-white"
               : isToday
                 ? "border border-primary text-primary"
                 : "hover:bg-primary-soft active:bg-primary-soft hover:text-primary")
@@ -447,7 +447,7 @@ export default function ExDatePickerCalendar({
                 setCurrentDate(today);
                 onSelect?.(formatDate(today));
               }}
-              className="flex py-1 items-center rounded-sm bg-primary px-2 text-xs font-medium text-white transition hover:opacity-90 cursor-pointer"
+              className="flex py-1 items-center rounded-sm bg-primary-solid px-2 text-xs font-medium text-white transition hover:opacity-90 cursor-pointer"
             >
               Today
             </button>

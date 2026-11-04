@@ -1,11 +1,8 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { DateRangeRadius, DateRangeSize, DateRangeState } from "../types/ExDateRangeType";
 
-export const DateRangeStateClass: Record<DateRangeState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const DateRangeStateClass: Record<DateRangeState, string> = { ...FormControlStateClass };
 
 export const DateRangeSizeClass: Record<
   DateRangeSize,
@@ -60,7 +57,7 @@ export const DateRangeSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-full",
         suffix: "rounded-l-full",
       },
@@ -97,7 +94,7 @@ export const DateRangeRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

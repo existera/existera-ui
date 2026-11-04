@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useId } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Search, UserRound } from "lucide-react";
@@ -85,6 +85,7 @@ export default function ExMention({
 
   const reducedMotion = useReducedMotion();
 
+  const popupId = useId();
   const mentionRef = useRef<MentionState | null>(null);
   const resultsRef = useRef<ExMentionUser[]>([]);
   const selectedIndexRef = useRef(0);
@@ -356,6 +357,26 @@ export default function ExMention({
     };
   }, [mention, onSearch, users, minQueryLength, debounce, maxResults]);
 
+  useEffect(() => {
+    if (!mention || mention.query.length < minQueryLength) return;
+    const element = mention.element;
+    const attributes: Record<string, string> = { "aria-controls": popupId, "aria-haspopup": "listbox" };
+    if (element instanceof HTMLInputElement) {
+      attributes.role = "combobox";
+      attributes["aria-expanded"] = "true";
+      attributes["aria-autocomplete"] = "list";
+    }
+    if (!loading && results[selectedIndex]) attributes["aria-activedescendant"] = `${popupId}-option-${selectedIndex}`;
+    const previous = Object.fromEntries(Object.keys(attributes).map(key => [key, element.getAttribute(key)]));
+    for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
+    return () => {
+      for (const [key, value] of Object.entries(previous)) {
+        if (value === null) element.removeAttribute(key);
+        else element.setAttribute(key, value);
+      }
+    };
+  }, [mention, minQueryLength, popupId, loading, results, selectedIndex]);
+
   if (typeof document === "undefined") return null;
   return createPortal(
     <AnimatePresence>
@@ -367,10 +388,10 @@ export default function ExMention({
           exit={reducedMotion ? undefined : { opacity: 0, y: -4, scale: 0.98 }}
           transition={{ duration: 0.16, ease: "easeOut" }}
           style={{ position: "fixed", top: position.top, left: position.left, width: position.width, zIndex: 9999 }}
-          className={cn("overflow-hidden rounded-xl border border-border bg-surface shadow-lg", className)}>
-          <div className="ex-textarea-scroll max-h-64 overflow-y-auto scroll-smooth p-1 motion-reduce:scroll-auto">
+          className={cn("overflow-hidden rounded-lg border border-border bg-surface shadow-lg", className)}>
+          <div id={popupId} role="listbox" aria-label="Mention suggestions" aria-busy={loading} className="ex-textarea-scroll max-h-64 overflow-y-auto scroll-smooth p-1 motion-reduce:scroll-auto">
             {loading ? (
-              <div className="flex items-center justify-center gap-2 px-3 py-4 text-xs text-muted">
+              <div role="status" className="flex items-center justify-center gap-2 px-3 py-4 text-xs text-muted">
                 <Search className="size-3.5 animate-pulse" />
                 Searching users...
               </div>
@@ -378,6 +399,10 @@ export default function ExMention({
               results.map((user, index) => (
                 <button
                   key={user.id}
+                  id={`${popupId}-option-${index}`}
+                  role="option"
+                  aria-selected={index === selectedIndex}
+                  tabIndex={-1}
                   type="button"
                   onMouseDown={(event) => event.preventDefault()}
                   onClick={() => selectUser(user)}
@@ -404,7 +429,7 @@ export default function ExMention({
                 </button>
               ))
             ) : (
-              <div className="px-3 py-5 text-center text-xs text-muted">No users found</div>
+              <div role="status" className="px-3 py-5 text-center text-xs text-muted">No users found</div>
             )}
           </div>
         </motion.div>

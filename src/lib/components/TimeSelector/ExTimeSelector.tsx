@@ -14,6 +14,7 @@ import ExSuffix from "../Suffix/ExSuffix";
 
 import type { CompoundTimeSelector } from "./types/ExTimeSelectorType";
 
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 
 import { TimeSelectorPadding, TimeSelectorSizeClass, TimeSelectorStateClass, TimeSelectorStateIconSize } from "./class/ExTimeSelectorClass";
@@ -37,16 +38,18 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
+    state: stateProp,
     loading = false,
     clearable = false,
     format = 24,
     debounce = 0,
-    disabled = false,
+    disabled: disabledProp = false,
     onType,
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
   const HOURS = useMemo(
@@ -76,8 +79,9 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
   const picker = usePickerKeyboard(open, setOpen, triggerRef, contentRef, disabled || readOnly);
   const field = useTextField({ controlled: "value" in props, value, defaultValue, onChange, onType, debounce, disabled, readOnly });
   const inputValue = field.value;
-  const inputRef = useNativeField<HTMLInputElement>(ref, element => {
-    element.value = field.reset().split(":")[0] ?? ""; setOpen(false);
+  const inputRef = useNativeField<HTMLInputElement>(ref, (element) => {
+    element.value = field.reset().split(":")[0] ?? "";
+    setOpen(false);
   });
   const { hour, minute, formatValue } = useMemo(() => {
     if (!inputValue.trim()) {
@@ -189,10 +193,9 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
           TimeSelectorSizeClass[inputSize].height,
           operator && "h-full min-h-0",
           TimeSelectorSizeClass[inputSize].radius[radius].default,
-          operator
-            ? "min-w-0 flex-1"
-            : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-          disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+          operator ? "min-w-0 flex-1" : FormControlBaseClass,
+          !operator && (disabled ? FormControlDisabledClass : TimeSelectorStateClass[state]),
+          operator && disabled && "cursor-not-allowed text-muted",
         )}>
         {!operator && prefix && (
           <ExPrefix radius={radius} size={size}>
@@ -204,7 +207,6 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
           className={cn(
             "relative flex h-full w-full items-center",
             TimeSelectorPadding[inputSize].wrapper,
-            !operator && TimeSelectorStateClass[state],
             !operator && !suffix && prefix && TimeSelectorSizeClass[inputSize].radius[radius].prefix,
             !operator && !prefix && suffix && TimeSelectorSizeClass[inputSize].radius[radius].suffix,
             !operator && !prefix && !suffix && TimeSelectorSizeClass[inputSize].radius[radius].default,
@@ -233,11 +235,18 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                 "w-full bg-transparent pl-1 outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
+              role="combobox"
               aria-haspopup="dialog"
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
+              aria-busy={loading || undefined}
               aria-expanded={open}
               aria-controls={open ? picker.popupId : undefined}
-              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
-              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onKeyDown={(e) => {
+                picker.onTriggerKeyDown(e);
+              }}
+              onClick={() => {
+                if (!disabled && !readOnly) setOpen(true);
+              }}
               onFocus={(e) => {
                 nativeProps.onFocus?.(e);
                 picker.rememberTrigger(e.currentTarget);
@@ -249,7 +258,11 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
               onBlur={(e) => {
                 nativeProps.onBlur?.(e);
                 setFocused(false);
-                if (e.relatedTarget && (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))) return;
+                if (
+                  e.relatedTarget &&
+                  (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))
+                )
+                  return;
                 setOpen(false);
               }}
             />
@@ -273,11 +286,18 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                 "w-full bg-transparent pr-1 outline-none focus:border-none focus:outline-none focus:ring-0",
                 disabled && "cursor-not-allowed text-muted",
               )}
+              role="combobox"
               aria-haspopup="dialog"
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
+              aria-busy={loading || undefined}
               aria-expanded={open}
               aria-controls={open ? picker.popupId : undefined}
-              onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
-              onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
+              onKeyDown={(e) => {
+                picker.onTriggerKeyDown(e);
+              }}
+              onClick={() => {
+                if (!disabled && !readOnly) setOpen(true);
+              }}
               onFocus={(e) => {
                 nativeProps.onFocus?.(e);
                 picker.rememberTrigger(e.currentTarget);
@@ -289,7 +309,11 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
               onBlur={(e) => {
                 nativeProps.onBlur?.(e);
                 setFocused(false);
-                if (e.relatedTarget && (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))) return;
+                if (
+                  e.relatedTarget &&
+                  (contentRef.current?.contains(e.relatedTarget as Node) || triggerRef.current?.contains(e.relatedTarget as Node))
+                )
+                  return;
                 setOpen(false);
               }}
             />
@@ -350,11 +374,19 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
       </div>
 
       {!disabled && !readOnly && (
-        <ExTimeSelectorClock popupId={picker.popupId} onPopupKeyDown={picker.onPopupKeyDown} open={open} triggerRef={triggerRef} contentRef={contentRef}>
+        <ExTimeSelectorClock
+          popupId={picker.popupId}
+          onPopupKeyDown={picker.onPopupKeyDown}
+          open={open}
+          triggerRef={triggerRef}
+          contentRef={contentRef}>
           <div className={cn("grid w-full grid-cols-3 pb-2", format === 12 ? "grid-cols-3" : "grid-cols-2")}>
             <div className="relative w-full">
               <div
                 ref={hourRef}
+                tabIndex={0}
+                role="group"
+                aria-label="Hours"
                 className="relative h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth ex-textarea-scroll"
                 style={{
                   right: "-5px",
@@ -372,7 +404,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                       aria-label={"hour " + item}
                       aria-pressed={active}
                       tabIndex={active || (!hour && index === 0) ? 0 : -1}
-                      onKeyDown={e => handlePickerGroupKeyDown(e)}
+                      onKeyDown={(e) => handlePickerGroupKeyDown(e)}
                       ref={(el) => {
                         hourItemRefs.current[index] = el;
                       }}
@@ -391,9 +423,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                       className={cn(
                         "relative z-10 flex w-full snap-center select-none items-center justify-center transition-all duration-200 ease-out",
                         disabled ? "cursor-not-allowed text-muted" : "cursor-pointer",
-                        active
-                          ? "scale-110 text-base font-semibold text-primary"
-                          : "scale-95 text-sm text-muted opacity-60 hover:opacity-100",
+                        active ? "scale-110 text-base font-semibold text-primary" : "scale-95 text-sm text-muted",
                       )}>
                       {item}
                     </button>
@@ -405,6 +435,9 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
             <div className="relative w-full">
               <div
                 ref={minuteRef}
+                tabIndex={0}
+                role="group"
+                aria-label="Minutes"
                 className="relative h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth ex-textarea-scroll"
                 style={{
                   right: "-5px",
@@ -422,7 +455,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                       aria-label={"minute " + item}
                       aria-pressed={active}
                       tabIndex={active || (!minute && index === 0) ? 0 : -1}
-                      onKeyDown={e => handlePickerGroupKeyDown(e)}
+                      onKeyDown={(e) => handlePickerGroupKeyDown(e)}
                       ref={(el) => {
                         minuteItemRefs.current[index] = el;
                       }}
@@ -441,9 +474,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                       className={cn(
                         "relative z-10 flex w-full snap-center select-none items-center justify-center transition-all duration-200 ease-out",
                         disabled ? "cursor-not-allowed text-muted" : "cursor-pointer",
-                        active
-                          ? "scale-110 text-base font-semibold text-primary"
-                          : "scale-95 text-sm text-muted opacity-60 hover:opacity-100",
+                        active ? "scale-110 text-base font-semibold text-primary" : "scale-95 text-sm text-muted",
                       )}>
                       {item}
                     </button>
@@ -455,7 +486,9 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
             {format === 12 && (
               <div className="relative w-full">
                 <div
-                  ref={hourRef}
+                  tabIndex={0}
+                  role="group"
+                  aria-label="Period"
                   className="relative h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth ex-textarea-scroll"
                   style={{
                     right: "-5px",
@@ -473,7 +506,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                         aria-label={"period " + item}
                         aria-pressed={active}
                         tabIndex={active || (!formatValue && index === 0) ? 0 : -1}
-                        onKeyDown={e => handlePickerGroupKeyDown(e)}
+                        onKeyDown={(e) => handlePickerGroupKeyDown(e)}
                         ref={(el) => {
                           formatItemRefs.current[index] = el;
                         }}
@@ -492,9 +525,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
                         className={cn(
                           "relative z-10 flex w-full snap-center select-none items-center justify-center transition-all duration-200 ease-out",
                           disabled ? "cursor-not-allowed text-muted" : "cursor-pointer",
-                          active
-                            ? "scale-110 text-base font-semibold text-primary"
-                            : "scale-95 text-sm text-muted opacity-60 hover:opacity-100",
+                          active ? "scale-110 text-base font-semibold text-primary" : "scale-95 text-sm text-muted",
                         )}>
                         {item}
                       </button>
@@ -530,7 +561,7 @@ const ExTimeSelector: CompoundTimeSelector = (props) => {
 
                 handleThisTime();
               }}
-              className="flex cursor-pointer items-center rounded-sm bg-primary px-2 py-1 text-xs font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+              className="flex cursor-pointer items-center rounded-sm bg-primary-solid px-2 py-1 text-xs font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
               This Time
             </button>
           </div>

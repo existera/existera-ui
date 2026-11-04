@@ -149,7 +149,7 @@ export default function ExInputRange({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onKeyDown={handleKeyDown}
-        className={`relative flex touch-none select-none items-center rounded-full outline-none bg-secondary/30 bg-gray-200 shadow-[inset_0_1px_3px_rgba(0,0,0,0.06)] dark:bg-gray-800 dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] ${
+        className={`relative flex touch-none select-none items-center rounded-full outline-none bg-surface-4 ${
           isVertical ? currentSize.trackVert : currentSize.trackHoriz
         } ${
           disabled ? "cursor-not-allowed" : "cursor-pointer"
@@ -184,7 +184,7 @@ export default function ExInputRange({
 
         <div
           aria-hidden="true"
-          className={`absolute z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-[0_2px_5px_rgba(0,0,0,0.12),0_1px_2px_rgba(0,0,0,0.08)] ring-offset-background transition-[transform,box-shadow] duration-100 ease-out dark:border-gray-700 dark:bg-gray-950 dark:shadow-[0_2px_5px_rgba(0,0,0,0.4)] ${currentSize.thumb} ${disabled ? "text-gray-400 dark:text-gray-500" : currentColor.text} ${
+          className={`absolute z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-field-border bg-field shadow-[0_2px_5px_rgba(0,0,0,0.12),0_1px_2px_rgba(0,0,0,0.08)] ring-offset-background transition-[transform,box-shadow] duration-100 ease-out dark:shadow-[0_2px_5px_rgba(0,0,0,0.4)] ${currentSize.thumb} ${disabled ? "text-gray-400 dark:text-gray-500" : currentColor.text} ${
             !disabled ? "hover:scale-110 hover:shadow-[0_3px_8px_rgba(0,0,0,0.15)] active:scale-95" : "pointer-events-none"
           }`}
           style={positionStyle}>

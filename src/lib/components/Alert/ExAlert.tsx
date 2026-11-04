@@ -3,15 +3,21 @@
 import { X } from "lucide-react";
 import { cn } from "../../utils/Utils";
 import type { ExAlertProps } from "./props/ExAlertProps";
-
-import { AlertBaseClass, AlertCloseButtonClass, AlertColorClass, AlertPaddingClass, AlertSizeClass, AlertVariantClass } from "./class/ExAlertClass";
-
-import { useEffect, useRef } from "react";
+import {
+  AlertAccentClass,
+  AlertBaseClass,
+  AlertCloseButtonClass,
+  AlertColorClass,
+  AlertPaddingClass,
+  AlertSizeClass,
+  AlertVariantClass,
+} from "./class/ExAlertClass";
 
 export default function ExAlert({
   id,
+  isOpen = true,
   title = "Alert",
-  variant = "solid",
+  variant = "soft",
   color = "primary",
   size = "md",
   padding = "m",
@@ -19,72 +25,50 @@ export default function ExAlert({
   dismissible = false,
   onDismiss,
   children,
-  "aria-live": ariaLive,
+  className,
+  "aria-live": ariaLive = "assertive",
+  "aria-label": ariaLabel,
+  ...rest
 }: ExAlertProps) {
-  const alertRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (alertRef.current) {
-      alertRef.current.setAttribute("role", "alert");
-      alertRef.current.setAttribute("aria-live", ariaLive || "assertive");
-    }
-  }, [ariaLive]);
+  const styles = AlertSizeClass[size];
+  if (!isOpen) return null;
 
   return (
     <div
+      {...rest}
       id={id}
-      ref={alertRef}
       role="alert"
-      aria-live={ariaLive || "assertive"}
+      aria-live={ariaLive}
       aria-atomic="true"
+      aria-label={ariaLabel ?? (title || undefined)}
       className={cn(
         AlertBaseClass,
-        AlertSizeClass[size].wrap,
+        styles.wrap,
         AlertPaddingClass[padding],
-        dismissible && AlertSizeClass[size].pr,
         AlertVariantClass[variant](AlertColorClass[color]),
+        variant === "soft" && AlertAccentClass[color],
+        className,
+      )}>
+      {icon && (
+        <span aria-hidden="true" className={cn("flex shrink-0 items-center justify-center [&>svg]:stroke-[1.75]", styles.icon)}>
+          {icon}
+        </span>
       )}
-      aria-label={title}>
-      <div className="flex-1 min-w-0">
-        <div className=" items-start gap-1 w-fit">
-          <div className={cn(AlertSizeClass[size].title, "flex items-center min-w-0")}>
-            {icon && icon}
-            <div className={cn(AlertSizeClass[size].title, "font-medium leading-none")}>{title}</div>
-          </div>
-          {children && <div className="mt-1">{children}</div>}
-        </div>
+      <div className="min-w-0 flex-1 break-words">
+        {title && <div className={cn(styles.title, "font-semibold tracking-tight", variant === "soft" && "text-foreground")}>{title}</div>}
+        {children != null && <div className={cn(title && "mt-0.5", variant === "soft" && "text-muted")}>{children}</div>}
       </div>
-
       {dismissible && (
         <button
-          id={`btn-close-alert-${id}`}
+          id={id ? `btn-close-alert-${id}` : undefined}
           type="button"
           aria-label="Close alert"
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onDismiss?.();
           }}
-          className={cn(
-            AlertCloseButtonClass,
-            AlertSizeClass[size].close,
-            AlertColorClass[color].ring,
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-          )}>
-          <X
-            className={cn(
-              variant === "soft"
-                ? ({
-                    primary: "text-primary",
-                    secondary: "text-secondary",
-                    success: "text-success",
-                    warning: "text-warning",
-                    danger: "text-danger",
-                    info: "text-info",
-                  }[color] ?? "text-white")
-                : "text-white",
-              "size-4 stroke-2",
-            )}
-          />
+          className={cn(AlertCloseButtonClass, styles.close, AlertColorClass[color].ring)}>
+          <X aria-hidden="true" className="size-3.5 stroke-[1.75]" />
         </button>
       )}
     </div>

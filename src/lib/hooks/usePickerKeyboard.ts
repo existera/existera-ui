@@ -48,14 +48,22 @@ export function usePickerKeyboard(
     origin.current = e.currentTarget;
     setOpen(true);
     if (frame.current !== null) cancelAnimationFrame(frame.current);
-    frame.current = requestAnimationFrame(() => {
+    const focusPopup = (attempt = 0) => {
       const content = contentRef.current;
       const selector =
         origin.current?.getAttribute("placeholder") === "Minute"
           ? '[data-time-part="minute"][tabindex="0"]'
           : '[data-calendar-day][tabindex="0"], [data-time-part][tabindex="0"]';
-      (content?.querySelector<HTMLElement>(selector) ?? content?.querySelector<HTMLElement>("button:not(:disabled)"))?.focus();
-    });
+      const target = content?.querySelector<HTMLElement>(selector) ?? content?.querySelector<HTMLElement>("button:not(:disabled)");
+      // Portaled pickers first mount hidden while measuring their position.
+      if (target && target.getClientRects().length && getComputedStyle(target).visibility !== "hidden") {
+        target.focus();
+        frame.current = null;
+      } else if (attempt < 10) {
+        frame.current = requestAnimationFrame(() => focusPopup(attempt + 1));
+      }
+    };
+    frame.current = requestAnimationFrame(() => focusPopup());
   };
   const onPopupKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {

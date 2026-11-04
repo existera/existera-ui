@@ -65,7 +65,7 @@ export const ButtonColorTokens: Record<
   }
 > = {
   primary: {
-    solidBg: "bg-primary",
+    solidBg: "bg-primary-solid",
     solidText: "text-white",
     softBg: "bg-primary-soft",
     softText: "text-primary",
@@ -75,7 +75,7 @@ export const ButtonColorTokens: Record<
   },
 
   secondary: {
-    solidBg: "bg-secondary",
+    solidBg: "bg-secondary-solid",
     solidText: "text-white",
     softBg: "bg-secondary-soft",
     softText: "",
@@ -85,7 +85,7 @@ export const ButtonColorTokens: Record<
   },
 
   success: {
-    solidBg: "bg-success",
+    solidBg: "bg-success-solid",
     solidText: "text-white",
     softBg: "bg-success-soft",
     softText: "text-success",
@@ -95,7 +95,7 @@ export const ButtonColorTokens: Record<
   },
 
   warning: {
-    solidBg: "bg-warning",
+    solidBg: "bg-warning-solid",
     solidText: "text-white",
     softBg: "bg-warning-soft",
     softText: "text-warning",
@@ -105,7 +105,7 @@ export const ButtonColorTokens: Record<
   },
 
   danger: {
-    solidBg: "bg-danger",
+    solidBg: "bg-danger-solid",
     solidText: "text-white",
     softBg: "bg-danger-soft",
     softText: "text-danger",

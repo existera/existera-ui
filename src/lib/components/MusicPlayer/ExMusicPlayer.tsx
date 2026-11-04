@@ -1,14 +1,15 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { LoaderCircle, Music, Pause, Play, Volume2, VolumeX, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useId } from "react";
 import ExButton from "../Button/ExButton";
 import type { ExMusicPlayerProps } from "./props/ExMusicPlayerProps";
 
 const VISUALIZER_HEIGHTS = [12, 20, 8, 26, 16, 22, 10, 30, 14, 24, 18, 28, 12, 26, 16, 22, 10, 30, 14, 24, 18, 28, 12, 20];
 
 export default function ExMusicPlayer({ name, url, autoPlay = false, loop = false, muted = false, onClose }: ExMusicPlayerProps) {
+  const reducedMotion = useReducedMotion();
   const audioRef = useRef<HTMLAudioElement>(null);
   const volumeRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -17,6 +18,10 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
   const [current, setCurrent] = useState(0);
   const [volume, setVolume] = useState(muted ? 0 : 1);
   const [volumeOpen, setVolumeOpen] = useState(false);
+  const volumeId = useId();
+  useEffect(() => {
+    if (volumeOpen) volumeRef.current?.querySelector<HTMLInputElement>("input")?.focus();
+  }, [volumeOpen]);
 
   const progress = useMemo(() => {
     if (!duration) return 0;
@@ -111,15 +116,15 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
         className="fixed bottom-5 left-1/2 z-9999 w-[calc(100%-32px)] max-w-md -translate-x-1/2"
         role="region"
         aria-label={name ? `Music player: ${name}` : "Music player"}>
-        <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-linear-to-br from-white via-white to-neutral-100 p-5 shadow-[0_30px_80px_rgba(0,0,0,.15)] backdrop-blur-2xl dark:border-white/10 dark:bg-none dark:bg-neutral-950/80 dark:shadow-[0_30px_80px_rgba(0,0,0,.55)]">
+        <div className="relative overflow-hidden rounded-lg border border-black/10 bg-linear-to-br from-white via-white to-neutral-100 p-5 shadow-[0_30px_80px_rgba(0,0,0,.15)] backdrop-blur-2xl dark:border-white/10 dark:bg-none dark:bg-neutral-950/80 dark:shadow-[0_30px_80px_rgba(0,0,0,.55)]">
           <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-black/5 via-transparent to-transparent dark:from-white/10" />
           <div className="relative flex items-center justify-between">
             <div className="flex min-w-0 items-center gap-4">
               <motion.div
-                animate={{ rotate: playing ? 360 : 0 }}
+                animate={{ rotate: playing && !reducedMotion ? 360 : 0 }}
                 transition={{
                   duration: 8,
-                  repeat: playing ? Infinity : 0,
+                  repeat: playing && !reducedMotion ? Infinity : 0,
                   ease: "linear",
                 }}
                 className="relative flex size-14 items-center justify-center rounded-full bg-linear-to-br from-black/10 to-black/5 ring-1 ring-black/10 dark:from-white/20 dark:to-white/5 dark:ring-white/10"
@@ -130,11 +135,11 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
 
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-neutral-900 dark:text-white">{name}</p>
-                <p className="mt-1 text-xs text-neutral-500 dark:text-white/50">{playing ? "Playing now" : "Paused"}</p>
+                <p className="mt-1 text-xs text-muted">{playing ? "Playing now" : "Paused"}</p>
               </div>
             </div>
 
-            <ExButton variant="text" color="danger" iconOnly onClick={onClose}>
+            <ExButton variant="text" color="danger" iconOnly aria-label="Close music player" onClick={onClose}>
               <X size={17} aria-label="Close music player" />
             </ExButton>
           </div>
@@ -147,11 +152,11 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
                 <motion.span
                   key={index}
                   animate={{
-                    height: playing ? [6, height, 6] : 6,
+                    height: playing && !reducedMotion ? [6, height, 6] : 6,
                     opacity: playing ? 1 : 0.35,
                   }}
                   transition={{
-                    repeat: Infinity,
+                    repeat: reducedMotion ? 0 : Infinity,
                     duration: 0.8,
                     delay: index * 0.03,
                   }}
@@ -198,7 +203,7 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
               }}
             />
 
-            <div className="mt-2 flex justify-between text-[11px] text-neutral-500 dark:text-white/40">
+            <div className="mt-2 flex justify-between text-[11px] text-muted">
               <span>{formatTime(current)}</span>
               <span>{formatTime(duration)}</span>
             </div>
@@ -209,8 +214,25 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
               {playing ? <Pause size={16} /> : <Play size={16} />}
             </ExButton>
 
-            <div ref={volumeRef} className="relative">
-              <ExButton variant="text" color="secondary" iconOnly onClick={() => setVolumeOpen((value) => !value)} aria-label="Volume">
+            <div
+              ref={volumeRef}
+              className="relative"
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && volumeOpen) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setVolumeOpen(false);
+                  volumeRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+                }
+              }}>
+              <ExButton
+                variant="text"
+                color="secondary"
+                iconOnly
+                onClick={() => setVolumeOpen((value) => !value)}
+                aria-label="Volume"
+                aria-expanded={volumeOpen}
+                aria-controls={volumeOpen ? volumeId : undefined}>
                 {volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
               </ExButton>
 
@@ -221,14 +243,13 @@ export default function ExMusicPlayer({ name, url, autoPlay = false, loop = fals
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.9 }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="absolute bottom-full left-1/2 mb-0 flex h-40 -translate-x-1/2 items-center rounded-2xl border border-border bg-white/95 px-3 shadow-xl backdrop-blur-xl dark:bg-background/75"
-                    role="slider"
-                    aria-label="Volume control"
-                    aria-valuemin={0}
-                    aria-valuemax={1}
-                    aria-valuenow={volume}>
+                    className="absolute bottom-full left-1/2 mb-0 flex h-40 -translate-x-1/2 items-center rounded-lg border border-border bg-white/95 px-3 shadow-xl backdrop-blur-xl dark:bg-background/75"
+                    id={volumeId}>
                     <input
                       type="range"
+                      aria-label="Music volume"
+                      aria-orientation="vertical"
+                      aria-valuetext={`${Math.round(volume * 100)}%`}
                       min={0}
                       max={1}
                       step={0.01}

@@ -58,7 +58,6 @@ export default function ExBreadcrumbsItem({
   if (active) {
     return (
       <span
-        role="listitem"
         aria-current="page"
         className={cn("inline-flex items-center", colorClass, className)}
       >

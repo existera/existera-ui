@@ -78,6 +78,7 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
     });
 
     const fieldId = useId();
+    const labelId = `${fieldId}-label`;
     const descriptionId = description ? fieldId + "-description" : undefined;
     const errorId = error ? fieldId + "-error" : undefined;
     const describedBy = [nativeProps["aria-describedby"], descriptionId, errorId].filter(Boolean).join(" ") || undefined;
@@ -124,7 +125,11 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
 
     return (
       <label
-        className={clsx("group flex select-none items-start", styles.gap, disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer")}>
+        className={clsx(
+          "group flex min-h-6 select-none items-start",
+          styles.gap,
+          disabled ? "cursor-not-allowed opacity-55" : "cursor-pointer",
+        )}>
         {/* Radio control */}
         <span className={clsx("relative flex shrink-0 items-center justify-center", styles.box)}>
           <input
@@ -133,6 +138,7 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
             onClick={(event) => {
               if (readOnly) event.preventDefault();
             }}
+            aria-labelledby={nativeProps["aria-labelledby"] ?? (nativeProps["aria-label"] ? undefined : label ? labelId : undefined)}
             aria-describedby={describedBy}
             aria-invalid={nativeProps["aria-invalid"] ?? Boolean(error)}
             ref={inputRef}
@@ -146,17 +152,21 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
           <motion.span
             className={clsx(
               styles.box,
-              "flex items-center justify-center rounded-full border bg-surface",
+              "flex items-center justify-center rounded-full border",
               "transition-[border-color,background-color,transform]",
               "duration-150 ease-out",
-              error ? "border-danger" : "border-secondary",
-              !disabled && "group-hover:border-primary/70",
+              isChecked
+                ? error
+                  ? "border-danger bg-danger-solid"
+                  : "border-primary bg-primary-solid"
+                : error
+                  ? "border-danger bg-surface"
+                  : "border-secondary bg-surface",
+              !disabled && !error && !isChecked && "group-hover:border-primary/70",
               "peer-focus-visible:ring-2",
               error ? "peer-focus-visible:ring-danger/25" : "peer-focus-visible:ring-primary/25",
               "peer-focus-visible:ring-offset-1",
               "peer-focus-visible:ring-offset-background",
-              isChecked && !error && ["border-primary", "bg-primary/10", "dark:bg-primary/15"],
-              isChecked && error && ["border-danger", "bg-danger/10", "dark:bg-danger/15"],
               !disabled && "active:scale-95",
             )}>
             <AnimatePresence initial={false}>
@@ -166,7 +176,7 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0, opacity: 0 }}
                   transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                  className={clsx(styles.dot, "rounded-full", error ? "bg-danger" : "bg-primary")}
+                  className={clsx(styles.dot, "rounded-full bg-white")}
                 />
               )}
             </AnimatePresence>
@@ -177,7 +187,9 @@ const ExRadio = forwardRef<HTMLInputElement, ExRadioProps>(
         {(label || description || error) && (
           <span className="min-w-0 flex-1">
             {label && (
-              <span className={clsx("block leading-tight", styles.text, "font-medium", error ? "text-danger" : "text-foreground")}>
+              <span
+                id={labelId}
+                className={clsx("block leading-tight", styles.text, "font-medium", error ? "text-danger" : "text-foreground")}>
                 {label}
               </span>
             )}

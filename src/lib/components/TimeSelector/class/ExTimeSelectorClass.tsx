@@ -1,11 +1,8 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { TimeSelectorRadius, TimeSelectorSize, TimeSelectorState } from "../types/ExTimeSelectorType";
 
-export const TimeSelectorStateClass: Record<TimeSelectorState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const TimeSelectorStateClass: Record<TimeSelectorState, string> = { ...FormControlStateClass };
 
 export const TimeSelectorSizeClass: Record<
   TimeSelectorSize,
@@ -60,7 +57,7 @@ export const TimeSelectorSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-full",
         suffix: "rounded-l-full",
       },
@@ -97,7 +94,7 @@ export const TimeSelectorRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

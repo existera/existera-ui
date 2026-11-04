@@ -18,6 +18,7 @@ export default function ChatBubblePage() {
       name: "Long Text",
       link: "#long-text",
     },
+    { name: "Variants & Colors", link: "#variants-colors" },
     {
       name: "Size",
       link: "#size",
@@ -55,53 +56,81 @@ export default function ChatBubblePage() {
   return (
     <PageContent section={section}>
       <div className="flex flex-col gap-20">
-        <section
-          id="intro"
-          className="grid gap-2 section-anchor">
-          <h2 className="text-3xl font-semibold">
-            Chat Bubble
-          </h2>
+        <section id="intro" className="grid gap-2 section-anchor">
+          <h2 className="text-3xl font-semibold">Chat Bubble</h2>
           <p>
-            Chat bubbles are used to display
-            messages in a chat interface similar
-            to WhatsApp. They support different
-            positions for sender and receiver,
-            avatars, timestamps, delivery status,
-            and customizable styling for modern
-            chat applications.
+            Chat bubbles are used to display messages in a chat interface similar to WhatsApp. They support different positions for sender
+            and receiver, avatars, timestamps, delivery status, and customizable styling for modern chat applications.
           </p>
         </section>
 
-        <section
-          id="basic-usage"
-          className="grid section-anchor">
+        <section id="variants-colors" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Basic Usage
-            </h3>
+            <h3 className="text-2xl font-semibold">Variants &amp; Colors</h3>
             <p className="text-muted text-md">
-              Display chat messages with minimal
-              configuration.
+              WhatsApp-style tails follow the message position. Choose solid or soft independently of position, with any theme color. By
+              default, incoming messages are solid and outgoing messages are soft, using primary.
             </p>
+          </div>
+          <ExCanvas>
+            <div className="w-full flex flex-col gap-6">
+              {(["primary", "secondary", "success", "warning", "danger"] as const).map((color) => (
+                <div key={color} className="flex flex-col gap-3">
+                  <ExChatBubble
+                    color={color}
+                    variant="solid"
+                    position="left"
+                    message={`${color} solid message`}
+                    timestamp="10:30"
+                    showAvatar={false}
+                  />
+                  <ExChatBubble
+                    color={color}
+                    variant="soft"
+                    position="right"
+                    message={`${color} soft message`}
+                    timestamp="10:31"
+                    status="read"
+                    showAvatar={false}
+                  />
+                </div>
+              ))}
+            </div>
+          </ExCanvas>
+          <ExCodeBlock language="tsx">
+            {`<ExChatBubble
+  position="left"
+  variant="solid"
+  color="primary"
+  message="Hello!"
+  timestamp="10:30"
+  showAvatar={false}
+/>
+<ExChatBubble
+  position="right"
+  variant="soft"
+  color="success"
+  message="Message received."
+  timestamp="10:31"
+  status="read"
+  showAvatar={false}
+/>
+// Colors: primary | secondary | success | warning | danger
+// Variants: solid | soft`}
+          </ExCodeBlock>
+        </section>
+
+        <section id="basic-usage" className="grid section-anchor">
+          <div className="mb-5">
+            <h3 className="text-2xl font-semibold">Basic Usage</h3>
+            <p className="text-muted text-md">Display chat messages with minimal configuration.</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
-              <ExChatBubble
-                position="left"
-                message="Hello there! How can I help you today?"
-                showName={false}
-              />
-              <ExChatBubble
-                position="right"
-                message="Hi! I need some help with my recent order."
-                showName={false}
-              />
-              <ExChatBubble
-                position="left"
-                message="Sure! What seems to be the issue?"
-                showName={false}
-              />
+              <ExChatBubble position="left" message="Hello there! How can I help you today?" showName={false} />
+              <ExChatBubble position="right" message="Hi! I need some help with my recent order." showName={false} />
+              <ExChatBubble position="left" message="Sure! What seems to be the issue?" showName={false} />
               <ExChatBubble
                 position="left"
                 message="Here is a longer message that demonstrates how the bubble adjusts to fit longer text content. It should wrap nicely and maintain proper padding and styling."
@@ -118,18 +147,10 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="long-text"
-          className="grid section-anchor">
+        <section id="long-text" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Long Text
-            </h3>
-            <p className="text-muted text-md">
-              Long messages automatically show
-              "Read more" and can be expanded to
-              view full content.
-            </p>
+            <h3 className="text-2xl font-semibold">Long Text</h3>
+            <p className="text-muted text-md">Long messages automatically show "Read more" and can be expanded to view full content.</p>
           </div>
 
           <ExCanvas>
@@ -170,45 +191,18 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="size"
-          className="grid section-anchor">
+        <section id="size" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Size
-            </h3>
-            <p className="text-muted text-md">
-              Choose from four_sizes to fit
-              different chat interface designs.
-            </p>
+            <h3 className="text-2xl font-semibold">Size</h3>
+            <p className="text-muted text-md">Choose from four_sizes to fit different chat interface designs.</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
-              <ExChatBubble
-                size="xs"
-                position="left"
-                message="Extra small"
-                showName={false}
-              />
-              <ExChatBubble
-                size="sm"
-                position="right"
-                message="Small"
-                showName={false}
-              />
-              <ExChatBubble
-                size="md"
-                position="left"
-                message="Medium (default)"
-                showName={false}
-              />
-              <ExChatBubble
-                size="lg"
-                position="right"
-                message="Large"
-                showName={false}
-              />
+              <ExChatBubble size="xs" position="left" message="Extra small" showName={false} />
+              <ExChatBubble size="sm" position="right" message="Small" showName={false} />
+              <ExChatBubble size="md" position="left" message="Medium (default)" showName={false} />
+              <ExChatBubble size="lg" position="right" message="Large" showName={false} />
             </div>
           </ExCanvas>
 
@@ -220,40 +214,21 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="position"
-          className="grid section-anchor">
+        <section id="position" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Position
-            </h3>
-            <p className="text-muted text-md">
-              Use position prop to indicate sender
-              (right) or receiver (left).
-            </p>
+            <h3 className="text-2xl font-semibold">Position</h3>
+            <p className="text-muted text-md">Use position prop to indicate sender (right) or receiver (left).</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
               <div className="flex flex-col items-start">
-                <span className="text-xs text-muted mb-1">
-                  Receiver (left)
-                </span>
-                <ExChatBubble
-                  position="left"
-                  message="This message is from receiver"
-                  showName={false}
-                />
+                <span className="text-xs text-muted mb-1">Receiver (left)</span>
+                <ExChatBubble position="left" message="This message is from receiver" showName={false} />
               </div>
               <div className="flex flex-col items-end">
-                <span className="text-xs text-muted mb-1">
-                  Sender (right)
-                </span>
-                <ExChatBubble
-                  position="right"
-                  message="This message is from sender"
-                  showName={false}
-                />
+                <span className="text-xs text-muted mb-1">Sender (right)</span>
+                <ExChatBubble position="right" message="This message is from sender" showName={false} />
               </div>
             </div>
           </ExCanvas>
@@ -264,17 +239,10 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="avatar"
-          className="grid section-anchor">
+        <section id="avatar" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Avatar
-            </h3>
-            <p className="text-muted text-md">
-              Add user avatars to make
-              conversations more personal.
-            </p>
+            <h3 className="text-2xl font-semibold">Avatar</h3>
+            <p className="text-muted text-md">Add user avatars to make conversations more personal.</p>
           </div>
 
           <ExCanvas>
@@ -306,33 +274,16 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="name"
-          className="grid section-anchor">
+        <section id="name" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Name
-            </h3>
-            <p className="text-muted text-md">
-              Display user names above messages.
-              Toggle with showName prop.
-            </p>
+            <h3 className="text-2xl font-semibold">Name</h3>
+            <p className="text-muted text-md">Display user names above messages. Toggle with showName prop.</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
-              <ExChatBubble
-                position="left"
-                message="Message without name"
-                name="User A"
-                showName={false}
-              />
-              <ExChatBubble
-                position="right"
-                message="Message with name"
-                name="User B"
-                showName={true}
-              />
+              <ExChatBubble position="left" message="Message without name" name="User A" showName={false} />
+              <ExChatBubble position="right" message="Message with name" name="User B" showName={true} />
             </div>
           </ExCanvas>
 
@@ -353,17 +304,10 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="media"
-          className="grid section-anchor">
+        <section id="media" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Media
-            </h3>
-            <p className="text-muted text-md">
-              Send images, videos, or files with
-              chat bubbles.
-            </p>
+            <h3 className="text-2xl font-semibold">Media</h3>
+            <p className="text-muted text-md">Send images, videos, or files with chat bubbles.</p>
           </div>
 
           <ExCanvas>
@@ -402,14 +346,7 @@ export default function ChatBubblePage() {
                 message="Check out this video!"
                 showName={false}
               />
-              <ExChatBubble
-                position="left"
-                media="document.pdf"
-                mediaType="file"
-                timestamp="10:35 AM"
-                status="sent"
-                showName={false}
-              />
+              <ExChatBubble position="left" media="document.pdf" mediaType="file" timestamp="10:35 AM" status="sent" showName={false} />
             </div>
           </ExCanvas>
 
@@ -433,27 +370,15 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="timestamp"
-          className="grid section-anchor">
+        <section id="timestamp" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Timestamp
-            </h3>
-            <p className="text-muted text-md">
-              Show message delivery time. Toggle
-              with showTimestamp prop.
-            </p>
+            <h3 className="text-2xl font-semibold">Timestamp</h3>
+            <p className="text-muted text-md">Show message delivery time. Toggle with showTimestamp prop.</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
-              <ExChatBubble
-                position="left"
-                message="Message with timestamp"
-                timestamp="10:30 AM"
-                showName={false}
-              />
+              <ExChatBubble position="left" message="Message with timestamp" timestamp="10:30 AM" showName={false} />
               <ExChatBubble
                 position="right"
                 message="Message without timestamp"
@@ -479,46 +404,18 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="status"
-          className="grid section-anchor">
+        <section id="status" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Status
-            </h3>
-            <p className="text-muted text-md">
-              Show delivery status for sender
-              messages. Toggle with showStatus
-              prop.
-            </p>
+            <h3 className="text-2xl font-semibold">Status</h3>
+            <p className="text-muted text-md">Show delivery status for sender messages. Toggle with showStatus prop.</p>
           </div>
 
           <ExCanvas>
             <div className="md:mx-15 w-full flex flex-col gap-4">
-              <ExChatBubble
-                position="right"
-                message="Sent"
-                timestamp="10:30 AM"
-                status="sent"
-              />
-              <ExChatBubble
-                position="right"
-                message="Delivered"
-                timestamp="10:30 AM"
-                status="delivered"
-              />
-              <ExChatBubble
-                position="right"
-                message="Read"
-                timestamp="10:30 AM"
-                status="read"
-              />
-              <ExChatBubble
-                position="right"
-                message="No status"
-                timestamp="10:30 AM"
-                showStatus={false}
-              />
+              <ExChatBubble position="right" message="Sent" timestamp="10:30 AM" status="sent" />
+              <ExChatBubble position="right" message="Delivered" timestamp="10:30 AM" status="delivered" />
+              <ExChatBubble position="right" message="Read" timestamp="10:30 AM" status="read" />
+              <ExChatBubble position="right" message="No status" timestamp="10:30 AM" showStatus={false} />
             </div>
           </ExCanvas>
 
@@ -543,17 +440,10 @@ export default function ChatBubblePage() {
           </ExCodeBlock>
         </section>
 
-        <section
-          id="customization"
-          className="grid section-anchor">
+        <section id="customization" className="grid section-anchor">
           <div className="mb-5">
-            <h3 className="text-2xl font-semibold">
-              Customization
-            </h3>
-            <p className="text-muted text-md">
-              Control visibility of all elements
-              with boolean props.
-            </p>
+            <h3 className="text-2xl font-semibold">Customization</h3>
+            <p className="text-muted text-md">Control visibility of all elements with boolean props.</p>
           </div>
 
           <ExCanvas>

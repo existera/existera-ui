@@ -1,8 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Download, Image, RotateCcw, X, ZoomIn, ZoomOut } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Download, Image, RotateCcw, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
 import ExButton from "../Button/ExButton";
 import type { ExImageViewerProps } from "./props/ExImageViewerProps";
 
@@ -11,10 +12,13 @@ const MAX_SCALE = 5;
 
 export default function ExImageViewer({
   name,
+  alt,
   url,
   file,
   onClose,
 }: ExImageViewerProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(true, dialogRef, null, undefined, onClose);
   const [transform, setTransform] = useState({
     scale: 1,
     x: 0,
@@ -64,15 +68,8 @@ export default function ExImageViewer({
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    document.addEventListener("keydown", handler);
     return () => {
       document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handler);
     };
   }, [onClose]);
 
@@ -89,6 +86,12 @@ export default function ExImageViewer({
     showZoomIndicator();
   };
 
+  const pan = (x: number, y: number) => {
+    setTransform(previous => {
+      const limit = 350 * (previous.scale - 1);
+      return { ...previous, x: Math.max(-limit, Math.min(limit, previous.x + x)), y: Math.max(-limit, Math.min(limit, previous.y + y)) };
+    });
+  };
   const reset = () => {
     setTransform({
       scale: 1,
@@ -200,6 +203,8 @@ export default function ExImageViewer({
   return (
     <AnimatePresence>
       <motion.div
+        ref={dialogRef}
+        tabIndex={-1}
         className="fixed inset-0 z-999999 bg-surface backdrop-blur-md"
         initial={{
           opacity: 0,
@@ -228,6 +233,7 @@ export default function ExImageViewer({
             <AnimatePresence>
               {transform.scale !== 1 && (
                 <motion.div
+                  key="zoom-reset"
                   initial={{
                     opacity: 0,
                     scale: 0.8,
@@ -245,6 +251,7 @@ export default function ExImageViewer({
                     variant="soft"
                     color="secondary"
                     iconOnly
+                    aria-label="Reset zoom"
                     onClick={reset}
                   >
                     <RotateCcw size={16} aria-label="Reset zoom" />
@@ -253,6 +260,7 @@ export default function ExImageViewer({
               )}
               {transform.scale !== 1 && (
                 <motion.div
+                  key="zoom-out"
                   initial={{
                     opacity: 0,
                     scale: 0.8,
@@ -270,6 +278,7 @@ export default function ExImageViewer({
                     variant="soft"
                     color="secondary"
                     iconOnly
+                    aria-label="Zoom out"
                     onClick={() => updateScale(transform.scale - 0.25)}
                   >
                     <ZoomOut size={16} aria-label="Zoom out" />
@@ -281,7 +290,8 @@ export default function ExImageViewer({
               variant="soft"
               color="secondary"
               iconOnly
-              onClick={() => updateScale(transform.scale + 0.25)}
+              aria-label="Zoom in"
+                    onClick={() => updateScale(transform.scale + 0.25)}
             >
               <ZoomIn size={16} aria-label="Zoom in" />
             </ExButton>
@@ -289,21 +299,38 @@ export default function ExImageViewer({
               variant="soft"
               color="secondary"
               iconOnly
-              onClick={download}
+              aria-label="Download image"
+                    onClick={download}
             >
               <Download size={16} aria-label="Download image" />
             </ExButton>
-            <ExButton variant="soft" color="danger" iconOnly onClick={onClose}>
+            <ExButton variant="soft" color="danger" iconOnly aria-label="Close image viewer" onClick={onClose}>
               <X size={16} aria-label="Close image viewer" />
             </ExButton>
           </div>
         </div>
 
         <div
-          className="flex h-[calc(100%-65px)] w-full items-center justify-center overflow-hidden"
+          tabIndex={0}
+          role="region"
+          aria-label="Image canvas"
+          aria-keyshortcuts={transform.scale > 1 ? "ArrowLeft ArrowRight ArrowUp ArrowDown" : undefined}
+          onKeyDown={event => {
+            if (event.target !== event.currentTarget || transform.scale <= 1) return;
+            const directions: Record<string, [number, number]> = {ArrowLeft:[40,0],ArrowRight:[-40,0],ArrowUp:[0,40],ArrowDown:[0,-40]};
+            const direction = directions[event.key];
+            if (direction) { event.preventDefault(); pan(...direction); }
+          }}
+          className="relative flex h-[calc(100%-65px)] w-full items-center justify-center overflow-hidden"
           onClick={(e) => e.stopPropagation()}
           onWheel={handleWheel}
         >
+          {transform.scale > 1 && <div role="group" aria-label="Pan image" className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2 rounded-md border border-field-border bg-surface p-1.5">
+            <ExButton size="sm" variant="text" color="secondary" iconOnly aria-label="Pan left" onClick={() => pan(40,0)}><ArrowLeft size={16} /></ExButton>
+            <ExButton size="sm" variant="text" color="secondary" iconOnly aria-label="Pan right" onClick={() => pan(-40,0)}><ArrowRight size={16} /></ExButton>
+            <ExButton size="sm" variant="text" color="secondary" iconOnly aria-label="Pan up" onClick={() => pan(0,40)}><ArrowUp size={16} /></ExButton>
+            <ExButton size="sm" variant="text" color="secondary" iconOnly aria-label="Pan down" onClick={() => pan(0,-40)}><ArrowDown size={16} /></ExButton>
+          </div>}
           <AnimatePresence>
             {showZoom && (
               <motion.div
@@ -337,7 +364,7 @@ export default function ExImageViewer({
           </AnimatePresence>
           <motion.img
             src={imageUrl}
-            alt={name}
+            alt={alt ?? name}
             draggable={false}
             onDoubleClick={handleDoubleClick}
             onPointerDown={handlePointerDown}

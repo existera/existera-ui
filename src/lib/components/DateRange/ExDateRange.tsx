@@ -8,6 +8,7 @@ import Suffix from "../Suffix/ExSuffix";
 import ExPrefix from "../Prefix/ExPrefix";
 import ExSuffix from "../Suffix/ExSuffix";
 import { Children, isValidElement, useEffect, useRef, useState } from "react";
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 import { DateRangePadding, DateRangeSizeClass, DateRangeStateClass, DateRangeStateIconSize } from "./class/DateRangeClass";
 import { ArrowRight, CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
@@ -167,8 +168,8 @@ const ExDateRange: CompoundDateRange = (props) => {
         className={cn(
           DateRangeSizeClass[size].height,
           DateRangeSizeClass[size].radius[radius].default,
-          "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-          disabled ? "cursor-not-allowed bg-surface-4 select-none" :  "bg-surface-2",
+          FormControlBaseClass,
+          disabled ? FormControlDisabledClass : DateRangeStateClass[state],
         )}>
         {prefix && (
           <ExPrefix radius={radius} size={size}>
@@ -180,7 +181,6 @@ const ExDateRange: CompoundDateRange = (props) => {
           className={cn(
             "relative flex h-full w-full items-center",
             DateRangePadding[size].wrapper,
-            DateRangeStateClass[state],
             !suffix && prefix && DateRangeSizeClass[size].radius[radius].prefix,
             !prefix && suffix && DateRangeSizeClass[size].radius[radius].suffix,
             !prefix && !suffix && DateRangeSizeClass[size].radius[radius].default,
@@ -206,7 +206,10 @@ const ExDateRange: CompoundDateRange = (props) => {
               placeholder={startDatePlaceholder}
               value={startValue ?? ""}
               onChange={(e) => updateStart(e.target.value)}
+              role="combobox"
               aria-haspopup="dialog"
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
+              aria-busy={loading || undefined}
               aria-expanded={open}
               aria-controls={open ? picker.popupId : undefined}
               onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}
@@ -252,7 +255,10 @@ const ExDateRange: CompoundDateRange = (props) => {
               placeholder={endDatePlaceholder}
               value={endValue ?? ""}
               onChange={(e) => updateEnd(e.target.value)}
+              role="combobox"
               aria-haspopup="dialog"
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
+              aria-busy={loading || undefined}
               aria-expanded={open}
               aria-controls={open ? picker.popupId : undefined}
               onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}

@@ -3,9 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import ExButton from "../Button/ExButton";
 import type { ExFlyoutProps } from "./props/ExFlyoutProps";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { cn } from "../../utils/Utils";
 import { useRegisterModalPortal } from "../Modal/context/ExModalContext";
 
@@ -17,8 +18,16 @@ export default function ExFlyout({
   closeButton = true,
   onClose,
   children,
+  "aria-label": ariaLabel = "Details panel",
+  "aria-labelledby": labelledBy,
 }: ExFlyoutProps) {
   const registerPortalRef = useRegisterModalPortal<HTMLElement>();
+  const panelRef = useRef<HTMLElement>(null);
+  const setPanelRef = useCallback((element: HTMLElement | null) => {
+    panelRef.current = element;
+    registerPortalRef(element);
+  }, [registerPortalRef]);
+  useFocusTrap(Boolean(isOpen), panelRef, null, undefined, onClose);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   useEffect(() => {
@@ -29,15 +38,6 @@ export default function ExFlyout({
       document.body.style.overflow = original;
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose?.();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [isOpen, onClose]);
 
   const frameClass = useMemo(() => {
     if (isMobile) return "top-0 bottom-0";
@@ -76,7 +76,12 @@ export default function ExFlyout({
 
           <div className={cn("fixed z-97", frameClass, sideClass)}>
             <motion.aside
-              ref={registerPortalRef}
+              ref={setPanelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={labelledBy ? undefined : ariaLabel}
+              aria-labelledby={labelledBy}
+              tabIndex={-1}
               className={cn("h-full bg-surface shadow-xl overflow-hidden flex flex-col", sizeClass)}
               initial={{
                 x: side === "right" ? "110%" : "-110%",
@@ -105,12 +110,10 @@ export default function ExFlyout({
                 damping: 22,
                 mass: 0.9,
               }}
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true">
+              onClick={(e) => e.stopPropagation()}>
               {closeButton && (
                 <div className="absolute right-1.5 top-1.5">
-                  <ExButton color="secondary" variant="text" size="xs" iconOnly onClick={() => onClose?.()}>
+                  <ExButton color="secondary" variant="text" size="xs" iconOnly aria-label="Close panel" onClick={() => onClose?.()}>
                     <X size={14} />
                   </ExButton>
                 </div>

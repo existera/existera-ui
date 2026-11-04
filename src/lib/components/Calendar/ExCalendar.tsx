@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { RadiusSizeClass } from "../../styles/Radius";
 import { cn } from "../../utils/Utils";
 import type { ExCalendarProps } from "./props/ExCalendarProps";
 import type { ExCalendarEvent, ExCalendarView } from "./types/ExCalendarType";
@@ -185,7 +186,8 @@ export default function ExCalendar({
     <section
       aria-label="Calendar"
       className={cn(
-        "ex-calendar flex min-h-0 min-w-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface shadow-sm",
+        "ex-calendar flex min-h-0 min-w-0 flex-col overflow-hidden border border-border bg-surface shadow-sm",
+        RadiusSizeClass[size],
         className,
       )}
       data-size={size}
@@ -300,7 +302,7 @@ export default function ExCalendar({
                             onClick={() => showDay(day)}
                             className={cn(
                               "flex size-6 items-center justify-center rounded-full text-xs",
-                              sameDay(day, now) ? "bg-primary font-semibold text-background" : "hover:bg-surface-3",
+                              sameDay(day, now) ? "bg-primary-solid font-semibold text-white" : "hover:bg-surface-3",
                               day.getMonth() !== current.getMonth() && "text-muted",
                             )}>
                             {day.getDate()}
@@ -340,7 +342,7 @@ export default function ExCalendar({
                     <span
                       className={cn(
                         "flex size-5 items-center justify-center rounded-full text-lg font-semibold p-4 mt-2",
-                        sameDay(day, now) && "bg-primary text-white",
+                        sameDay(day, now) && "bg-primary-solid text-white",
                       )}>
                       {day.getDate()}
                     </span>
@@ -403,7 +405,7 @@ export default function ExCalendar({
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-x-0 z-20 border-t border-danger"
                       style={{ top: `${((now.getHours() * 60 + now.getMinutes()) / 1440) * 100}%` }}>
-                      <span className="absolute -left-1 -top-1 size-2 rounded-full bg-danger" />
+                      <span className="absolute -left-1 -top-1 size-2 rounded-full bg-danger-solid" />
                     </div>
                   )}
                 </div>

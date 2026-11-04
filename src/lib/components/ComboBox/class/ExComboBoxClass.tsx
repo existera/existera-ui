@@ -1,11 +1,8 @@
+import { FormControlStateClass } from "../../../styles/FormControl";
 import { ControlSizeClass } from "../../../styles/ControlSize";
 import type { ComboBoxRadius, ComboBoxSize, ComboBoxState } from "../types/ExComboBoxType";
 
-export const ComboBoxStateClass: Record<ComboBoxState, string> = {
-  default: "focus-within:outline-2 focus-within:outline-primary",
-  error: "outline-2 outline-danger",
-  success: "outline-2 outline-success",
-};
+export const ComboBoxStateClass: Record<ComboBoxState, string> = { ...FormControlStateClass };
 
 export const ComboBoxSizeClass: Record<
   ComboBoxSize,
@@ -60,7 +57,7 @@ export const ComboBoxSizeClass: Record<
         suffix: "rounded-l-md",
       },
       full: {
-        prefix: "rounded-r-md",
+        prefix: "rounded-r-full",
         default: "rounded-[var(--radius-full-md)]",
         suffix: "rounded-l-full",
       },
@@ -97,7 +94,7 @@ export const ComboBoxRadiusClass: Record<
     suffix: "rounded-l-md",
   },
   full: {
-    prefix: "rounded-r-md",
+    prefix: "rounded-r-full",
     default: "rounded-full",
     suffix: "rounded-l-full",
   },

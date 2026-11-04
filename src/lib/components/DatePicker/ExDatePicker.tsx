@@ -9,6 +9,7 @@ import Suffix from "../Suffix/ExSuffix";
 import ExPrefix from "../Prefix/ExPrefix";
 import ExSuffix from "../Suffix/ExSuffix";
 import { Children, isValidElement, useEffect, useRef, useState } from "react";
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
 import { DatePickerPadding, DatePickerSizeClass, DatePickerStateClass, DatePickerStateIconSize } from "./class/ExDatePickerClass";
@@ -29,7 +30,7 @@ const ExDatePicker: CompoundDatePicker = (props) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
+    state: stateProp,
     clearable = false,
     loading = false,
     format = "DD-MM-YYYY",
@@ -37,12 +38,14 @@ const ExDatePicker: CompoundDatePicker = (props) => {
     startDate,
     endDate,
     disabledDate = [],
-    disabled = false,
+    disabled: disabledProp = false,
     onType,
     onChange,
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
 
@@ -107,8 +110,9 @@ const ExDatePicker: CompoundDatePicker = (props) => {
           DatePickerSizeClass[inputSize].radius[radius].default,
           operator
             ? "min-w-0 flex-1"
-            : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-          disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+            : FormControlBaseClass,
+          !operator && (disabled ? FormControlDisabledClass : DatePickerStateClass[state]),
+        operator && disabled && "cursor-not-allowed text-muted",
         )}>
         {!operator && prefix && (
           <ExPrefix radius={radius} size={size}>
@@ -120,7 +124,6 @@ const ExDatePicker: CompoundDatePicker = (props) => {
           className={cn(
             "relative flex h-full w-full items-center",
             DatePickerPadding[inputSize].wrapper,
-            !operator && DatePickerStateClass[state],
             !operator && !suffix && prefix && DatePickerSizeClass[inputSize].radius[radius].prefix,
             !operator && !prefix && suffix && DatePickerSizeClass[inputSize].radius[radius].suffix,
             !operator && !prefix && !suffix && DatePickerSizeClass[inputSize].radius[radius].default,
@@ -143,7 +146,10 @@ const ExDatePicker: CompoundDatePicker = (props) => {
             placeholder={placeholder}
             value={inputValue}
             onClick={() => { if (!disabled && !readOnly) setOpen(true); }}
-            aria-haspopup="dialog"
+            role="combobox"
+              aria-haspopup="dialog"
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
+              aria-busy={loading || undefined}
             aria-expanded={open}
             aria-controls={open ? picker.popupId : undefined}
             onKeyDown={(e) => { picker.onTriggerKeyDown(e); }}

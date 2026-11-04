@@ -2,6 +2,9 @@
 
 import { Fragment, useEffect, useId, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
+import { Move } from "lucide-react";
+import ExDropdown from "../Dropdown/ExDropdown";
+import ExButton from "../Button/ExButton";
 import { cn } from "../../utils/Utils";
 import ExKanbanCardView from "./ExKanbanCard";
 import ExKanbanColumnView from "./ExKanbanColumn";
@@ -91,6 +94,7 @@ export default function ExKanban({
     // Touch keeps native scrolling; card gestures are handled by the cards.
     if (event.pointerType === "touch" || event.button !== 0 || !event.isPrimary || dragRef.current || pointerRef.current || panRef.current) return;
     const target = event.target as Element;
+    if (!event.currentTarget.contains(target)) return;
     if (target.closest('[data-kanban-card], button, a, input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="button"], [data-kanban-no-drag]')) return;
     const board = event.currentTarget;
     if (board.scrollWidth <= board.clientWidth) return;
@@ -171,6 +175,7 @@ export default function ExKanban({
     if (!event.isPrimary) return;
 
     const target = event.target as HTMLElement;
+    if (!event.currentTarget.contains(target)) return;
     const interactive = target.closest('button, a, input, textarea, select, [contenteditable="true"], [data-kanban-no-drag]');
 
     if (interactive && !interactive.hasAttribute("data-kanban-title")) return;
@@ -340,7 +345,7 @@ export default function ExKanban({
   };
 
   const marker = (
-    <div aria-hidden="true" className="relative my-2 h-0.5 rounded-full bg-primary" />
+    <div aria-hidden="true" className="relative my-2 h-0.5 rounded-full bg-primary-solid" />
   );
 
   return (
@@ -389,7 +394,7 @@ export default function ExKanban({
         onPointerCancel={panEnd}
         onLostPointerCapture={panEnd}>
         {columns.length === 0 && (
-          <p className="w-full rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted">No columns to display.</p>
+          <p className="w-full rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">No columns to display.</p>
         )}
 
         {columns.map((column) => {
@@ -415,6 +420,14 @@ export default function ExKanban({
                       card={card}
                       size={size}
                       moving={moving}
+                      actions={!locked ? <ExDropdown>
+                        <ExDropdown.Trigger><ExButton variant="text" color="secondary" size="xs" iconOnly aria-label={`Move ${card.title}`}><Move size={14} /></ExButton></ExDropdown.Trigger>
+                        <ExDropdown.Content>
+                          <ExDropdown.Item disabled={index === 0} onSelect={() => { update({cardId:card.id,columnId:column.id,index:index-1,keyboard:true}); commit(); }}>Move up</ExDropdown.Item>
+                          <ExDropdown.Item disabled={index === column.cards.length - 1} onSelect={() => { update({cardId:card.id,columnId:column.id,index:index+1,keyboard:true}); commit(); }}>Move down</ExDropdown.Item>
+                          {columns.filter(target => target.id !== column.id && !target.disabled).map(target => <ExDropdown.Item key={target.id} onSelect={() => { update({cardId:card.id,columnId:target.id,index:target.cards.length,keyboard:true}); commit(); }}>Move to {target.title}</ExDropdown.Item>)}
+                        </ExDropdown.Content>
+                      </ExDropdown> : undefined}
                       locked={Boolean(locked)}
                       renderCard={renderCard ?? composition.cardProps.get(card.id)?.renderCard}
                       onCardClick={

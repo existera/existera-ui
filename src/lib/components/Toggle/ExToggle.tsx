@@ -55,10 +55,10 @@ export default function ExToggle({
         ToggleRadiusClass[radius],
         "border",
         fit ? "min-w-fit" : "w-full",
-        selected ? "bg-primary text-white" : "bg-transparent border-foreground/15",
+        selected ? "bg-primary-solid text-white" : "bg-transparent border-foreground/15",
         isDisabled
           ? "cursor-not-allowed opacity-70"
-          : "cursor-pointer hover:scale-[1.01] active:scale-[0.98] hover:bg-primary hover:text-white",
+          : "cursor-pointer hover:scale-[1.01] active:scale-[0.98] hover:bg-primary-solid hover:text-white",
         className,
       )}>
       {loading && (

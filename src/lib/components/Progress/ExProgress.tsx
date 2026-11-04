@@ -12,8 +12,12 @@ export default function ExProgress({
   radius = true,
   className,
   style,
+  "aria-label": ariaLabel = "Progress",
+  "aria-labelledby": labelledBy,
 }: ExProgressProps) {
-  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
+  const safeValue = Number.isFinite(value) ? Math.min(Math.max(value, 0), safeMax) : 0;
+  const percentage = (safeValue / safeMax) * 100;
 
   return (
     <div className={clsx("min-w-0 w-full", className)} style={style}>
@@ -38,9 +42,11 @@ export default function ExProgress({
           },
         )}
         role="progressbar"
-        aria-valuenow={value}
+        aria-label={labelledBy ? undefined : ariaLabel}
+        aria-labelledby={labelledBy}
+        aria-valuenow={safeValue}
         aria-valuemin={0}
-        aria-valuemax={max}
+        aria-valuemax={safeMax}
         aria-valuetext={`${Math.round(percentage)}%`}>
         <div
           className={clsx(

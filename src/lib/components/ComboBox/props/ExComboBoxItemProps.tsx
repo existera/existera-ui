@@ -7,6 +7,7 @@ export interface ExOption<T> {
 }
 
 export interface ExComboBoxItemProps<T = string> extends ExOption<T> {
+  id?: string;
   size?: ComboBoxSize;
   selected?: boolean;
   active?: boolean;

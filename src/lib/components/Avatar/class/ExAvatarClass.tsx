@@ -1,15 +1,6 @@
-import type {
-  AvatarSize,
-  AvatarStatus,
-  AvatarColor,
-  AvatarEffect,
-  AvatarVariant,
-} from "../types/ExAvatarType";
+import type { AvatarSize, AvatarStatus, AvatarColor, AvatarEffect, AvatarVariant } from "../types/ExAvatarType";
 
-export const AvatarSizeClass: Record<
-  AvatarSize,
-  { container: string; status: string }
-> = {
+export const AvatarSizeClass: Record<AvatarSize, { container: string; status: string }> = {
   xs: {
     container: "size-6 text-[10px] [&_svg]:size-3",
     status: "size-2",
@@ -30,34 +21,31 @@ export const AvatarSizeClass: Record<
 
 export const AvatarStatusClass: Record<AvatarStatus, string> = {
   none: "",
-  offline: "bg-secondary",
-  online: "bg-success",
-  away: "bg-warning",
-  busy: "bg-danger",
+  offline: "bg-secondary-solid",
+  online: "bg-success-solid",
+  away: "bg-warning-solid",
+  busy: "bg-danger-solid",
 };
 
-export const AvatarColorClass: Record<
-  AvatarColor,
-  Record<AvatarVariant, string>
-> = {
+export const AvatarColorClass: Record<AvatarColor, Record<AvatarVariant, string>> = {
   primary: {
-    solid: "text-white bg-primary",
+    solid: "text-white bg-primary-solid",
     soft: "text-primary bg-primary/25",
   },
   secondary: {
-    solid: "text-white bg-secondary",
+    solid: "text-white bg-secondary-solid",
     soft: "text-secondary bg-secondary/25",
   },
   danger: {
-    solid: "text-white bg-danger",
+    solid: "text-white bg-danger-solid",
     soft: "text-danger bg-danger/25",
   },
   success: {
-    solid: "text-white bg-success",
+    solid: "text-white bg-success-solid",
     soft: "text-success bg-success/25",
   },
   warning: {
-    solid: "text-white bg-warning",
+    solid: "text-white bg-warning-solid",
     soft: "text-warning bg-warning/25",
   },
 };

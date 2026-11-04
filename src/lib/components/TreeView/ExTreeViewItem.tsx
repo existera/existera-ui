@@ -21,12 +21,12 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import ExButton from "../Button/ExButton";
+import { RadiusSizeClass } from "../../styles/Radius";
 import { cn } from "../../utils/Utils";
 import { useTreeView } from "./context/ExTreeViewContext";
 import { TreeViewSizeClass, TreeViewTotalSizeClass } from "./class/ExTreeViewClass";
 import type { ExTreeViewItemProps } from "./props/ExTreeViewItemProps";
 
-// Render icon keys locally; never put React elements in callback data.
 const itemIcons = new Map<string, ReactNode>([
   ["folder", <Folder />],
   ["file", <File />],
@@ -163,7 +163,8 @@ export default function ExTreeViewItem({
       }}>
       <div
         className={cn(
-          "flex min-w-0 cursor-pointer items-center rounded-md hover:bg-surface-2",
+          "flex min-w-0 cursor-pointer items-center hover:bg-surface-2",
+          RadiusSizeClass[size],
           TreeViewSizeClass[size],
           selected === generatedId && "bg-surface-3 font-semibold",
         )}>

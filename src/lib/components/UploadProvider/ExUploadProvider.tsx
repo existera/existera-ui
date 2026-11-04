@@ -8,19 +8,14 @@ import { cn } from "../../utils/Utils";
 import type { ExUploadProviderProps } from "./props/ExUploadProviderProps";
 import ExButton from "../Button/ExButton";
 
-export default function ExUploadProvider({
-  uploadButton = false,
-  children,
-  onFiles,
-}: ExUploadProviderProps) {
+export default function ExUploadProvider({ uploadButton = false, children, onFiles }: ExUploadProviderProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     let dragCounter = 0;
-    const isFileDrag = (e: DragEvent) =>
-      e.dataTransfer?.types?.includes("Files");
+    const isFileDrag = (e: DragEvent) => e.dataTransfer?.types?.includes("Files");
     const handleDragEnter = (e: DragEvent) => {
       if (!isFileDrag(e)) return;
       e.preventDefault();
@@ -78,27 +73,20 @@ export default function ExUploadProvider({
         isDragging,
         files,
         setFiles,
-      }}
-    >
+      }}>
       {children}
 
       {uploadButton && (
         <>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            className="hidden"
-            onChange={handlePickFiles}
-          />
+          <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handlePickFiles} />
           <div className="fixed right-5 bottom-5">
             <ExButton
               type="button"
               size="lg"
               radius="full"
               iconOnly
-              onClick={() => fileInputRef.current?.click()}
-            >
+              aria-label="Upload files"
+              onClick={() => fileInputRef.current?.click()}>
               <Upload size={18} />
             </ExButton>
           </div>
@@ -114,21 +102,16 @@ export default function ExUploadProvider({
                 className={cn(
                   "pointer-events-auto",
                   "w-full h-full",
-                  "rounded-3xl",
+                  "rounded-lg",
                   "border-2 border-dashed",
                   "border-muted/40",
                   "bg-transparent",
                   "px-5 py-10",
                   "flex flex-col items-center justify-center",
-                )}
-              >
+                )}>
                 <div className="text-center">
-                  <div className="text-xl font-medium text-muted/50">
-                    Drop files to upload
-                  </div>
-                  <div className="mt-1 text-sm text-muted/50">
-                    Files and folders are supported
-                  </div>
+                  <div className="text-xl font-medium text-muted">Drop files to upload</div>
+                  <div className="mt-1 text-sm text-muted">Files and folders are supported</div>
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ export interface ExSelectedFile {
 
 export interface ExFilePickerProps {
   id?: string;
+  "aria-label"?: string;
   ref?: Ref<HTMLInputElement>;
   onChange?: (files: File[]) => void;
   accept?: string;

@@ -28,26 +28,18 @@ export default function VideoPlayerPage() {
       <div className="flex flex-col gap-15">
         <section id="intro" className="grid gap-2 section-anchor">
           <h2 className="text-3xl font-semibold">Video Player</h2>
-
+          <p>Video Player is a fullscreen video viewer built on top of the browser's native HTML5 video API.</p>
           <p>
-            Video Player is a fullscreen video viewer built on top of the
-            browser's native HTML5 video API.
-          </p>
-
-          <p>
-            It supports MP4 video playback with native browser controls,
-            fullscreen mode, picture-in-picture support (where available), and
-            responsive playback across desktop and mobile devices.
+            It includes custom playback controls, a buffered timeline, loading and buffering indicators, ten-second skip controls, volume,
+            playback speed, optional WebVTT subtitles, and error recovery. Fullscreen and picture-in-picture controls appear when supported
+            by the browser.
           </p>
         </section>
 
         <section id="basic-usage" className="grid gap-5 section-anchor">
           <div>
             <h2 className="text-2xl font-semibold">Basic Usage</h2>
-
-            <p className="mt-2 text-muted">
-              Pass a remote MP4 URL to open the fullscreen video player.
-            </p>
+            <p className="mt-2 text-muted">Pass a remote MP4 URL to open the fullscreen video player.</p>
           </div>
 
           <ExCanvas>
@@ -99,15 +91,7 @@ setViewer({
         </section>
       </div>
 
-      {viewer && (
-        <ExVideoPlayer
-          name={viewer.name}
-          url={viewer.url}
-          autoPlay
-          controls
-          onClose={() => setViewer(null)}
-        />
-      )}
+      {viewer && <ExVideoPlayer name={viewer.name} url={viewer.url} autoPlay controls onClose={() => setViewer(null)} />}
     </PageContent>
   );
 }

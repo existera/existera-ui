@@ -128,3 +128,39 @@
   appearance: none;
   display: none;
 }
+
+/* System colors preserve controls and state indicators in high-contrast mode. */
+@media (forced-colors: active) {
+  :focus-visible { outline: 2px solid Highlight; }
+  [role="switch"], [role="slider"], input, select, textarea { border-color: ButtonText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The default palette retains the approved visual style; this opt-in palette
+   keeps the contrast-tested interaction treatment. */
+[data-contrast="more"] .ex-link-auto-underline { text-decoration-line: underline; }
+[data-contrast="more"] :is(button,a)[class~="hover:bg-primary/25"]:hover { background-color: color-mix(in srgb, var(--color-primary) 15%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="active:bg-primary/30"]:active { background-color: color-mix(in srgb, var(--color-primary) 20%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="hover:bg-secondary/25"]:hover { background-color: color-mix(in srgb, var(--color-secondary) 15%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="active:bg-secondary/30"]:active { background-color: color-mix(in srgb, var(--color-secondary) 20%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="hover:bg-success/25"]:hover { background-color: color-mix(in srgb, var(--color-success) 15%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="active:bg-success/30"]:active { background-color: color-mix(in srgb, var(--color-success) 20%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="hover:bg-warning/25"]:hover { background-color: color-mix(in srgb, var(--color-warning) 15%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="active:bg-warning/30"]:active { background-color: color-mix(in srgb, var(--color-warning) 20%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="hover:bg-danger/25"]:hover { background-color: color-mix(in srgb, var(--color-danger) 15%, transparent); }
+[data-contrast="more"] :is(button,a)[class~="active:bg-danger/30"]:active { background-color: color-mix(in srgb, var(--color-danger) 20%, transparent); }
+
+@layer base {
+  [data-contrast="more"] :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+}

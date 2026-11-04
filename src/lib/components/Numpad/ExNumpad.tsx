@@ -40,16 +40,16 @@ export default function ExNumpad({
           aria-label={key === "backspace" ? "Backspace" : undefined}
           onClick={() => (key === "backspace" ? onBackspace?.() : onPress?.(key))}
           className={cn(
-            "inline-flex shrink-0 items-center justify-center border border-border font-medium tabular-nums outline-none shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-            "focus-visible:outline-2 focus-visible:outline-primary",
+            "inline-flex shrink-0 items-center justify-center border border-field-border font-medium tabular-nums outline-none",
+            "shadow-none transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-field-focus focus-visible:border-field-focus",
             InputSizeClass[inputSizes[size]].radius.default.default,
             keySizes[size],
             key === "0" && "col-start-2",
             disabled
-              ? "cursor-not-allowed bg-surface-4 text-muted"
+              ? "cursor-not-allowed bg-surface-2 text-muted"
               : key === "backspace"
                 ? "cursor-pointer bg-danger-soft text-danger hover:bg-danger-soft/80 active:bg-danger-soft/80"
-                : "cursor-pointer bg-surface-2 text-foreground hover:bg-surface-3 active:bg-surface-4",
+                : "cursor-pointer bg-field text-foreground hover:border-field-hover hover:bg-surface-2 active:bg-surface-3",
           )}>
           {key === "backspace" ? <Delete aria-hidden="true" className="text-danger size-[1em]" /> : key}
         </button>

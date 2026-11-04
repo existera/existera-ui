@@ -1,11 +1,12 @@
 "use client";
 import { useNativeField } from "../../hooks/useNativeField";
 
-import React, { Children, isValidElement, type ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { Children, isValidElement, type ReactElement, useEffect, useMemo, useRef, useState, useId } from "react";
 import Prefix from "../Prefix/ExPrefix";
 import Suffix from "../Suffix/ExSuffix";
 import ExPrefix from "../Prefix/ExPrefix";
 import ExSuffix from "../Suffix/ExSuffix";
+import { FormControlBaseClass, FormControlDisabledClass } from "../../styles/FormControl";
 import { cn } from "../../utils/Utils";
 import { CircleCheck, Loader, TriangleAlert, X } from "lucide-react";
 
@@ -39,8 +40,8 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
     rightIcon,
     size = "md",
     radius = "default",
-    state = "default",
-    disabled = false,
+    state: stateProp,
+    disabled: disabledProp = false,
     clearable = false,
     loading = false,
     selected: controlledSelected,
@@ -52,7 +53,11 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
     onType,
     ...nativeProps
   } = props;
-  const { operator, size: operatorSize } = useInputOperator();
+  const { operator, size: operatorSize, disabled: operatorDisabled, state: operatorState } = useInputOperator();
+  const disabled = disabledProp || operatorDisabled;
+  const state = stateProp ?? (operator ? operatorState : "default");
+  const generatedId = useId();
+  const listboxId = `${id ?? generatedId}-listbox`;
   const inputSize = operator ? operatorSize : size;
   const [focused, setFocused] = useState(false);
 
@@ -254,6 +259,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
       return (
         <ExComboBoxItem
           key={child.key ?? index}
+          id={`${listboxId}-option-${index}`}
           ref={(el) => {
             itemRefs.current[index] = el;
           }}
@@ -289,7 +295,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
               setInternalValue(option.label);
               setOpen(false);
               requestAnimationFrame(() => {
-                inputRef.current?.blur();
+                inputRef.current?.focus();
               });
             }
             changeSelection(nextSelected);
@@ -303,7 +309,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
   })();
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const handler = (e: Event) => {
       const target = e.target as Node;
       if (triggerRef.current?.contains(target)) {
         return;
@@ -314,8 +320,10 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
       setOpen(false);
     };
     document.addEventListener("mousedown", handler);
+    document.addEventListener("focusin", handler);
     return () => {
       document.removeEventListener("mousedown", handler);
+      document.removeEventListener("focusin", handler);
     };
   }, []);
 
@@ -331,15 +339,11 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
           ComboBoxSizeClass[inputSize].radius[radius].default,
           operator
             ? "min-w-0 flex-1"
-            : "flex w-full items-center border border-border shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:shadow-[inset_0_1px_3px_rgba(0,0,0,0.28),inset_0_-1px_1px_rgba(255,255,255,0.035)]",
-          disabled ? "cursor-not-allowed bg-surface-4 select-none" : !operator ? "bg-surface-2" : "transparent",
+            : FormControlBaseClass,
+          !operator && (disabled ? FormControlDisabledClass : ComboBoxStateClass[state]),
+        operator && disabled && "cursor-not-allowed text-muted",
         )}
-        role="combobox"
-        aria-haspopup="listbox"
-        aria-expanded={disabled ? false : open}
-        aria-controls={id ? `${id}-listbox` : undefined}
-        aria-owns={id ? `${id}-listbox` : undefined}
-        aria-disabled={disabled}>
+        >
         {!operator && prefix && (
           <ExPrefix textarea radius={radius} size={size}>
             {prefix}
@@ -350,7 +354,6 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
           className={cn(
             "relative flex h-full min-w-0 flex-1 items-center",
             multiple && selected.length > 0 ? "px-1 py-0.5" : ComboBoxPadding[inputSize].wrapper,
-            !operator && ComboBoxStateClass[state],
             !operator && !suffix && prefix && ComboBoxSizeClass[inputSize].radius[radius].prefix,
             !operator && !prefix && suffix && ComboBoxSizeClass[inputSize].radius[radius].suffix,
             !operator && !prefix && !suffix && ComboBoxSizeClass[inputSize].radius[radius].default,
@@ -389,7 +392,13 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
               id={id}
               ref={inputRef}
               disabled={disabled}
-              role="searchbox"
+              role="combobox"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              aria-expanded={!disabled && !readOnly && open}
+              aria-controls={open ? listboxId : undefined}
+              aria-activedescendant={open && activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined}
+              aria-invalid={nativeProps["aria-invalid"] ?? (state === "error" || undefined)}
               className={cn(
                 "min-h-0 border-none bg-transparent px-1 py-0 leading-none shadow-none outline-none",
                 multiple ? "min-w-8 flex-1 basis-8" : "min-w-0 w-full",
@@ -473,8 +482,10 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
                   }
 
                   case "Escape":
+                    e.preventDefault();
+                    e.stopPropagation();
                     setOpen(false);
-                    inputRef.current?.blur();
+                    inputRef.current?.focus();
                     break;
                 }
               }}
@@ -525,7 +536,7 @@ const ExComboBox = (<T,>(props: ExComboBoxProps<T>) => {
       </div>
 
       <ExComboBoxContent open={disabled || readOnly ? false : open} triggerRef={triggerRef} contentRef={contentRef}>
-        <div id={id ? `${id}-listbox` : undefined} role="listbox" className="flex flex-col items-start gap-0 text-md">
+        <div id={listboxId} role="listbox" aria-label={nativeProps["aria-label"] ?? placeholder} aria-multiselectable={multiple || undefined} className="flex flex-col items-start gap-0 text-md">
           {items.length > 0 && items}
 
           {items.length === 0 && (
