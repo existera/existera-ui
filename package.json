@@ -43,6 +43,7 @@
     "test:pdf": "node scripts/check-pdf-viewer.mjs",
     "test:video": "node scripts/check-video-player.mjs",
     "test:forms": "node scripts/check-form-controls.mjs",
+    "test:security": "npm audit --audit-level=high",
     "test:a11y": "playwright test",
     "test:a11y:install": "playwright install chromium"
   },
