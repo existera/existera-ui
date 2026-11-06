@@ -2,6 +2,7 @@ import type { ReactNode, RefObject } from "react";
 import type { ModalSize, ModalVariant } from "../types/ExModalType";
 
 export interface ExModalProps {
+  className?: string;
   variant?: ModalVariant;
   size?: ModalSize;
   isOpen?: boolean;

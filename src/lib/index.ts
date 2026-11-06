@@ -18,6 +18,8 @@ export { default as ExAlert } from "./components/Alert/ExAlert";
 export type { ExAlertProps } from "./components/Alert/props/ExAlertProps";
 export type { AlertPadding } from "./components/Alert/types/ExAlertType";
 export { default as ExAvatar } from "./components/Avatar/ExAvatar";
+export { default as ExProfilePicture } from "./components/ProfilePicture/ExProfilePicture";
+export type { ExProfilePictureProps } from "./components/ProfilePicture/props/ExProfilePictureProps";
 export { default as ExBadge } from "./components/Badge/ExBadge";
 export { default as ExChatBubble } from "./components/ChatBubble/ExChatBubble";
 export { default as ExBreadcrumbs } from "./components/Breadcrumbs/ExBreadcrumbs";
