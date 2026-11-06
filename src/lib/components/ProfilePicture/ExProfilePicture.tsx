@@ -8,6 +8,12 @@ import ExModal from "../Modal/ExModal";
 import { cn } from "../../utils/Utils";
 import type { ExProfilePictureProps } from "./props/ExProfilePictureProps";
 
+const sizeClasses = {
+  sm: { container: "size-16", content: "text-xl [&_svg]:size-6", status: "size-3", edit: "size-7", actionIcon: 20, editIcon: 12 },
+  md: { container: "size-24", content: "text-3xl [&_svg]:size-9", status: "size-4", edit: "size-8", actionIcon: 24, editIcon: 14 },
+  lg: { container: "size-32", content: "text-4xl [&_svg]:size-12", status: "size-5", edit: "size-9", actionIcon: 28, editIcon: 16 },
+} as const;
+
 interface CropImage {
   image: HTMLImageElement;
   source: string;
@@ -24,6 +30,7 @@ export default function ExProfilePicture({
   name,
   imgURL,
   icon,
+  size = "lg",
   variant = "solid",
   color = "primary",
   effect = "default",
@@ -38,8 +45,10 @@ export default function ExProfilePicture({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const [viewOpen, setViewOpen] = useState(false);
+  const [editingFromView, setEditingFromView] = useState(false);
   const canEdit = !viewOnly;
   const canView = viewOnly || !editOnly;
+  const sizing = sizeClasses[size];
   const requestRef = useRef(0);
   const dragRef = useRef<{ x: number; y: number; box: CropBox; corner?: string } | null>(null);
   const [crop, setCrop] = useState<CropImage | null>(null);
@@ -91,6 +100,7 @@ export default function ExProfilePicture({
         const side = Math.min(image.naturalWidth, image.naturalHeight) * 0.8;
         setBox({ x: (image.naturalWidth - side) / 2, y: (image.naturalHeight - side) / 2, side });
         setCrop({ image, source, name: file.name });
+        setViewOpen(false);
       };
       image.src = source;
     };
@@ -136,12 +146,13 @@ export default function ExProfilePicture({
 
   return (
     <div className="inline-flex flex-col gap-2 w-fit h-fit">
-      <div className="group relative size-32">
+      <div className={cn("group relative", sizing.container)}>
         <div
           role="img"
           aria-label={`${name || "User profile picture"}${status !== "none" ? `, ${status}` : ""}`}
           className={cn(
-            "flex size-full items-center justify-center overflow-hidden rounded-full text-4xl font-bold [&_svg]:size-12",
+            "flex size-full items-center justify-center overflow-hidden rounded-full font-bold",
+            sizing.content,
             AvatarColorClass[color][variant],
             border && "border-2 border-background",
           )}>
@@ -156,9 +167,13 @@ export default function ExProfilePicture({
           type="button"
           disabled={disabled}
           aria-label={canView ? "View profile picture" : "Change profile picture"}
-          onClick={() => (canView ? setViewOpen(true) : inputRef.current?.click())}
-          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/45 text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed group-hover:opacity-100 [@media(hover:none)]:opacity-100">
-          {canView ? <Eye size={28} aria-hidden="true" /> : <Pencil size={28} aria-hidden="true" />}
+          onClick={() => {
+            setEditingFromView(false);
+            if (canView) setViewOpen(true);
+            else inputRef.current?.click();
+          }}
+          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/45 text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed group-hover:opacity-100 max-sm:bg-transparent [@media(hover:none)]:bg-transparent [&_svg]:max-sm:hidden [@media(hover:none)]:[&_svg]:hidden">
+          {canView ? <Eye size={sizing.actionIcon} aria-hidden="true" /> : <Pencil size={sizing.actionIcon} aria-hidden="true" />}
         </button>
         {canView && canEdit && (
           <button
@@ -166,16 +181,20 @@ export default function ExProfilePicture({
             type="button"
             disabled={disabled}
             aria-label="Change profile picture"
-            onClick={() => inputRef.current?.click()}
-            className="absolute -bottom-1 -right-1 z-10 flex size-9 cursor-pointer items-center justify-center rounded-full border-2 border-background bg-primary-solid text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed [@media(hover:none)]:opacity-100">
-            <Pencil size={16} aria-hidden="true" />
+            onClick={() => {
+              setEditingFromView(false);
+              inputRef.current?.click();
+            }}
+            className={cn("absolute -bottom-1 -right-1 z-10 flex cursor-pointer items-center justify-center rounded-full border-2 border-background bg-primary-solid text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed max-sm:hidden [@media(hover:none)]:hidden", sizing.edit)}>
+            <Pencil size={sizing.editIcon} aria-hidden="true" />
           </button>
         )}
         {status !== "none" && (
           <span
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute bottom-1 right-1 size-5 rounded-full border-2 border-background",
+              "pointer-events-none absolute bottom-1 right-1 rounded-full border-2 border-background",
+              sizing.status,
               AvatarStatusClass[status],
             )}
           />
@@ -226,13 +245,24 @@ export default function ExProfilePicture({
             </div>
           )}
         </div>
+          {canEdit && (
+            <div className="mt-4 flex justify-center sm:hidden [@media(hover:none)]:flex">
+              <ExButton type="button" disabled={disabled} leftIcon={<Pencil size={16} aria-hidden="true" />}
+                onClick={() => {
+                  setEditingFromView(true);
+                  inputRef.current?.click();
+                }}>
+                Edit photo
+              </ExButton>
+            </div>
+          )}
       </ExModal>
       <ExModal
         isOpen={!!crop && canEdit}
         onClose={close}
         titleId={titleId}
         aria-describedby={helpId}
-        returnFocusRef={canView ? editButtonRef : buttonRef}>
+        returnFocusRef={canView && !editingFromView ? editButtonRef : buttonRef}>
         <div className="flex w-full flex-col gap-4 p-6 sm:w-[640px]">
           <h2 id={titleId} className="pr-6 text-xl font-semibold">
             Crop profile picture
