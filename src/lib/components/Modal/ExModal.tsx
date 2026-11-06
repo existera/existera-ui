@@ -19,6 +19,7 @@ const clientSnapshot = () => true;
 const serverSnapshot = () => false;
 
 export default function ExModal({
+  className,
   variant = "center",
   size = "auto",
   isOpen = false,
@@ -95,6 +96,7 @@ export default function ExModal({
                 modalPosition,
 
                 isFullscreen ? "h-full rounded-md" : [ModalSizeMap[size], "max-h-[90dvh]", "overflow-y-auto", "p-safe"],
+                className,
               )}
               role="dialog"
               aria-modal="true"

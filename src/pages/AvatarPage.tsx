@@ -6,6 +6,7 @@ import {
   User,
 } from "lucide-react";
 import ExAvatar from "../lib/components/Avatar/ExAvatar";
+import ExProfilePicture from "../lib/components/ProfilePicture/ExProfilePicture";
 import ExCodeBlock from "../lib/components/CodeBlock/ExCodeBlock";
 import ExCanvas from "../shared/components/ExCanvas";
 import { type OnThisPage } from "../shared/documentation/OnThisPageDocumentation";
@@ -13,6 +14,7 @@ import PageContent from "../shared/documentation/PageContent";
 
 export default function AvatarPage() {
   const section: OnThisPage[] = [
+    { name: "Profile Picture", link: "#profile-picture" },
     {
       name: "Introduction",
       link: "#intro",
@@ -49,6 +51,30 @@ export default function AvatarPage() {
   return (
     <PageContent section={section}>
       <div className="flex flex-col gap-20">
+        <section id="profile-picture" className="grid gap-3 section-anchor">
+          <h2 className="text-3xl font-semibold">Profile Picture</h2>
+          <p>A fixed 128 px profile picture. Click the photo to view it, or the pencil to choose and crop an image. Use viewOnly to disable editing, or editOnly to skip viewing.</p>
+          <ExCanvas><ExProfilePicture name="Michele Jane" /></ExCanvas>
+          <ExCodeBlock language="tsx">{`<ExProfilePicture
+  name="Michele Jane"
+  onChange={(file, previewURL) => {
+    // Upload the cropped 512 x 512 PNG file.
+    console.log(file, previewURL);
+  }}
+/>`}</ExCodeBlock>
+          <div id="profile-picture-modes" className="grid gap-4 sm:grid-cols-2">
+            <div className="grid justify-items-start gap-2">
+              <h3 className="text-lg font-semibold">View only</h3>
+              <ExProfilePicture name="Michele Jane" imgURL="https://i.pravatar.cc/300?img=5" viewOnly />
+              <ExCodeBlock language="tsx">{'<ExProfilePicture name="Michele Jane" imgURL="/photo.png" viewOnly />'}</ExCodeBlock>
+            </div>
+            <div className="grid justify-items-start gap-2">
+              <h3 className="text-lg font-semibold">Edit only</h3>
+              <ExProfilePicture name="Michele Jane" editOnly />
+              <ExCodeBlock language="tsx">{'<ExProfilePicture name="Michele Jane" editOnly onChange={handlePhotoChange} />'}</ExCodeBlock>
+            </div>
+          </div>
+        </section>
         <section id="intro" className="grid gap-2 section-anchor">
           <h2 className="text-3xl font-semibold">Avatar</h2>
           <p>
