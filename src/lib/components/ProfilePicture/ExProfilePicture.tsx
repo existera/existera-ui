@@ -146,7 +146,7 @@ export default function ExProfilePicture({
 
   return (
     <div className="inline-flex flex-col gap-2 w-fit h-fit">
-      <div className={cn("group relative", sizing.container)}>
+      <div className={cn("group/profile-picture relative", sizing.container)}>
         <div
           role="img"
           aria-label={`${name || "User profile picture"}${status !== "none" ? `, ${status}` : ""}`}
@@ -172,7 +172,7 @@ export default function ExProfilePicture({
             if (canView) setViewOpen(true);
             else inputRef.current?.click();
           }}
-          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/45 text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed group-hover:opacity-100 max-sm:bg-transparent [@media(hover:none)]:bg-transparent [&_svg]:max-sm:hidden [@media(hover:none)]:[&_svg]:hidden">
+          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/45 text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed group-hover/profile-picture:opacity-100 max-sm:bg-transparent [@media(hover:none)]:bg-transparent [&_svg]:max-sm:hidden [@media(hover:none)]:[&_svg]:hidden">
           {canView ? <Eye size={sizing.actionIcon} aria-hidden="true" /> : <Pencil size={sizing.actionIcon} aria-hidden="true" />}
         </button>
         {canView && canEdit && (
@@ -185,7 +185,7 @@ export default function ExProfilePicture({
               setEditingFromView(false);
               inputRef.current?.click();
             }}
-            className={cn("absolute -bottom-1 -right-1 z-10 flex cursor-pointer items-center justify-center rounded-full border-2 border-background bg-primary-solid text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed max-sm:hidden [@media(hover:none)]:hidden", sizing.edit)}>
+            className={cn("absolute -bottom-1 -right-1 z-10 flex cursor-pointer items-center justify-center rounded-full border-2 border-background bg-primary-solid text-white opacity-0 transition-opacity group-hover/profile-picture:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed max-sm:hidden [@media(hover:none)]:hidden", sizing.edit)}>
             <Pencil size={sizing.editIcon} aria-hidden="true" />
           </button>
         )}
